@@ -1,0 +1,52 @@
+@charset "UTF-8";
+/*
+Name: 下载文件不打开空白页
+*/
+a[href$=".flyshare"],
+a[href$=".exe"],
+a[href$=".zip"],
+a[href$=".ppt"],
+a[href$=".xls"],
+a[href$=".doc"],
+a[href$=".7z"],
+a[href$=".mpkg"],
+a[href$=".rar"],
+a[href$=".elf"],
+a[href$=".pdf"],
+a[href$=".rep"],
+a[href$=".scm"],
+a[href$=".scx"],
+a[href$=".txt"],
+a[href$=".jar"],
+a[href$=".chm"],
+a[href$=".mp3"],
+a[href$=".lzh"],
+a[href*="/attachment.aspx?attachmentid="],
+a[href*="attachment.php?am="],
+a[href*="downs.asp?softid="],
+a[href*="aid="],
+a[href*="&downid="],
+a[href*="viewFile.asp?BoardID="],
+a[href*="?downd_id"],
+a[href*="&act=Attach&type=post&id="],
+a[href*="ShowSoftDown.asp?UrlID="],
+a[href*="attachs.php?action=getfile"],
+a[href*="view_down.asp?down_url=http://"],
+a[href*="index.php?act=attach&type=post&id="],
+a[href*="attach.aspx?attachid="],
+a[href*="job-htm-action-download-pid-"]
+a[href*="download.php?id"],
+a[href*="Download.ASP?FileID="],
+a[href*="qidian.com/bookall/"],
+a[href*="-aid-"],
+a[href*="/softdown.asp?softid="],
+a[href*="download.php?s="],
+a[href*="go_down.asp?down_url="],
+a[href*="=download&id="],
+a[href*="download/get?id="],
+a[href*="download.aspx?f="],
+a[href*="mode=download&key="]
+{
+-o-link:attr(href) !important;
+-o-link-source:current !important;
+}
