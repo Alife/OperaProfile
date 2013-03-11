@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	for (var i = 0, oTD; oTD = oTDs[i]; i++) {
 		oTD.style.color = "red";
 	}
-	AddmyLinks();
 	
 	//var cat1 = document.body;
 	//for(var prop in cat1) { alert("cat1["+prop+"]="+cat1[prop]); }
@@ -201,4 +200,8 @@ function AddTitleToList() {
 		}
 	}
 }
-
+if(typeof(jQuery)!='undefined'){
+	jQuery(document).ready(function () {
+		$("small.ua").each(function(){if($(this).html().indexOf("mini")>-1){$(this).css("color","red")}});
+	});
+}

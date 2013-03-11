@@ -55,6 +55,18 @@ loop = function () {
 }, _flag;
 
 //unsafeWindow.addEventListener('hashchange', loop, false);
-document.addEventListener('DOMContentLoaded', loop, false);
+//document.addEventListener('DOMContentLoaded', loop, false);
 //window.addEventListener('load', function(){document.title = document.title + " Redirect Clear \\(^o^)/ ";}, false);
+if(typeof(jQuery)!='undefined'){
+	jQuery(document).ready(function () {
+		if($("a[onmousedown*='rwt']")){
+			$("a[onmousedown*='rwt']").live('mouseover', function() {
+				if($(this).attr("onmousedown")){
+					$(this).removeAttr("onmousedown").append(" √")
+				}
+			});
+		}
+	});
+}
+
 	

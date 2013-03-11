@@ -32,7 +32,7 @@
 
 	document["$UserJS"].quickQuote = function () {
 		var oDivPost = document["$UserJS"].lastClicked.selectSingleNode("ancestor-or-self::div[@class='post postbg']");
-
+		console.log(oDivPost);
 		if (!oDivPost) {
 			alert("请框选一些内容或点击相应帖子后，再使用快速引用");
 			return;
@@ -416,7 +416,7 @@ window.addEventListener(
 	'DOMContentLoaded',
 	function(){
 	/*---------------------------------功能：在引用按钮后面添加快速引用（直接提交）---------------------------------------*/
-		var quoteuls = document.selectNodes('//ul[@class="profile-icons"]');
+		var quoteuls = document.selectNodes('//a[@title="引用"]');
 		for(var i=0,quoteul;quoteul = quoteuls[i];i++){
 			var autoquote = document.createElement('li');
 			autoquote.setAttribute('class', 'quote-icon');
