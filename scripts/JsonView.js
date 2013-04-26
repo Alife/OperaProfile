@@ -170,8 +170,9 @@
         addStyle('.null', { color: 'red', 'font-weight': 'bold' });
         addStyle('.key', { 'font-weight' : 'bold' });
         addStyle('.sub-items', { 'margin-left': '20px' });
-        addStyle('.toggle-btn', { cursor: 'pointer', font: 'bold', 'margin-right': '10px;', 'margin-left': '-18px' });
+        addStyle('.toggle-btn', { cursor: 'pointer', font: 'bold', 'margin-right': '10px;', 'margin-left': '-8px' });
         addStyle('.ellipsis', { border: 'gray 1px solid', background: '#d3d3d3' });
+        addStyle('.sub-item', {'list-style': 'decimal;' , display: 'list-item'});
     }
 
     function addUi() {

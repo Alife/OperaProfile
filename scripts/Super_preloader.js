@@ -463,7 +463,7 @@
 		};
 		//css 获取所有元素
 		function getAllElementsByCSS(css,contextNode){
-			return (contextNode || document).querySelectorAll(css);
+			return (contextNode || document).qSelectorAll(css);
 		};
 		//xpath 获取单个元素
 		function getElementByXpath(xpath,contextNode,doc){

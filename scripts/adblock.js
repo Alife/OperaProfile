@@ -102,7 +102,7 @@
 	};
 	var getCssRule = function(el, wide){
 		var att, tag, rez = [];
-		var ver = document.querySelectorAll ? 10 : (window.postMessage ? 9.5 : (window.getSelection ? 9 : 8));
+		var ver = document.qSelectorAll ? 10 : (window.postMessage ? 9.5 : (window.getSelection ? 9 : 8));
 		while(el){
 			if(el.nodeType == 1){
 				tag = el.nodeName;
@@ -114,7 +114,7 @@
 				else{
 					att = getAtt(el, 'id|class|height|width|color|bgcolor'+(ver >= 9 ? '|align|valign|type' : ''));
 					rez.unshift(tag+att+((wide != false || ver < 9.5 || /^(html|body)$/i.test(tag)) ? '' : getNth(el)));
-					if(wide && att && (ver >= 10 ? document.querySelectorAll(tag+att).length == 1 : /\[id=\x22.*?\x22\]|\[class=\x22.*?\x22\]\[|\]\[class=\x22.*?\x22\]/.test(att)))break;
+					if(wide && att && (ver >= 10 ? document.qSelectorAll(tag+att).length == 1 : /\[id=\x22.*?\x22\]|\[class=\x22.*?\x22\]\[|\]\[class=\x22.*?\x22\]/.test(att)))break;
 				}
 			};
 			el = el.parentNode;

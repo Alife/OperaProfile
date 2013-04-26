@@ -26,7 +26,7 @@
 	}
 	else{
 		function $$(str){
-			return document.querySelectorAll(str);
+			return document.qSelectorAll(str);
 		}
 		
 		function loadLazyImage(img){

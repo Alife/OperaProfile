@@ -59,13 +59,17 @@ loop = function () {
 //window.addEventListener('load', function(){document.title = document.title + " Redirect Clear \\(^o^)/ ";}, false);
 if(typeof(jQuery)!='undefined'){
 	jQuery(document).ready(function () {
-		if($("a[onmousedown*='rwt']")){
-			$("a[onmousedown*='rwt']").live('mouseover', function() {
-				if($(this).attr("onmousedown")){
-					$(this).removeAttr("onmousedown").append(" √")
+		if(jQuery("a[onmousedown*='rwt']").length>0){
+			jQuery("a[onmousedown*='rwt']").live('mouseover', function() {
+				if(jQuery(this).attr("onmousedown")){
+					jQuery(this).removeAttr("onmousedown").append(" √")
 				}
 			});
 		}
+		// no js web style
+		jQuery("#ires h3 a,.osl>a").live('mouseover', function() {
+			if(getQueryString("q", this.href)!="")jQuery(this).attr("href",getQueryString("q", this.href)).append(" √")
+		});
 	});
 }
 

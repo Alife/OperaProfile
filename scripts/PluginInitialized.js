@@ -259,11 +259,12 @@
 					setAttri(flashVars,'flashVars',ofVarsAft,true);
 				};
                 
-                //if(/http:\/\/static\.youku\.com\//i.test(src_data)){
+                if(/http:\/\/static\.youku\.com\//i.test(src_data)){
                     //elem.setAttribute('data','http://static.youku.com/v1.0.0098/v/swf/qplayer.swf');
                     //elem.setAttribute('data','http://static.youku.com/v1.0.0206/v/swf/qplayer_taobao.swf');
                     //elem.setAttribute('data','http://player.opengg.me/player.swf');
-                //};
+                    //elem.setAttribute('data','http://localhost/player.swf');
+                };
 				setAttri(allowFullScreen,'allowFullScreen',matched[2]);
 				setAttri(allowNetworking,'allowNetworking',matched[3]);
 				setAttri(allowScriptAccess,'allowScriptAccess',matched[4]);

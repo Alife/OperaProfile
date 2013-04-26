@@ -10,7 +10,7 @@
 // ==/UserScript==
 
 //code based on ff extension but improved
-(function(opera,getSelection,addEventListener,selNode,getBoundingClientRect,window){var 
+(function(opera,getSelection,addEventListener,selNode,getBoundingClientRect,window){var
 //..//
 	showStatus=1 , // show # of selected links in status bar
 	selAllLinks=0, // select all links
@@ -43,9 +43,9 @@
 					return(sl.clear());
 			x2=ev.pageX;
 			y2=ev.pageY;
-			
+
 			ctKey=ev.ctrlKey;shKey=ev.shiftKey;
-			
+
 			var rect=sl.getRealXY([x,x2],[y,y2]);
 			if(!outRect){
 				if( reqCtrlKey || ((rect.x[1]-rect.x[0])>4 && (rect.y[1]-rect.y[0])>10 && !getSelection().rangeCount)){
@@ -58,13 +58,14 @@
 			};
 
 			if(getSelection().rangeCount)getSelection().removeAllRanges();
-			
+
 			sl.setRectSize(rect,docMaxX,docMaxY)
-			
+
 			if(!updateTimeout)
 			 updateTimeout=setTimeout(function(){updateTimeout=null;sl.selLinks()},66);
 		},
 		mouseup:function(ev){
+			var timer = null;timer = setInterval(open_ext, 100);function open_ext(){clearInterval(timer);
 			if(ev.which===1 && mdown){
 			  var linksOpened;
 			  ev.preventDefault();//ev.stopPropagation();
@@ -72,7 +73,7 @@
 			  if(elms && (!reqCtrlKey || ev.ctrlKey)){
 			  	var mEv=document.createEvent('MouseEvent');mEv.initMouseEvent('mousedown',0,0,document.defaultView,1,0,0,0,0,0,0,0,0,1,null);mEv.dynamicEvent=1;
 				for(var iX=0,elm,link=!inSameTab?0:(inSameTab==-1?elms.pop():elms.shift());elm=elms[iX];iX++){
-					window.open(elm);
+					window.open(elm).blur();
 					elm.style.outline="none";
 				}
 				if(linksOpened=(iX && showStatus)){
@@ -82,6 +83,7 @@
 				if(link){ sl.clear();location.href=link.href;return }
 			  }
 			  sl.clear(0,0,linksOpened);
+			}
 			}
 		},
 		keydown:function(ev){
@@ -186,7 +188,7 @@
 			  if(linksOutline.indexOf('!important')==-1)linksOutline+='!important';
 			  (document.documentElement||document).appendChild(outRect);
 			};
-			console.log("loopElms:"+loopElms);
+
 			minY=minY||pageYOffset;
 			maxY=maxY||pageYOffset+(document.documentElement.clientHeight);
 			if(visMinY==-1 || visMaxY==-1){
@@ -199,7 +201,7 @@
 				minY=visMaxY
 				visMaxY=maxY;
 			}else return;
- 
+
 			var elms=loopElms||document.links,i=0,elm;visElms=addToElms||visElms||{sizes:[],elms:[],pos:[]};
 			var eSty,elFS,pos;
 			var iX=0,cLnk,vEls=visElms.elms;

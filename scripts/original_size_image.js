@@ -1,8 +1,8 @@
 // ==UserScript==
 // @author yansyrs
 // @description 当图片被缩小或另外链接着图片时，显示原本尺寸的图片，可对图片进行拖拽、缩放或旋转。使用相册功能可列出当前页面的图片并预读。
-// @version v2.0.0
-// @date 2013-02-15
+// @version v2.1.0
+// @date 2013-03-17
 // @namespace http://opera.im/archives/ujs-original_size_image-js-v2/
 // @grant none
 // @exclude *.jpg
@@ -658,6 +658,9 @@
 
 	function create_preview(x, y, imgLink, not_from_click){
 		if(imgLink != null){
+			if(album_in_select_mode){
+				return;
+			}
 			destroy_all_preview();
 			if(preview_album != null){
 				if(target_obj.src && !not_from_click){
@@ -1007,7 +1010,7 @@
 
 	var start_preview_x = 0, start_preview_y = 0, start_preview_link = '', start_preview_click_obj = null;
 	function click_to_show_preview(ev){
-		if(ev.target != start_preview_click_obj || (isOpera ? ev.altKey : ev.ctrlKey)){
+		if(ev.target != start_preview_click_obj || (isOpera ? ev.altKey : ev.ctrlKey) || ev.button != 0){
 			return;
 		}
 		_StopEvent(ev);
@@ -1061,6 +1064,9 @@
 		//用于修正拖拽过快造成的拖拽失败问题
 		if(drag_fix(ev)){
 			return false;
+		}
+		if(album_in_select_mode){
+			return;
 		}
 
 		target_obj = ev.target;
@@ -1172,6 +1178,8 @@
 	var album_icon = null;
 	var preview_album = null;
 	var album_settings = null;
+	var album_confirm = null;
+	var album_in_select_mode = false;
 	var album_ctn = null;
 	var album_tables = null;
 	var albumStyleObj = null;
@@ -1191,11 +1199,11 @@
 	var album_background_img = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwQDAwQEBAQFBQQFBwsHBwYGBw4KCggLEA4RERAOEA8SFBoWEhMYEw8QFh8XGBsbHR0dERYgIh8cIhocHRz/2wBDAQUFBQcGBw0HBw0cEhASHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBz/wAARCAAZABkDAREAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAIBCP/EACMQAAEDAwIHAAAAAAAAAAAAAAABESESMUFi8DJCUnGRoeL/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A7UjSAjNIAABLRYCql6QC34cga+kDADK3yAV99gMkCebwBWQN36AoD//Z';
 
 	var styleStr = '#ujs_preview_ablum_settings { width: 100% !important; height: 23px !important; background: black !important; text-align: center !important; box-shadow: 0px 0px 10px black !important; position: fixed !important; top: 0px !important; left: 0px !important; z-index: 1 !important; color: white !important; } \n'
-	+ '#ujs_preview_ablum_settings * { color: inherit !important; float: none !important; font-size: 12px !important; font-weight: normal !important; } \n'
+	+ '#ujs_preview_ablum_settings * { color: inherit; float: none !important; font-size: 12px !important; font-weight: normal !important; } \n'
 	+ '#ujs_preview_ablum_settings input { display: inline !important; color: black !important; } \n'
 	+ '#ujs_preview_ablum_settings input[type="text"] { background-color: white !important; margin: 0px !important; padding: 0px !important; width: auto !important; height: auto !important; } \n'
 	+ '#ujs_preview_ablum_settings select { max-width: 100px !important; border: 0px !important; margin: 0px 0px 0px 10px !important; padding: 0px !important; width: auto !important; height: auto !important; display: inline !important; color: black !important; background-color: white !important; } \n'
-	+ '#ujs_preview_ablum_settings input[type="button"] { padding: 2px 5px 2px 5px !important; margin: 0px !important; width: auto !important; height: auto !important; background: #ffffff; border: 1px solid !important; border-color: #eeeeee #999999 #999999 #eeeeee !important; } \n'
+	+ '#ujs_preview_ablum_settings input[type="button"] { padding: 2px 5px 2px 5px !important; margin: 0px 5px 0px 5px !important; width: auto !important; height: auto !important; background: #ffffff; border: 1px solid !important; border-color: #eeeeee #999999 #999999 #eeeeee !important; } \n'
 	+ '#ujs_preview_ablum_page_count>span { display: inline-block !important; margin-left: 3px !important; cursor: pointer !important; border: 1px solid #555555 !important; width: 35px !important; padding: 2px !important; } \n'
 	+ '#ujs_preview_ablum_page_count>.current_page { border: 1px solid white !important; } \n'
 	+ '#ujs_preview_ablum_preload_info { margin-left: 10px !important; } \n'
@@ -1205,21 +1213,28 @@
 	+ '.ujs_preview_album_table * { background-color: transparent !important; border: none !important; } \n'
 	+ '.ujs_preview_album_table td{ vertical-align: middle !important; } \n'
 	+ '#ujs_preview_ablum_container { width: 98% !important; height: 100% !important; left: 0.5% !important; top: 25px !important; position: fixed !important; overflow: hidden !important; z-index: 0 !important; } \n'
-	+ '#ujs_preview_ablum_close { display: inline-block !important; width: 40px !important; color: white !important; cursor: pointer !important; }';
+	+ '.ujs_preview_album_text_button { display: inline-block !important; width: auto !important; color: white !important; cursor: pointer !important; } \n'
+	+ '.ujs_preview_album_text_button:hover { color: yellow !important; } \n'
+	+ '#ujs_preview_ablum_url_list_container { position: fixed !important; left: 50% !important; top: 50% !important; z-index: 999999 !important; background-color: white !important; padding: 10px !important; margin: -150px 0px 0px -250px !important;} \n'
+	+ '#ujs_preview_ablum_url_list_toolbar { height: 22px !important; } \n'
+	+ '#ujs_preview_album_url_list_textarea { width: 500px !important; height: 300px !important; margin-top: 10px !important; border: 1px solid gray !important; background-color: white !important; color: black !important; }';
 
 	function _addStyle(str){
+		if(document.doctype && document.doctype.name == "wml"){
+			return;
+		}
 		var styleObj = _createElement('style');
 		styleObj.textContent = str;
-		$('head').appendChild(styleObj);
+		qs('head').appendChild(styleObj);
 		return styleObj;
 	}
 
-	function $(str){
+	function qs(str){
 		return document.querySelector(str);
 	}
 
-	function $$(str){
-		return document.querySelectorAll(str);
+	function $qs(str){
+		return document.qSelectorAll(str);
 	}
 
 	function isVisible(obj){
@@ -1307,31 +1322,160 @@
 		}
 		album_settings.innerHTML = 
 		'<span id="ujs_preview_ablum_page_count"></span>' +
-		'<select id="ujs_preview_ablum_filter_selections">' +
-			'<option value="0x0">全部显示</option>' +
-			str_filter +
-			'<option value="99999x99999">只显示预读</option>' +
-		'</select>' +
-		'<span style="margin-left: 10px;">' + 
-			'面积小于 ' +
-			'<input id="ujs_preview_ablum_setting_width" type="text" size="5" value="' + default_filter_w + '">' +
-			' X ' +
-			'<input id="ujs_preview_ablum_setting_height" type="text" size="5" value="' + default_filter_h + '">' + 
-			' 的被 ' + 
-			'<input id="ujs_preview_ablum_settings_go" type="button" value="过滤" title="链接着大图的除外">' + 
-			' 宫格：' +
-			'<select id="ujs_preview_ablum_grid_selections">' +
-				str_size +
+		'<span id="ujs_preview_album_normal_container">' +
+			'<select id="ujs_preview_ablum_filter_selections">' +
+				'<option value="0x0">全部显示</option>' +
+				str_filter +
+				'<option value="99999x99999">只显示预读</option>' +
 			'</select>' +
-		'</span>' +
-		'<span id="ujs_preview_ablum_preload_info">' +
-			'<span id="ujs_preview_ablum_preload_completed_num"></span>' +
-			' / ' +
-			'<span id="ujs_preview_ablum_preload_need_to_load_num"></span>' +
-			' 已预读' +
-			'<span id="ujs_preview_ablum_preload_failed_to_load">（<span class="num"></span> 失败）</span>' +
-		'</span>' +
-		'<span id="ujs_preview_ablum_close">关闭</span>';
+			'<span style="margin-left: 10px;">' + 
+				'面积小于 ' +
+				'<input id="ujs_preview_ablum_setting_width" type="text" size="5" value="' + default_filter_w + '">' +
+				' X ' +
+				'<input id="ujs_preview_ablum_setting_height" type="text" size="5" value="' + default_filter_h + '">' + 
+				' 的被 ' + 
+				'<input id="ujs_preview_ablum_settings_go" type="button" value="过滤" title="链接着大图的除外">' + 
+				' 宫格：' +
+				'<select id="ujs_preview_ablum_grid_selections">' +
+					str_size +
+				'</select>' +
+			'</span>' +
+			'<span id="ujs_preview_ablum_preload_info">' +
+				'<span id="ujs_preview_ablum_preload_completed_num"></span>' +
+				' / ' +
+				'<span id="ujs_preview_ablum_preload_need_to_load_num"></span>' +
+				' 已预读' +
+				'<span id="ujs_preview_ablum_preload_failed_to_load">（<span class="num"></span> 失败）</span>' +
+			'</span>' +
+			'<span id="ujs_preview_album_url_list" class="ujs_preview_album_text_button">URL 列表</span>' +
+			'<span> | </span>' +
+			'<span id="ujs_preview_ablum_close" class="ujs_preview_album_text_button">关闭</span>' +
+		'</span>';
+	}
+	
+	function create_preview_album_confirm (okFunc, cancelFunc) {
+		var normal_container = qs('#ujs_preview_album_normal_container') || null;
+		if(normal_container == null){
+			return;
+		}
+		normal_container.style.display = 'none';
+		if(album_confirm == null){
+			album_confirm = _createElement('span', 'ujs_preview_ablum_settings_confirm');
+			album_confirm.innerHTML =
+			'<input id="ujs_preview_album_confirm_ok" type="button" value="确定">' +
+			'<input id="ujs_preview_album_confirm_cancel" type="button" value="取消">' +
+			'<input id="ujs_preview_album_select_none" type="button" value="全部取消" style="float: right !important;">' +
+			'<input id="ujs_preview_album_select_all" type="button" value="全选" style="float: right !important;">';
+			normal_container.parentNode.insertBefore(album_confirm, normal_container);
+			qs('#ujs_preview_album_confirm_ok').addEventListener('click', okFunc, false);
+			qs('#ujs_preview_album_confirm_cancel').addEventListener('click', cancelFunc, false);
+			qs('#ujs_preview_album_select_all').addEventListener('click', preview_album_select_mode_select_all, false);
+			qs('#ujs_preview_album_select_none').addEventListener('click', preview_album_select_mode_select_none, false);
+		}
+	}
+	
+	function destroy_preview_album_confirm () {
+		var normal_container = qs('#ujs_preview_album_normal_container') || null;
+		if(normal_container != null){
+			normal_container.style.display = 'inline';
+		}
+		if(album_confirm != null){
+			album_confirm.parentNode.removeChild(album_confirm);
+			album_confirm = null;
+		}
+	}
+	
+	function preview_album_select_mode_click_hdlr (e) {
+		if(e.button != 0){
+			return;
+		}
+		var img = e.target;
+		var obj = document.evaluate('ancestor-or-self::a', img, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+		if(obj.snapshotLength > 0){
+			_StopEvent(e);
+		}
+		if(_tag(img) != 'img'){
+			return;
+		}
+		if(img.className && img.className.indexOf('current') != -1){
+			_removeClassName(img, 'current');
+		}
+		else{
+			_addClassName(img, 'current');
+		}
+	}
+	
+	function preview_album_select_mode_select_all () {
+		var imgs = $qs('#ujs_preview_album_tables img');
+		_addClassName(imgs, 'current');
+	}
+	
+	function preview_album_select_mode_select_none () {
+		var imgs = $qs('#ujs_preview_album_tables img');
+		_removeClassName(imgs, 'current');
+	}
+	
+	function preview_album_entry_select_mode (finishFunc) {
+		album_in_select_mode = true;
+		preview_album_select_mode_select_all();
+		create_preview_album_confirm(finishFunc, preview_album_exit_select_mode);
+		window.addEventListener('click', preview_album_select_mode_click_hdlr, true);
+	}
+	
+	function preview_album_exit_select_mode (){
+		album_in_select_mode = false;
+		destroy_preview_album_confirm();
+		preview_album_select_mode_select_none();
+		if(curr_index > 0){
+			preview_album_hightlight_photo(curr_index, false);
+		}
+		window.removeEventListener('click', preview_album_select_mode_click_hdlr, true);
+	}
+	
+	function preview_album_close_url_list_dialog (ev) {
+		var bg = qs('#ujs_preview_ablum_url_list_bg');
+		if(bg){
+			bg.parentNode.removeChild(bg);
+		}
+		var dialog = qs('#ujs_preview_ablum_url_list_container');
+		if(dialog){
+			dialog.parentNode.removeChild(dialog);
+		}
+		preview_album_exit_select_mode();
+	}
+	
+	function preview_album_show_url_list (input, count) {
+		var url_list_page_bg = create_whole_page_div('black', BACKGROUND_OPACITY);
+		url_list_page_bg.id = 'ujs_preview_ablum_url_list_bg';
+		var list_container = _createElement('div', 'ujs_preview_ablum_url_list_container');
+		list_container.innerHTML =
+		'<div id="ujs_preview_ablum_url_list_toolbar">请手动复制下列地址到下载工具中（共 ' + count + ' 个）</div>' +
+		'<textarea id="ujs_preview_album_url_list_textarea">' + input + '</textarea>';
+		document.body.appendChild(url_list_page_bg);
+		document.body.appendChild(list_container);
+		var close_btn = create_preview_button(icon.close, preview_album_close_url_list_dialog);
+		qs('#ujs_preview_ablum_url_list_toolbar').appendChild(close_btn);
+		qs('#ujs_preview_album_url_list_textarea').select();
+		if(CLICK_BLANK_TO_CLOSE){
+			url_list_page_bg.addEventListener('click', preview_album_close_url_list_dialog, false);
+		}
+	}
+	
+	function preview_album_get_url_list_finish_callback () {
+		var imgs = $qs('#ujs_preview_album_tables img');
+		var output = '', count = 0;;
+		for(var i = 0; i < imgs.length; i++){
+			if(imgs[i].className && imgs[i].className.indexOf('current') != -1){
+				var link = curr_album_source[i].ohref || curr_album_source[i].href;
+				output += link + '\r\n';
+				count++;
+			}
+		}
+		preview_album_show_url_list(output, count);
+	}
+	
+	function preview_album_get_url_list () {
+		preview_album_entry_select_mode(preview_album_get_url_list_finish_callback);
 	}
 
 	function preview_setting_go () {
@@ -1346,8 +1490,8 @@
 		var index = this.selectedIndex;
 		var value = this.options[index].value.split('x');
 		var width = value[0], height = value[1];
-		$('#ujs_preview_ablum_setting_width').value = width;
-		$('#ujs_preview_ablum_setting_height').value = height;
+		qs('#ujs_preview_ablum_setting_width').value = width;
+		qs('#ujs_preview_ablum_setting_height').value = height;
 		preview_setting_go();
 	}
 
@@ -1362,31 +1506,31 @@
 	function preview_album_scroll_to (obj, toHere) {
 		var to_here = toHere, dir = 'none';
 		var last_table_height = 0;
-		var last_table = $('#ujs_preview_album_tables>table:last-child');
+		var last_table = qs('#ujs_preview_album_tables>table:last-child');
 		var img_count = last_table.getElementsByTagName('img').length;
 		var last_table_visible_rows = Math.ceil(img_count / album_col);
 		last_table_height = (last_table.offsetHeight / album_row) * last_table_visible_rows;
 		
-		var limit_y = -($('#ujs_preview_album_tables').offsetHeight - 2 * last_table.offsetHeight + last_table_height);
+		var limit_y = -(qs('#ujs_preview_album_tables').offsetHeight - 2 * last_table.offsetHeight + last_table_height);
 		to_here = (to_here < limit_y) ? limit_y : to_here;
 		to_here = (to_here > 0) ? 0 : to_here;
 		dir = (to_here > parseInt(obj.style.top)) ? 'up' : 'down';
 		obj.style.top = to_here + 'px';
 		
 		var f = dir == 'up' ? Math.ceil : Math.floor;
-		var current_page = f(Math.abs(to_here) / $('#ujs_preview_album_tables>table').offsetHeight);
+		var current_page = f(Math.abs(to_here) / qs('#ujs_preview_album_tables>table').offsetHeight);
 		if(to_here == limit_y){
-			current_page = $$('#ujs_preview_album_tables>table').length - 1;
+			current_page = $qs('#ujs_preview_album_tables>table').length - 1;
 		}
-		var ind = $('#ujs_preview_ablum_page_count>span:nth-child(' + (current_page + 1) + ')');
+		var ind = qs('#ujs_preview_ablum_page_count>span:nth-child(' + (current_page + 1) + ')');
 		if(ind){
-			_removeClassName($$('#ujs_preview_ablum_page_count>span'), 'current_page');
+			_removeClassName($qs('#ujs_preview_ablum_page_count>span'), 'current_page');
 			_addClassName(ind, 'current_page');
 		}
 	}
 
 	function preview_album_scroll_hdlr (ev) {
-		if($$('#ujs_preview_album_tables table').length <= 1){
+		if($qs('#ujs_preview_album_tables table').length <= 1){
 			return;
 		}
 		var val;
@@ -1398,7 +1542,7 @@
 		if(album_scroll_lock){
 			return;
 		}
-		var curr_page_index = parseInt($('#ujs_preview_ablum_page_count>.current_page').textContent);
+		var curr_page_index = parseInt(qs('#ujs_preview_ablum_page_count>.current_page').textContent);
 		var to_page_index = val > 0 ? curr_page_index - 2 : curr_page_index;
 		preview_album_jump_to_page(to_page_index);
 		album_scroll_lock = true;
@@ -1406,10 +1550,10 @@
 	}
 
 	function preview_album_jump_to_page (index) {
-		var table = $('#ujs_preview_album_tables>table');
+		var table = qs('#ujs_preview_album_tables>table');
 		if(table){
 			var toHere = 0 - table.offsetHeight * index;
-			preview_album_scroll_to($('#ujs_preview_album_tables'), toHere);
+			preview_album_scroll_to(qs('#ujs_preview_album_tables'), toHere);
 		}
 	}
 
@@ -1419,23 +1563,27 @@
 	}
 
 	function preview_album_table_click_hdlr (ev) {
+		if(album_in_select_mode){
+			return;
+		}
 		curr_index = -1;
 		preview_album_hightlight_photo(curr_index, true);
 	}
 		
 	function regist_preview_album_actions () {
-		$('#ujs_preview_ablum_settings_go').addEventListener('click', preview_setting_go, false);
-		$('#ujs_preview_album_tables').addEventListener('DOMMouseScroll', preview_album_scroll_hdlr, false);
-		$('#ujs_preview_album_tables').addEventListener('mousewheel', preview_album_scroll_hdlr, false);
-		$('#ujs_preview_album_tables').addEventListener('click', preview_album_table_click_hdlr, false);
-		$('#ujs_preview_ablum_container').addEventListener('dblclick', function(ev) { _StopEvent(ev); preview_album_main(); if(window.getSelection() != '') window.getSelection().removeAllRanges(); }, false);
+		qs('#ujs_preview_ablum_settings_go').addEventListener('click', preview_setting_go, false);
+		qs('#ujs_preview_album_tables').addEventListener('DOMMouseScroll', preview_album_scroll_hdlr, false);
+		qs('#ujs_preview_album_tables').addEventListener('mousewheel', preview_album_scroll_hdlr, false);
+		qs('#ujs_preview_album_tables').addEventListener('click', preview_album_table_click_hdlr, false);
+		qs('#ujs_preview_ablum_container').addEventListener('dblclick', function(ev) { _StopEvent(ev); if(album_in_select_mode) { return; } preview_album_main(); if(window.getSelection() != '') window.getSelection().removeAllRanges(); }, false);
 		if(SHOW_TIPS_ON_STATUSBAR){
-			$('#ujs_preview_ablum_container').addEventListener('mousemove', function(e) { window.status = '双击空白处关闭相册 | 空格键（+shift）显示下一张（上一张）图片'; }, false);
+			qs('#ujs_preview_ablum_container').addEventListener('mousemove', function(e) { window.status = '双击空白处关闭相册 | 空格键（+shift）显示下一张（上一张）图片'; }, false);
 		}
-		$('#ujs_preview_ablum_filter_selections').addEventListener('change', preview_setting_filter_select, false);
-		$('#ujs_preview_ablum_grid_selections').addEventListener('change', preview_setting_grid_select, false);
-		$('#ujs_preview_ablum_page_count').addEventListener('click', preview_album_jump_to_page_by_click, false);
-		$('#ujs_preview_ablum_close').addEventListener('click', destroy_preview_album, false);
+		qs('#ujs_preview_ablum_filter_selections').addEventListener('change', preview_setting_filter_select, false);
+		qs('#ujs_preview_ablum_grid_selections').addEventListener('change', preview_setting_grid_select, false);
+		qs('#ujs_preview_ablum_page_count').addEventListener('click', preview_album_jump_to_page_by_click, false);
+		qs('#ujs_preview_ablum_close').addEventListener('click', destroy_preview_album, false);
+		qs('#ujs_preview_album_url_list').addEventListener('click', preview_album_get_url_list, false);
 	}
 
 	function create_preview_album () {
@@ -1478,8 +1626,8 @@
 	}
 
 	function preview_album_page_count_add_one () {
-		var pages = $('#ujs_preview_ablum_page_count');
-		var index = pages.hasChildNodes() ? $$('#ujs_preview_ablum_page_count>span').length + 1 : 1;
+		var pages = qs('#ujs_preview_ablum_page_count');
+		var index = pages.hasChildNodes() ? $qs('#ujs_preview_ablum_page_count>span').length + 1 : 1;
 		var page = _createElement('span');
 		page.textContent = index + '';
 		pages.appendChild(page);
@@ -1493,9 +1641,9 @@
 			tables = Math.ceil(imgs.length / (album_col * album_row));
 			tableArr = [];
 			count = 0;
-			var container_w = $('#ujs_preview_ablum_container').offsetWidth;
-			var container_h = $('#ujs_preview_ablum_container').offsetHeight;
-			var setting_h = $('#ujs_preview_ablum_settings').offsetHeight;
+			var container_w = qs('#ujs_preview_ablum_container').offsetWidth;
+			var container_h = qs('#ujs_preview_ablum_container').offsetHeight;
+			var setting_h = qs('#ujs_preview_ablum_settings').offsetHeight;
 			for(i = 0; i < tables; i++){
 				var table = _createElement('table', null, 'ujs_preview_album_table');
 				for(j = 0; j < album_row; j++){
@@ -1522,12 +1670,12 @@
 				tableArr.push(table);
 				if(tables > 1){
 					preview_album_page_count_add_one();
-					_addClassName($('#ujs_preview_ablum_page_count>span:first-child'), 'current_page');
+					_addClassName(qs('#ujs_preview_ablum_page_count>span:first-child'), 'current_page');
 				}
 			}
 			
 			albumStyleObj && albumStyleObj.parentNode.removeChild(albumStyleObj);
-			var imgStyleStr = '.ujs_preview_album_imgs { max-width: ' + (container_w / album_col - 25) + 'px !important; max-height: ' + ((container_h - setting_h) / album_row - 25) + 'px !important; padding: 5px !important; background-color: white !important; box-shadow: 0px 0px 10px gray !important;} \n' +
+			var imgStyleStr = '.ujs_preview_album_imgs { max-width: ' + (container_w / album_col - 25) + 'px !important; max-height: ' + ((container_h - setting_h) / album_row - 25) + 'px !important; padding: 5px !important; background-color: white !important; box-shadow: 0px 0px 10px gray !important; display: inline !important; } \n' +
 			'.ujs_preview_album_imgs.loading { background-color: #409200 !important; } \n' +
 			'.ujs_preview_album_imgs.failed { background-color: #930E0E !important; }' +
 			'.ujs_preview_album_imgs.current { background-color: #0070B0 !important; }';
@@ -1541,20 +1689,21 @@
 	}
 
 	function preview_album_find_images_by_href (href) {
-		return $('a[class="ujs_preview_album_links"][href="' + href + '"]>img');
+		return qs('a[class="ujs_preview_album_links"][href="' + href + '"]>img');
 	}
 
 	function preview_album_preload_complete_callback (obj, success) {
-		preview_album_preload_info_num_increase($('#ujs_preview_ablum_preload_completed_num'));
+		preview_album_preload_info_num_increase(qs('#ujs_preview_ablum_preload_completed_num'));
 		preview_album_preload_next();
 		var img = preview_album_find_images_by_href(obj.src);
 		_removeClassName(img, 'loading');
 		if( success == 'error' ){
-			preview_album_preload_info_num_increase($('#ujs_preview_ablum_preload_failed_to_load .num'));
+			preview_album_preload_info_num_increase(qs('#ujs_preview_ablum_preload_failed_to_load .num'));
 			_addClassName(img, 'failed');
-			var a = $('a[class="ujs_preview_album_links"][href="' + obj.src + '"]');
+			var a = qs('a[class="ujs_preview_album_links"][href="' + obj.src + '"]');
 			a.href = a.getElementsByTagName('img')[0].src;
 			var i = preview_album_current_source_find_index_by_link(obj.src);
+			curr_album_source[i].ohref = curr_album_source[i].href;
 			curr_album_source[i].href = curr_album_source[i].src;
 		}
 		else if(img.src == '') {// imgur.com 上因滚动加载图片的功能而造成album无法显示图片的问题
@@ -1594,7 +1743,7 @@
 	function preview_album_start_preload (source) {
 		var i = 0, count = 0;
 		preload_queue = [];
-		$('#ujs_preview_ablum_preload_completed_num').textContent = '0';
+		qs('#ujs_preview_ablum_preload_completed_num').textContent = '0';
 		for(i = 0; i < source.length; i++){
 			if(source[i].src != source[i].href){
 				preload_queue.push(source[i]);
@@ -1602,8 +1751,8 @@
 				_addClassName(preview_album_find_images_by_href(source[i].href), 'loading');
 			}
 		}
-		$('#ujs_preview_ablum_preload_need_to_load_num').textContent = count + '';
-		$('#ujs_preview_ablum_preload_failed_to_load .num').textContent = '0';
+		qs('#ujs_preview_ablum_preload_need_to_load_num').textContent = count + '';
+		qs('#ujs_preview_ablum_preload_failed_to_load .num').textContent = '0';
 		var thread = (PRELOAD_THREAD_NUM < 0) ? count : PRELOAD_THREAD_NUM;
 		for(i = 0; i < thread; i++){
 			preview_album_preload_next();
@@ -1622,14 +1771,14 @@
 	function preview_album_clear_photos () {
 		clean_preview_album_preload_callback();
 		if(album_tables != null) {
-			var tables = $$('#ujs_preview_album_tables table');
+			var tables = $qs('#ujs_preview_album_tables table');
 			if(tables && tables.length > 0){
 				for(var i = 0; i < tables.length; i++){
 					tables[i].parentNode.removeChild(tables[i]);
 				}
 			}
 		}
-		var pages = $$('#ujs_preview_ablum_page_count>span');
+		var pages = $qs('#ujs_preview_ablum_page_count>span');
 		for(var i = 0; i < pages.length; i++){
 			pages[i].parentNode.removeChild(pages[i]);
 		}
@@ -1640,8 +1789,8 @@
 		var height = get_default_filter_size().height;
 		var source = null;
 		if(preview_album != null){
-			width = parseInt($('#ujs_preview_ablum_setting_width').value);
-			height = parseInt($('#ujs_preview_ablum_setting_height').value);
+			width = parseInt(qs('#ujs_preview_ablum_setting_width').value);
+			height = parseInt(qs('#ujs_preview_ablum_setting_height').value);
 		}
 		if( ! isNaN(width) && ! isNaN(height) ){
 			var i = 0;
@@ -1706,12 +1855,17 @@
 		if(isVisible(img) == false){
 			return;
 		}
-		var a = _createElement('a');
-		a.href = '';
-		a.innerHTML = isOpera ? '' : '.'; //Opera中有内容则定位不准，Chrome中无内容则定位不上 = =
-		img.parentNode.insertBefore(a, img);
-		a.focus();
-		a.parentNode.removeChild(a);
+		if(_tag(img.parentNode) == 'a' && !isOpera){
+			img.parentNode.focus();
+		}
+		else{
+			var a = _createElement('a');
+			a.href = '';
+			a.innerHTML = isOpera ? '' : '.'; //Opera中有内容则定位不准，Chrome中无内容则定位不上 = =
+			img.parentNode.insertBefore(a, img);
+			a.focus();
+			a.parentNode.removeChild(a);
+		}
 	}
 
 	function find_image(src) { //first one
@@ -1745,17 +1899,17 @@
 		}
 	}
 
-	function preview_album_hightlight_photo (index, fromClick) {
-		var curr_img = $('.ujs_preview_album_imgs.current');
+	function preview_album_hightlight_photo (index, jumpToPage) {
+		var curr_img = qs('.ujs_preview_album_imgs.current');
 		if(curr_img){
 			_removeClassName(curr_img, 'current');
 		}
 		if(index != -1){
-			var imgs = $$('#ujs_preview_album_tables img');
+			var imgs = $qs('#ujs_preview_album_tables img');
 			if(index < imgs.length){
 				_addClassName(imgs[index], 'current');
 				var page_index = Math.floor(index / (album_row * album_col));
-				if( ! fromClick ){
+				if( ! jumpToPage ){
 					preview_album_jump_to_page(page_index);
 				}
 			}
@@ -1849,7 +2003,7 @@
 		destroy_all_preview();
 		if(preview_album == null){
 			if(window.top == window){
-				album_frame_count = $$('iframe[src]').length;
+				album_frame_count = $qs('iframe[src]').length;
 				album_source = [];
 				album_source = generate_album_source(document.images);
 				if(album_frame_count == 0){
@@ -1883,7 +2037,18 @@
 	function key_handler (ev) {
 		if(ev.keyCode == 27 /* ESC */){
 			var ret = false;
-			if(PRESS_ESC_TO_CLOSE && (preview_div != null || preview_exist_in_top)){
+			if(album_in_select_mode){
+				var dialog = qs('#ujs_preview_ablum_url_list_bg');
+				if(dialog){
+					preview_album_close_url_list_dialog();
+				}
+				else{
+					preview_album_exit_select_mode();
+				}
+				_StopEvent(ev);
+				ret = true;
+			}
+			if(PRESS_ESC_TO_CLOSE && (preview_div != null || preview_exist_in_top) && ! ret){
 				destroy_all_preview();
 				_StopEvent(ev);
 				ret = true;
@@ -1923,12 +2088,11 @@
 	function check_current_page() {
 		var spec_ele = null;
 		var ret = 'NORMAL_PAGE';
-		if(window.opera){
-			spec_ele = document.selectSingleNode('//head/link[@href="opera:style/image.css"]');
-			if(spec_ele != null)
-				ret = 'IMG_PAGE';
+		spec_ele = document.evaluate('//head/link[@href="resource://gre/res/TopLevelImageDocument.css" or @href="opera:style/image.css"]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+		if(spec_ele.snapshotLength > 0){
+			ret = 'IMG_PAGE';
 		}
-		/*firefox及chrome单独打开一张图片时不执行脚本，免去判断*/
+		/*chrome单独打开一张图片时不执行脚本，免去判断*/
 		return ret;
 	}
 
@@ -1977,15 +2141,13 @@
 			if(message.indexOf('MSG_ID_SUBMIT_IMAGE_DATA_REQ') != -1){
 				var source = generate_album_source(document.images);
 				var message = {data: source, msg: 'MSG_ID_SUBMIT_IMAGE_DATA_RSP'};
-				_Message(json.stringify(message));
+				//_Message(json.stringify(message));
 			}
 			else{
 				try{
 					var obj = json.parse(message);
-					var msg = obj.msg;
-					var source = obj.data;
-					if(msg == 'MSG_ID_FIND_AND_FOCUS_IMAGE'){
-						find_and_focus_image(source);
+					if(obj.msg == 'MSG_ID_FIND_AND_FOCUS_IMAGE'){
+						find_and_focus_image(obj.data);
 					}
 				}
 				catch(e){
@@ -2017,6 +2179,7 @@
 		window.addEventListener('message', onMessage, false);
 		window.addEventListener('resize', function(e){
 			if(preview_album != null){
+				destroy_all_preview(false);
 				destroy_preview_album();
 			}
 			viewWidth = window.opera ? window.innerWidth / (OP_PAGE_PERCENTAGE / 100) : window.innerWidth;
