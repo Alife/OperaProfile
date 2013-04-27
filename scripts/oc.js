@@ -202,6 +202,6 @@ function AddTitleToList() {
 }
 if(typeof(jQuery)!='undefined'){
 	jQuery(document).ready(function () {
-		$("small.ua").each(function(){if($(this).html().indexOf("mini")>-1){$(this).css("color","red")}});
+		jQuery("small.ua").each(function(){if(jQuery(this).html().indexOf("mini")>-1){jQuery(this).css("color","red")}});
 	});
 }

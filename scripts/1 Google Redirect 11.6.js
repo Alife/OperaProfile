@@ -70,6 +70,10 @@ if(typeof(jQuery)!='undefined'){
 		jQuery("#ires h3 a,.osl>a").live('mouseover', function() {
 			if(getQueryString("q", this.href)!="")jQuery(this).attr("href",getQueryString("q", this.href)).append(" √")
 		});
+		jQuery(".action-menu li a").each(function() {
+			jQuery(this).parents(".action-menu:first").before(this).empty();
+		});
+		
 	});
 }
 
