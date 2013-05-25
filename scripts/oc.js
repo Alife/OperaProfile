@@ -1,7 +1,6 @@
 // ==UserScript==
 // @include      *bbs.operachina.com/viewtopic.php?*
 // @include      *bbs.operachina.com/search.php?*
-// @include		 *bbs.operachina.com*
 // @include		 http://oc.ls.tl/*
 // ==/UserScript==
 
@@ -91,7 +90,7 @@ window.addEventListener(
 		showTopicRslt.checked = 'checked';
 	/*---------------------------------功能3：快速回复加入猫猫表情选择---------------------------------------*/
 	previewBtn = document.selectNodes('//input[@name="preview"]');
-	if (previewBtn != null) {
+	if (previewBtn != null&&previewBtn.length>0) {
 		faceBtn = document.createElement('input');
 		faceBtn.setAttribute('type', 'button');
 		faceBtn.setAttribute('name', 'face');

@@ -1,18 +1,20 @@
 // ==UserScript==
+// @ujs:modified 2009年3月2日17:22:27
+// ==/UserScript==
+
 // @include http://*.googleusercontent.com/*
 // @include http://*.twitter.com/*
 // @include http://t.sina.com.cn/*
 // @include http://*.smallcat.co.cc/*
-// @ujs:modified 2009年3月2日17:22:27
-// ==/UserScript==
-window.opera.addEventListener(
-    "BeforeEvent.load",
-    function (e) {
-        console.log(e.event.srcElement.outerHTML);
-    }, false
-);
 
-document.addEventListener('load', ReURL, true);
+//window.opera.addEventListener(
+//    "BeforeEvent.load",
+//    function (e) {
+//        console.log(e.event.srcElement.outerHTML);
+//    }, false
+//);
+
+document.addEventListener('DOMContentLoaded', ReURL, true);
 window.opera.addEventListener('BeforeExternalScript', function (e) {
 	if (e.element.src) {
 		for (var j = 0; j < res.length; j++) {
@@ -22,8 +24,12 @@ window.opera.addEventListener('BeforeExternalScript', function (e) {
 		}
 	}
 }, false);
-var res = ["http://webcache.googleusercontent.com", "http://twitter.com", "http://t.sina.com.cn", "http://igfw.net"];
-var repl = ["https://webcache.googleusercontent.com", "https://twitter.com", "http://t.sina.cn", ""];
+	var res = ["http://webcache.googleusercontent.com"];
+	var repl = ["https://webcache.googleusercontent.com"];
+	res.push("http://twitter.com");repl.push("https://twitter.com");
+	res.push("http://t.sina.com.cn");repl.push("http://t.sina.cn");
+	res.push("weibo.com");repl.push("weibo.cn");
+	res.push("http://igfw.net");repl.push("");
 function ReURL() {
 	var atag = document.getElementsByTagName("a");
 	for (var i = 0, l = atag.length; i < l; i++) {

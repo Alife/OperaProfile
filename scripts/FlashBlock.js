@@ -7,6 +7,7 @@
 // @ujs:download http://ruzanow.ru/userjs/FlashBlock.js
 // @exclude file://*
 // @exclude http://mail.google.com/*
+// @exclude http://translate.googleapis.com/*
 // @exclude http://files.mail.ru/*
 // @exclude http://*megaupload.com/*
 // @exclude http://*blizzard.com/*
