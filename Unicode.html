@@ -1,0 +1,78 @@
+<html>
+ <head>
+ </head>
+ <body>
+  <form>
+   <textArea style='width:100%;height:100' id='param'></textArea >
+   <INPUT type=button value='转换Unicode' onClick="toUnicode()" style="width:90;">
+   <INPUT type=button value='转换Unicode2' onClick="toUnicode2()" style="width:90;">
+   <INPUT type=button value='转换GBK' onClick="toGBK()" style="width:90;">
+   <INPUT type=button value='escape' onClick="toescape()" style="width:90;">
+   <INPUT type=button value='unescape' onClick="tounescape()" style="width:90;">
+   <INPUT type=button value='encodeURI' onClick="toencodeURI()" style="width:90;">
+   <INPUT type=button value='decodeURI' onClick="todecodeURI()" style="width:90;">
+   <INPUT type=button value='encodeURIComponent' onClick="toencodeURIComponent()" style="width:90;">
+   <INPUT type=button value='decodeURIComponent' onClick="todecodeURIComponent()" style="width:90;">
+   <textArea style='width:100%;height:100' id='result'></textArea >
+  </form>
+  <script type='text/javascript' language='JavaScript'>
+    Encrypt = function()
+    {
+     var F = {};
+     F.toUnicode = function(s){
+     	var res = [];
+     	var len = s.length-1;
+     	while(len>-1){
+     	 var ch = s.charCodeAt(len--);
+     	 if(!isNaN(ch)){res.push(ch);}
+      }
+      res.push('');
+      return res.reverse().join('&#');
+     };
+     F.toUnicode2 = function(s)
+     {
+      var res = [];
+      var len = s.length-1;
+      while(len>-1){
+       var ch = s.charCodeAt(len--);
+       if(!isNaN(ch)){
+        ch = ch.toString(16);
+        switch(ch.length){
+         case 4:{ch=ch;}break;
+         case 3:{ch='0'+ch;}break;
+         case 2:{ch='00'+ch;}break;
+         case 1:{ch='000'+ch;}break;
+         default:ch=null;
+        }
+        if(ch!=null){res.push(ch);}
+       }
+      }
+      res.push('');
+      return res.reverse().join('\\u');
+     };
+     F.toGBK = function(s){
+      var res = [''];
+      if(s.indexOf('&#')===0){
+       for(var i = 1,cs =s.split('&#'),len = cs.length; i < len; i++){res.push( String.fromCharCode(cs[i]) );}
+       return res.join('');
+      }else if(s.indexOf('\\u')===0){
+       for(var i = 1,cs =s.split('\\u'),len = cs.length; i < len; i++){res.push( String.fromCharCode( parseInt(cs[i],16)) );}
+       return res.join('');
+      }
+      return '';
+     };
+     return F;
+    }();
+     
+    function toUnicode(){window.document.getElementById('result').value = Encrypt.toUnicode(window.document.getElementById('param').value + '')}
+    function toUnicode2(){window.document.getElementById('result').value = Encrypt.toUnicode2(window.document.getElementById('param').value + '')}
+    function toGBK(){window.document.getElementById('result').value = Encrypt.toGBK(window.document.getElementById('param').value + '');}
+    function toescape(){window.document.getElementById('result').value = escape(window.document.getElementById('param').value + '');}
+    function tounescape(){window.document.getElementById('result').value = unescape(window.document.getElementById('param').value + '');}
+    function toencodeURI(){window.document.getElementById('result').value = encodeURI(window.document.getElementById('param').value + '');}
+    function todecodeURI(){window.document.getElementById('result').value = decodeURI(window.document.getElementById('param').value + '');}
+    function toencodeURIComponent(){window.document.getElementById('result').value = encodeURIComponent(window.document.getElementById('param').value + '');}
+    function todecodeURIComponent(){window.document.getElementById('result').value =decodeURIComponent(window.document.getElementById('param').value + '');}
+  </script>
+ </body>
+</html>
