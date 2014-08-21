@@ -1,0 +1,38 @@
+@charset "UTF-8";
+/*
+Name: Discuz Sinmple
+*/
+#postlist td.pls>div>div.pi,
+#postlist td.pls>div>div[class="tns xg2"],
+#postlist>div td.pls>div>p,
+#postlist>div td.pls>div>ul,
+#postlist>div td.pls>div>dl,
+#postlist>div td.pls>dl,
+#postlist>div td.pls>ul,
+#postlist>div td.pls>img,
+td>div.a_pr,
+td.plc>div.po p,
+td.plc>div.a_pb,
+td.plc>#p_btn,
+td.plc>div.sign,
+td.plm
+{display:none !important}
+
+div.pi{border:none !important;}
+td.plc>div.po {border:none !important;float:right !important}
+td.plc>div.po em a {line-height:22px;padding-top:0 !important;padding-bottom:0 !important;}
+.t_fsz{min-height:20px !important}
+td.plc>div.pi{text-align:right;padding:0 !important;margin:0 !important;}
+td.pls>div.pi{padding:0 !important;}
+.pti>div.authi{float:right}
+td.plc>div.pct{padding:0 !important}
+div#postlist>div{border-top: 1px dashed hsl(0, 0%, 80%);}
+
+dl.cl{list-style: decimal !important;display: list-item !important}
+div.nts{padding-left:25px !important}
+
+/* 白名单*/
+#postlist>div td.pls>div:hover,
+#postlist>div td.pls>div>div.pi,
+#postlist>div td.pls>div.pi
+{display:block !important}

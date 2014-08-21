@@ -1,0 +1,25 @@
+@charset "UTF-8";
+/*Name: 【超级链接效果】*/
+
+/*雅黑字体
+*{font-family: "微软雅黑", monospace !important;}*/
+
+/*背景颜色
+*{background: #cbe7ce !important;}*/
+
+/*超级链接效果*/
+/*a:link 指正常的未被访问过的链接 
+a:link {text-decoration: underline} */
+/*a:active 指点击链接的瞬间出现的链接情况*/
+a:active {background: #ffff80 !important;} 
+/*a:visited 指已经访问过的链接 */
+a:visited {text-decoration: underline; color: #cccccc !important;} 
+/*a:hover 指鼠标放上去链接出现的情况*/
+a:hover {color: #00ccff !important;} 
+
+/* 去除论坛防转帖乱码*/
+span[style="font-size: 0pt"] {display: none;}
+
+/*清除隐藏文字 小字体*/
+[style*="font-size:0p"],[style*="font-size: 0p"]
+{display: none !important;}
