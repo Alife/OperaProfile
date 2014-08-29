@@ -10,15 +10,21 @@
 
 
 var wfubmcTools={
+	url:location.href,
+	body_onload_fn:null,
+	typeSelect:null,
+	saveButton:null,
+	AutoCheckInTime:"9:17",
+	AutoCheckHour:4,	// hours check out time = checkInTime.addHours(AutoCheckHour)
+	_sS_lastAutoCheckIn:"lastAutoCheckIn",
+	_sS_lastAutoCheckOut:"lastAutoCheckOut",
+
 	getPath:function(){
 		var href=location.href;
 		if(href.indexOf("?")>-1)href=href.substring(0,href.indexOf("?"));
 		var dirs=href.split("/");
 		return dirs[dirs.length-1];
 	},
-	url:location.href,
-	body_onload_fn:null,
-	
 	// auto login when page is login page
 	init:function(){
 		this.body_onload_fn=document.body.onload,
@@ -57,9 +63,8 @@ var wfubmcTools={
 			}
 		}
 			// auto check in/out
-		var type=document.getElementById("TL_RPTD_TIME_PUNCH_TYPE$0");
-		var save=document.getElementById("TL_LINK_WRK_TL_SAVE_PB$0");
-		var _sS_lastAutoCheckIn= "lastAutoCheckIn",_sS_lastAutoCheckOut= "lastAutoCheckOut";
+		this.typeSelect=document.getElementById("TL_RPTD_TIME_PUNCH_TYPE$0");
+		this.saveButton=document.getElementById("TL_LINK_WRK_TL_SAVE_PB$0");
 		if(this.getPath()==("ROLE_EMPLOYEE.TL_WEBCLK_ESS.GBL")){
 			//if(window.parent!=window)return;
 			var minute=5;
@@ -67,39 +72,57 @@ var wfubmcTools={
 			inTime.setHours(9);outTime.setHours(13);
 			var myVar = setInterval(function(){
 				var d=new Date();
-				if(d.getDay()>=1||d.getDay()<=5){
-					if(!type||!save)return;
-					if(d.getHours()==inTime.getHours()&&d.getMinutes()==minute
-						&&(new Date(localStorage.getItem(_sS_lastAutoCheckIn))-new Date(new Date().toLocaleDateString())<0)){
-						type.selectedIndex=1;log("type.click.in");
-						save.click();
-						localStorage.setItem(_sS_lastAutoCheckIn,new Date().toLocaleDateString());
-					}else if(d.getHours()==outTime.getHours()&&d.getMinutes()==minute
-						&&(new Date(localStorage.getItem(_sS_lastAutoCheckOut))-new Date(new Date().toLocaleDateString())<0)){
-						type.selectedIndex=3;log("type.click.out");
-						//save.click();
-						localStorage.setItem(_sS_lastAutoCheckOut,new Date().toLocaleDateString());
+				if(d.getDate()>=1||d.getDate()<=5){
+					if(!wfubmcTools.typeSelect||!wfubmcTools.saveButton)return;
+					if(wfubmcTools.isCheckInTime()){
+						wfubmcTools.typeSelect.selectedIndex=1;log("this.typeSelect.click.in");
+						wfubmcTools.saveButton.click();
+					}else if(wfubmcTools.isCheckOutTime()){
+						wfubmcTools.typeSelect.selectedIndex=3;log("this.typeSelect.click.out");
+						//this.saveButton.click();
 					}
+					wfubmcTools.updateStorage();
 				}
 				//alert("Hello");
 				//if(time==0)clearInterval(myVar);
 				time=time+1;
-			}, 1000*30);
+			}, 1000*10);
 			// auto reload page pre 20 minutes avoid timeOut
 			var _Interval_Refresh = setInterval(function(){
 				location.reload();
 			}, 1000*60*20);
+		
+			if(!this.typeSelect||!this.saveButton)return;
+			this.saveButton.addEventListener('click', function(){
+				wfubmcTools.updateStorage();
+			}, false);
 		}
-
-		if(!type||!save)return;
-		save.addEventListener('click', function(){
-			if(type.selectedIndex==1){
-				localStorage.setItem(_sS_lastAutoCheckIn,new Date().toLocaleDateString());
-			}else if(type.selectedIndex==3){
-				localStorage.setItem(_sS_lastAutoCheckOut,new Date().toLocaleDateString());
-			} 
-		}, false);
-
+	},
+	updateStorage:function(){
+		if(!this.typeSelect||!this.saveButton)return;
+		if(this.typeSelect.selectedIndex==1){
+			localStorage.setItem(this._sS_lastAutoCheckIn,new Date());
+		}else if(this.typeSelect.selectedIndex==3){
+			localStorage.setItem(this._sS_lastAutoCheckOut,new Date());
+		} 
+	},
+	isCheckInTime:function(){
+		var d=new Date();
+		if(d.getDay()<1||d.getDay()>5)return false;
+		var inTime = new Date(d.getFullYear()+" "+(d.getMonth()+1)+" "+d.getDate()+" "+this.AutoCheckInTime);
+		var mins=new Date()-inTime;// check if approach the time of check in 1 minutes
+		if(mins<0||mins>1000*60)return false;
+		var lastInTime = new Date(localStorage.getItem(this._sS_lastAutoCheckIn));// check if already check in today
+		return new Date(lastInTime.toDateString())-new Date(new Date().toDateString())!=0;
+	},
+	isCheckOutTime:function(){
+		var d=new Date();
+		if(d.getDay()<1||d.getDay()>5)return false;
+		var outTime = new Date(localStorage.getItem(this._sS_lastAutoCheckIn));
+		outTime.setHours(outTime.getHours()+this.AutoCheckHour);
+		var mins=outTime-d;
+		if(mins<0||mins>1000*60)return false;
+		return true;
 	},
 
 };
