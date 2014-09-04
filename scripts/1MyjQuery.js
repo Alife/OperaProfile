@@ -20,12 +20,13 @@ if(typeof(jQuery)!='undefined'){
 		}
 		// no js web style
 	// https://www.google.com/search?hl=en&source=hp&q=java+randou&gbv=2&oq=java+randou&gs_l=heirloom-hp.3..0i13l10.10243.12557.0.12954.11.10.0.0.0.0.199.800.5j3.8.0....0...1ac.1.34.heirloom-hp..3.8.800.6mB0GMiRLzI
-	var ires_h3=jQuery("#ires h3 a,.osl>a");
+	var ires_h3=jQuery("#ires h3 a,.osl>a,#ires a");
 		if(ires_h3.length>0){
 			ires_h3.live('mouseover', function() {
 				var ori_hreh=getQueryString("url", this.href);
+				if(ori_hreh=="")ori_hreh=getQueryString("q", this.href);
 				//if(ori_hreh!="")jQuery(this).attr("href",ori_hreh).append(" √")
-				if(getQueryString("url", this.href)!="")jQuery(this).attr("href",ori_hreh).append(" √")
+				if(!jQuery(this).attr("removeurl"))jQuery(this).attr("href",ori_hreh).attr("removeurl","1").append(" √")
 			});
 		}
 		jQuery(".action-menu li a").each(function() {
