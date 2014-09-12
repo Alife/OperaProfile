@@ -79,5 +79,5 @@ div[class*="adu"],
 /* cnbeta */div[id="ADcon0"],
 /* Gmail */body[class="aAU"] div[class="ads"],
 /* lastpass */div[id="lppopupautofill"],
-div[class*="add"]{display:block !important;}
+div[class*="add"],
 /* blog.sina.com.cn */div[id="sina_keyword_ad_area2"]{display:block !important;}

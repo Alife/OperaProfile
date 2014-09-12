@@ -2,9 +2,11 @@
 // @name wfubmc.edu helper
 // @description auto login and auto check in/out
 // @include http://psappprd1.is.wfubmc.edu:8001/*
-// @todo show check in/out time pick up control on web
-// @todo show check in/out status on web
-// @todo check out time should after 4 fours the time of check in
+// @todo √ show check in/out time pick up control on web
+// @todo √ show check in/out status on web
+// @todo √ check out time should after 4 fours the time of check in
+// @todo show countdown of check time 
+// @todo calculate the whole week hours 
 // @author	lk
 // ==/UserScript==
 
@@ -23,10 +25,13 @@ var wfubmcTools={
 		var href=location.href;
 		if(href.indexOf("?")>-1)href=href.substring(0,href.indexOf("?"));
 		var dirs=href.split("/");
-		return dirs[dirs.length-1];
+		href= dirs[dirs.length-1];
+		dirs=href.split("#");
+		return dirs[0];
 	},
 	// auto login when page is login page
 	init:function(){
+		this.syncPref();
 		this.body_onload_fn=document.body.onload,
 		document.body.onload= function() {
 			if(this.body_onload_fn)eval(this.body_onload_fn)();
@@ -44,10 +49,15 @@ var wfubmcTools={
 				},false);
 			}
 		};
-		// go to the first day of week when Timesheet page
+		// go to Timesheet page after check in/out
+		var _SAVE_MSG=document.getElementById("DERIVED_ETEO_SAVE_MSG_CUSTOM");
+		if(_SAVE_MSG&&_SAVE_MSG.innerHTML.indexOf("sucessfully")>-1)
+			this.gotohref("/psp/hrpro/EMPLOYEE/HRMS/c/ROLE_EMPLOYEE.TL_MSS_EE_SRCH_PRD.GBL");
+		// go to Web check  page after login
 		if(this.url.indexOf("/psp/hrpro/EMPLOYEE/HRMS/h/?tab=DEFAULT")>-1){	
-			location.href="/psp/hrpro/EMPLOYEE/HRMS/c/ROLE_EMPLOYEE.TL_SS_JOB_SRCH_CLK.GBL?NAVSTACK=Clear&FolderPath=PORTAL_ROOT_OBJECT.CO_EMPLOYEE_SELF_SERVICE.HC_TIME_REPORTING.HC_RECORD_TIME.HC_TL_SS_JOB_SRCH_CLK_GBL&IsFolder=false&IgnoreParamTempl=FolderPath%2cIsFolder";
+			this.gotohref("/psp/hrpro/EMPLOYEE/HRMS/c/ROLE_EMPLOYEE.TL_SS_JOB_SRCH_CLK.GBL");
 		}
+		// go to the first day of week when Timesheet page
 		if(this.getPath()==("ROLE_EMPLOYEE.TL_MSS_EE_SRCH_PRD.GBL")){
 			var DATE_DAY1=document.getElementById("DATE_DAY1");
 			var _sS_TL_LINK_WRK = "TL_LINK_WRK_REFRESH_ICN";
@@ -72,6 +82,7 @@ var wfubmcTools={
 			var time=0;var inTime=new Date(),outTime=new Date();
 			inTime.setHours(9);outTime.setHours(13);
 			var myVar = setInterval(function(){
+				wfubmcTools.syncPref();
 				var d=new Date();
 				if(d.getDate()>=1||d.getDate()<=5){
 					if(!wfubmcTools.typeSelect||!wfubmcTools.saveButton)return;
@@ -81,7 +92,7 @@ var wfubmcTools={
 						wfubmcTools.updateStorage();
 					}else if(wfubmcTools.isCheckOutTime()){
 						wfubmcTools.typeSelect.selectedIndex=3;log("this.typeSelect.click.out");
-						//this.saveButton.click();
+						wfubmcTools.saveButton.click();
 						wfubmcTools.updateStorage();
 					}
 				}
@@ -99,22 +110,75 @@ var wfubmcTools={
 				wfubmcTools.updateStorage();
 			}, false);
 		}
-
+			
+		if(window.parent!=window)return;
 		// show info
-		this.showInfo("lastIn :"+new Date(localStorage.getItem(this._sS_lastAutoCheckIn)).toLocaleString());
-		this.showInfo("lastOut:"+new Date(localStorage.getItem(this._sS_lastAutoCheckOut)).toLocaleString());
+		this.showInfo("last<span style='display:inline-block;width:10px;'></span>In:"+this.getHumenDate(new Date(localStorage.getItem(this._sS_lastAutoCheckIn))));
+		this.showInfo("lastOut:"+this.getHumenDate(new Date(localStorage.getItem(this._sS_lastAutoCheckOut))));
+		var WillOut=new Date(localStorage.getItem(this._sS_lastAutoCheckIn));
+		WillOut.setMinutes(WillOut.getMinutes()+(this.AutoCheckHour/1*60));
+		this.showInfo("WillOut:"+this.getHumenDate(WillOut));
+		this.addHtml();
+		this.setPref();
+	},
+	addHtml:function(){
+		var id="_userJs_Info";
+		var _pageInfo =document.getElementById(id)
+		document.body.addStyle("._userJs_Info{background-color:#eee; float: right; padding:5px 10px; position: fixed; bottom: 0; right: 0px;z-index:10000;font-size:10px;line-height:100%}\
+			._userJs_Info .hide1{text-indent: -9999px;}\
+			._userJs_Info ul{margin:0;padding:0}\
+			._userJs_Info input{height:10px}\
+			._userJs_Info li{list-style:none}");
+		if(!_pageInfo){
+			_pageInfo = document.createElement('div');
+			_pageInfo.id = id;_pageInfo.className = id;
+			document.body.appendChild(_pageInfo);
+		}
+		_pageInfo.innerHTML=_pageInfo.innerHTML+'\
+			<fieldset><legend title="相关设置">设置</legend><ul>\
+				<li>AutoCheckInTime:<input type="text" maxlength=5 size="5" title="time like 9:00" name="AutoCheckInTime"/></li>\
+				<li>AutoCheckHour:<input type="text" maxlength=2 size="2" title="AutoCheckHour" name="AutoCheckHour"/></li>\
+			</ul></fieldset>';
+	},
+	gotohref:function(href){
+		location.href=href;
+	},
+	setPref:function(date){
+		jQuery("._userJs_Info input").each(function(){
+			this.value=localStorage.getItem("pref_"+this.name)||eval("wfubmcTools."+this.name);
+			jQuery(this).change(function(){
+				localStorage.setItem("pref_"+this.name,this.value);
+				wfubmcTools[this.name]=this.value;
+			});
+		})
+	},
+	// sync variables from localStorage
+	// need execute it when each thread start like DOMContentLoaded, setInterval
+	syncPref:function(){
+		for(var i=0,ii=localStorage.length;i<ii;i++){
+			lname=localStorage.key(i);
+			if(!lname || !/^pref_/i.test(lname))continue;
+			var name=lname.replace(/^pref_/i,"");
+			wfubmcTools[name]=localStorage.getItem(lname)||eval("wfubmcTools."+name);
+		};
+	},
+	getHumenDate:function(date){
+		var d=new Date();
+		var day=new Date(new Date().toLocaleDateString())-new Date(date.toLocaleDateString());
+		if(day==0)return "Today "+date.toLocaleTimeString();
+		else if(day==24*60*60*1000)return "Yesterday "+date.toLocaleTimeString();
+		else return date.getFullYear()+"/"+(date.getMonth()+1)+"/"+date.getDate()+" "+date.toLocaleTimeString();
 	},
 	showInfo:function(msg){
 		var id="_userJs_Info";
 		var _pageInfo =document.getElementById(id)
 		if(!_pageInfo){
 			_pageInfo = document.createElement('div');
-			_pageInfo.id = id;
-			_pageInfo.setAttribute("style","background-color:#eee; float: right; padding:5px 10px; position: fixed; bottom: 0; right: 0px;z-index:10000")
+			_pageInfo.id = id;_pageInfo.className = id;
 			document.body.appendChild(_pageInfo);
 		}
 		_pageInfo.innerHTML = _pageInfo.innerHTML+"<font color=yellor>"+msg+"</font><br/>";
-		
+		return _pageInfo;
 	},
 	updateStorage:function(){
 		if(!this.typeSelect||!this.saveButton)return;
@@ -129,9 +193,9 @@ var wfubmcTools={
 		if(d.getDay()<1||d.getDay()>5)return false;
 		var inTime = new Date(d.getFullYear()+" "+(d.getMonth()+1)+" "+d.getDate()+" "+this.AutoCheckInTime);
 		var mins=new Date()-inTime;// check if approach the time of check in 1 minutes
-		if(mins<0||mins>1000*60)return false;
-		var lastInTime = new Date(localStorage.getItem(this._sS_lastAutoCheckIn));// check if already check in today
-		return new Date(lastInTime.toDateString())-new Date(new Date().toDateString())!=0;
+		if(mins>1000*60)return false;
+		var lastTime = new Date(localStorage.getItem(this._sS_lastAutoCheckIn));// check if already check in today
+		return new Date(lastTime.toDateString())-new Date(new Date().toDateString())!=0;
 	},
 	isCheckOutTime:function(){
 		var d=new Date();
@@ -139,8 +203,9 @@ var wfubmcTools={
 		var outTime = new Date(localStorage.getItem(this._sS_lastAutoCheckIn));
 		outTime.setHours(outTime.getHours()+this.AutoCheckHour);
 		var mins=outTime-d;
-		if(mins<0||mins>1000*60)return false;
-		return true;
+		if(mins>1000*60)return false;
+		var lastTime = new Date(localStorage.getItem(this._sS_lastAutoCheckOut));// check if already check in today
+		return new Date(lastTime.toDateString())-new Date(new Date().toDateString())!=0;
 	},
 
 };

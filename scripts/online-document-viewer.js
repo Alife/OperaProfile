@@ -1,4 +1,4 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name           Document Viewer
 // @author         João Eiras, loosely based on work from alexandrius http://userscripts.org/scripts/show/58690
 // @version        1.0
@@ -19,6 +19,9 @@
 	function vuzit_viewer( link ){
 		return 'http://vuzit.com/view/?oid=1&storefiles=no&url='+link.href;
 	}
+	function googlecache_viewer( link ){
+		return 'http://webcache.googleusercontent.com/search?q=cache:'+link.href;
+	}
 
 	function zoho_viewer( link ){
 		return 'http://viewer.zoho.com/api/view.do?cache=false&url='+link.href;
@@ -29,7 +32,7 @@
 		{
 			var config = [];
 
-			config.push({title:'pdf document', exts : ['pdf'], handler: vuzit_viewer});
+			config.push({title:'pdf document', exts : ['pdf'], handler: googlecache_viewer});
 			config.push({title:'text document', exts : ['doc','docs','docx','odt','sxw','rtf'], handler: vuzit_viewer})
 			config.push({title:'spreadsheet document', exts : ['xls','csv','sxc','ods','xlsx'], handler:vuzit_viewer});
 			config.push({title:'presentation document', exts : ['ppt','pptx','pps','odp','sxi'], handler:vuzit_viewer});

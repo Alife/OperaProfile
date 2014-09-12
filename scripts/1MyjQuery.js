@@ -41,10 +41,10 @@ if(window == window.parent){
 		if(!_pageInfo){
 			_pageInfo = document.createElement('div');
 			_pageInfo.id = '_userJs_pageInfo';
-			_pageInfo.setAttribute("style","background-color:#eee; float: right; padding:5px 10px; position: fixed; bottom: 0; right: 0px;z-index:10000")
+			_pageInfo.setAttribute("style","background-color:#eee; float: right; padding:5px 10px; position: fixed; bottom: 0; right: 0px;z-index:10000;font-size:10px;line-height:100%")
 			document.body.appendChild(_pageInfo);
 		}
-		_pageInfo.innerHTML = _pageInfo.innerHTML+"<font color=yellor>"+msg+"</font><br/>";
+		_pageInfo.innerHTML = _pageInfo.innerHTML+"<font color=#356AA0>"+msg+"</font><br/>";
 		
 	};
 	
