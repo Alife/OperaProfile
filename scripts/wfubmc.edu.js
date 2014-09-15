@@ -7,6 +7,7 @@
 // @todo √ check out time should after 4 fours the time of check in
 // @todo show countdown of check time 
 // @todo calculate the whole week hours 
+// @todo get last check in time from Timesheet page
 // @author	lk
 // ==/UserScript==
 
@@ -51,11 +52,23 @@ var wfubmcTools={
 		};
 		// go to Timesheet page after check in/out
 		var _SAVE_MSG=document.getElementById("DERIVED_ETEO_SAVE_MSG_CUSTOM");
-		if(_SAVE_MSG&&_SAVE_MSG.innerHTML.indexOf("sucessfully")>-1)
-			this.gotohref("/psp/hrpro/EMPLOYEE/HRMS/c/ROLE_EMPLOYEE.TL_MSS_EE_SRCH_PRD.GBL");
+		if(_SAVE_MSG&&_SAVE_MSG.innerHTML.indexOf("sucessfully")>-1
 		// go to Web check  page after login
-		if(this.url.indexOf("/psp/hrpro/EMPLOYEE/HRMS/h/?tab=DEFAULT")>-1){	
-			this.gotohref("/psp/hrpro/EMPLOYEE/HRMS/c/ROLE_EMPLOYEE.TL_SS_JOB_SRCH_CLK.GBL");
+		||this.url.indexOf("/psp/hrpro/EMPLOYEE/HRMS/h/?tab=DEFAULT")>-1){	
+			this.gotohref("/psp/hrpro/EMPLOYEE/HRMS/c/ROLE_EMPLOYEE.TL_MSS_EE_SRCH_PRD.GBL");
+		}
+		// get last check in time from Timesheet page
+		if(this.url.indexOf("ROLE_EMPLOYEE.TL_MSS_EE_SRCH_PRD.GBL")>-1){	
+			var days=document.querySelectorAll("span[id^='PUNCH_DATE_DISPLAY$']");
+			for(var i=0,ii=days.length;i<ii;i++){
+				var day=days[i];
+				var inT=document.querySelector("span[id='PUNCH_TIME_1$"+i+"']");
+				var ouT=document.querySelector("span[id='PUNCH_TIME_7$"+i+"']");
+				if(inT.innerHTML.replace("&nbsp;","").trim()==""||ouT.innerHTML.replace("&nbsp;","").trim()!="")continue;
+				var inTime=new Date(document.getElementById("DATE_DAY1"));inTime.setDate(inTime.getDate()+i);alert("last in: "+inTime.toString());
+				if(new Date(inTime.toDateString())-new Date(new Date().toDateString())!=0)continue;
+				//localStorage.setItem(this._sS_lastAutoCheckIn,inTime);
+			}
 		}
 		// go to the first day of week when Timesheet page
 		if(this.getPath()==("ROLE_EMPLOYEE.TL_MSS_EE_SRCH_PRD.GBL")){

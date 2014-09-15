@@ -8,3 +8,6 @@
 * {
 	font-family: "Microsoft YaHei","微软雅黑",Tahoma,SimSun !important;
 }
+
+/*	github.com	*/
+*[class*="octicon"]{font-family:"octicons" !important;}

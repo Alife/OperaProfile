@@ -133,6 +133,13 @@ HTMLBodyElement.prototype.addScript = function(script){
 	b.appendChild(s);
 	return (document.getElementsByTagName('head')[0] || document.documentElement).appendChild(s);
 };
+HTMLBodyElement.prototype.addCss = function(src){
+	var d=document;var b=d.body;var s=d.createElement('link');
+	s.setAttribute('src',src);
+	s.setAttribute('type','text/css');
+	b.appendChild(s);
+	return (document.getElementsByTagName('head')[0] || document.documentElement).appendChild(s);
+};
 
 if (!window.log) {
 	window.log = console.log;
