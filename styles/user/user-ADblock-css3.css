@@ -50,7 +50,7 @@ div[class$="_adv"]
 ,div[class*="-gg-"]
 /* Gmail 隐藏广告 */
 ,div[class="nH"]>div[class="nH"]>div[class="u5"]
-,div[id*="popup"]
+/*,div[id*="popup"]*/
 ,iframe#frm_tt1
 {display:none !important;}
 
@@ -78,6 +78,6 @@ div[class*="adu"],
 /* bbs */div[class="viewthread"],
 /* cnbeta */div[id="ADcon0"],
 /* Gmail */body[class="aAU"] div[class="ads"],
-/* lastpass */div[id="lppopupautofill"],
+/* lastpass div[id="lppopupautofill"],*/
 div[class*="add"],
 /* blog.sina.com.cn */div[id="sina_keyword_ad_area2"]{display:block !important;}

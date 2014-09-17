@@ -11,23 +11,19 @@
 if(typeof(jQuery)!='undefined'){
 	jQuery(document).ready(function () {
 		// remove google redirect
-		if(jQuery("a[onmousedown*='rwt']").length>0){
-			jQuery("a[onmousedown*='rwt']").live('mouseover', function() {
-				if(jQuery(this).attr("onmousedown")){
-					jQuery(this).removeAttr("onmousedown").append(" √")
-				}
-			});
-		}
-		// no js web style
-	// https://www.google.com/search?hl=en&source=hp&q=java+randou&gbv=2&oq=java+randou&gs_l=heirloom-hp.3..0i13l10.10243.12557.0.12954.11.10.0.0.0.0.199.800.5j3.8.0....0...1ac.1.34.heirloom-hp..3.8.800.6mB0GMiRLzI
-	var ires_h3=jQuery("#ires h3 a,.osl>a,#ires a");
+		var removeGRU=function(e) {
+			if(!(this.href.indexOf("url=")>-1||this.href.indexOf("q=")>-1))return;
+			if(jQuery(this).attr("onmousedown")){jQuery(this).removeAttr("onmousedown").append(" √").unbind("mouseover",removeGRU);}
+			var ori_hreh=getQueryString("url", this.href);
+			if(ori_hreh=="")ori_hreh=getQueryString("q", this.href);
+			//if(ori_hreh!="")jQuery(this).attr("href",ori_hreh).append(" √")
+			if(!jQuery(this).attr("removeurl"))jQuery(this).attr("href",ori_hreh).attr("removeurl","1").append(" √").unbind("mouseover",removeGRU);
+		};
+		// #ires h3 a,.osl>a,#ires a for no js web style 
+		// https://www.google.com/search?hl=en&source=hp&q=java+randou&gbv=2&oq=java+randou&gs_l=heirloom-hp.3..0i13l10.10243.12557.0.12954.11.10.0.0.0.0.199.800.5j3.8.0....0...1ac.1.34.heirloom-hp..3.8.800.6mB0GMiRLzI
+		var ires_h3=jQuery("#ires h3 a,.osl>a,#ires a,a[onmousedown*='rwt']");
 		if(ires_h3.length>0){
-			ires_h3.live('mouseover', function() {
-				var ori_hreh=getQueryString("url", this.href);
-				if(ori_hreh=="")ori_hreh=getQueryString("q", this.href);
-				//if(ori_hreh!="")jQuery(this).attr("href",ori_hreh).append(" √")
-				if(!jQuery(this).attr("removeurl"))jQuery(this).attr("href",ori_hreh).attr("removeurl","1").append(" √")
-			});
+			ires_h3.live('mouseover',removeGRU);
 		}
 		jQuery(".action-menu li a").each(function() {
 			jQuery(this).parents(".action-menu:first").before(this).empty();

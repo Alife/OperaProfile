@@ -21,6 +21,7 @@ var wfubmcTools={
 	AutoCheckHour:4,	// hours check out time = checkInTime.addHours(AutoCheckHour)
 	_sS_lastAutoCheckIn:"lastAutoCheckIn",
 	_sS_lastAutoCheckOut:"lastAutoCheckOut",
+	_sS_TL_LINK_WRK = "TL_LINK_WRK_REFRESH_ICN",
 
 	getPath:function(){
 		var href=location.href;
@@ -73,8 +74,7 @@ var wfubmcTools={
 		// go to the first day of week when Timesheet page
 		if(this.getPath()==("ROLE_EMPLOYEE.TL_MSS_EE_SRCH_PRD.GBL")){
 			var DATE_DAY1=document.getElementById("DATE_DAY1");
-			var _sS_TL_LINK_WRK = "TL_LINK_WRK_REFRESH_ICN";
-			var _TL_LINK_WRK_V=sessionStorage.getItem(_sS_TL_LINK_WRK)||0;
+			var _TL_LINK_WRK_V=sessionStorage.getItem(this._sS_TL_LINK_WRK)||0;
 			if(DATE_DAY1){
 				var nowTime=new Date();
 				var day=(nowTime.getDate()-nowTime.getDay());day=day==0?1:day;
@@ -82,7 +82,7 @@ var wfubmcTools={
 				if(new Date(DATE_DAY1.value)-new Date(nowTime)!=7*24*60*60*1000&&_TL_LINK_WRK_V==0){
 					DATE_DAY1.value=nowTime;
 					document.getElementById("TL_LINK_WRK_REFRESH_ICN").click();
-					sessionStorage.setItem(_sS_TL_LINK_WRK,1);
+					sessionStorage.setItem(this._sS_TL_LINK_WRK,1);
 				}
 			}
 		}
@@ -197,8 +197,10 @@ var wfubmcTools={
 		if(!this.typeSelect||!this.saveButton)return;
 		if(this.typeSelect.selectedIndex==1){
 			localStorage.setItem(this._sS_lastAutoCheckIn,new Date());
+			sessionStorage.setItem(this._sS_TL_LINK_WRK,0);
 		}else if(this.typeSelect.selectedIndex==3){
 			localStorage.setItem(this._sS_lastAutoCheckOut,new Date());
+			sessionStorage.setItem(this._sS_TL_LINK_WRK,0);
 		} 
 	},
 	isCheckInTime:function(){

@@ -20,7 +20,7 @@
 	res.push("http://twitter.com");repl.push("https://twitter.com");
 	res.push("http://t.sina.com.cn");repl.push("http://t.sina.cn");
 	res.push("weibo.com");repl.push("weibo.cn");
-	res.push("http://igfw.net");repl.push("");
+	//res.push("http://igfw.net");repl.push("");
 	res.push("http://www.youtube");repl.push("https://www.youtube");
 function ReURL() {
 	var startTime=new Date();
