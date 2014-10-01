@@ -18,8 +18,8 @@ input:focus,textarea:focus,select:focus{box-shadow: 0px 0px 10px #3298FE!importa
 #homegrids_t img{max-width:296px!important;height:auto!important;}
 
 /*图片垂直居中*/
-img[class]{position:static !important;}
-img[id]{position:static !important;}
+body>img[class]{position:static !important;}
+bodu>img[id]{position:static !important;}
 
 /*图片最大尺寸
 img{max-width:680px !important;}*/
