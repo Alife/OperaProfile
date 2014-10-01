@@ -158,16 +158,13 @@ OpS.arrInputs = [];
 OpS.mapInstances = [];
 
 OpS.load = function() {
-	var arrCookies = document.cookie.split("; ");
 	var mapInputMultivalue = null;
 
 	var nLastCookieNumber = -1;
 	var sLastCookieValue = "";
 
-	for (var sCookie, i = 0; sCookie = arrCookies[i]; ++i) {
-		var nCookieNameEnd = sCookie.indexOf("=");
-
-		var sCookieName = sCookie.substr(0, nCookieNameEnd);
+	for(var i=0,ii=localStorage.length;i<ii;i++){
+		var sCookieName = localStorage.key(i);
 		if (sCookieName.indexOf(Cfg.CookieBaseName) != 0)
 			continue;
 
@@ -175,7 +172,7 @@ OpS.load = function() {
 		if (isNaN(nCookieNumber))
 			continue;
 
-		var sCookieValue = sCookie.substr(nCookieNameEnd + 1);
+		var sCookieValue = localStorage.getItem(sCookieName);
 		if (!sCookieValue) {
 			Utils_Cookie.deleteCookie(sCookieName);
 			continue;
@@ -187,6 +184,7 @@ OpS.load = function() {
 		}
 
 		mapInputMultivalue = Cookie.parseCookieValue(sCookieValue, mapInputMultivalue);
+		document.delCookie(sCookieName);
 	}
 
 	OpS.mapInputMultivalue = mapInputMultivalue || [];
@@ -683,8 +681,8 @@ OpS.view = {
 		if (Utils_Dom.AgentIsOp9)
 			nInputHeight -= 6;
 
-		domListBoxStyle.top = inputOffset.nTop + nInputHeight;
-		domListBoxStyle.left = inputOffset.nLeft;
+		domListBoxStyle.top = (inputOffset.nTop + nInputHeight)+"px";
+		domListBoxStyle.left = inputOffset.nLeft+"px";
 		domListBoxStyle.width = domInput.clientWidth+"px";
 		domListBoxStyle.display = "block";
 
@@ -1002,11 +1000,13 @@ var Utils_Cookie = {
 	ExpiredValue: "EXPIRED",
 
 	setCookie: function(sName, sValue, bForever) {
-		document.cookie = sName + "=" + sValue + (bForever ? "; expires=" + this.FarFuture : "");
+		//document.cookie = sName + "=" + sValue + (bForever ? "; expires=" + this.FarFuture : "");
+		localStorage.setItem(sName,sValue);
 	},
 
 	deleteCookie: function(sName) {
-		document.cookie = sName + "=" + this.ExpiredValue + "; expires=" + this.FarPast;
+		//document.cookie = sName + "=" + this.ExpiredValue + "; expires=" + this.FarPast;
+		localStorage.removeItem(sName);
 	}
 }
 //~ Utils_Cookie lib
