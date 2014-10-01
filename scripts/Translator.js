@@ -68,6 +68,7 @@ function N_google_request(from,target,s_text){
 	//var src="http://ajax.googleapis.com/ajax/services/language/translate?q=" + s_text + "&langpair=" + from + "|" + target + "&v=1.0&callback=N_google_callback"
 	var src="http://translate.google.com/translate_a/single?client=t&sl=" + from + "&tl=" + target + "&hl=en&dt=bd&dt=ex&dt=ld&dt=md&dt=qc&dt=rw&dt=rm&dt=ss&dt=t&dt=at&dt=sw&ie=UTF-8&oe=UTF-8&prev=btn&rom=1&ssel=3&tsel=4&q=" + s_text + "&v=1.0&callback=N_google_callback"
 	//https://translate.google.com/translate_a/single?client=t&sl=en&tl=zh-CN&hl=en&dt=bd&dt=ex&dt=ld&dt=md&dt=qc&dt=rw&dt=rm&dt=ss&dt=t&dt=at&dt=sw&ie=UTF-8&oe=UTF-8&prev=btn&rom=1&ssel=3&tsel=4&q=specimen
+	// http://api.microsofttranslator.com/v2/ajax.svc/TranslateArray?appId=Trrz5qRweo03PEtTFwInW2ljjetEHPzIeGszAXxIrHJc*&from=en&to=zh-chs&texts=["Electronic health records (EHR)."]
 	//alert(src)
 	N_t_set.script.src=src;
 };

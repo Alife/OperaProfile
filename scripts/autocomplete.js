@@ -279,8 +279,8 @@
       var inputs = document.getElementsByTagName("input");
       for (var index = 0; index < inputs.length; index++) {
          if (inputs[index].type != 'text' 
-			|| inputs[index].type != 'password'			
-			|| inputs[index].autocomplete == 'off') {
+			|| inputs[index].type != 'password'	) {		
+			//|| inputs[index].autocomplete == 'off') {
             continue;
          }
          inputs[index].addEventListener('click', function(e) {

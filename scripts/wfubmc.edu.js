@@ -21,7 +21,7 @@ var wfubmcTools={
 	AutoCheckHour:4,	// hours check out time = checkInTime.addHours(AutoCheckHour)
 	_sS_lastAutoCheckIn:"lastAutoCheckIn",
 	_sS_lastAutoCheckOut:"lastAutoCheckOut",
-	_sS_TL_LINK_WRK = "TL_LINK_WRK_REFRESH_ICN",
+	_sS_TL_LINK_WRK:"TL_LINK_WRK_REFRESH_ICN",
 
 	getPath:function(){
 		var href=location.href;
@@ -112,7 +112,7 @@ var wfubmcTools={
 				//alert("Hello");
 				//if(time==0)clearInterval(myVar);
 				time=time+1;
-			}, 1000*10);
+			}, 1000*5);
 			// auto reload page pre 20 minutes avoid timeOut
 			var _Interval_Refresh = setInterval(function(){
 				location.reload();
@@ -154,7 +154,9 @@ var wfubmcTools={
 			</ul></fieldset>';
 	},
 	gotohref:function(href){
-		location.href=href;
+		var win=window;
+		while(win.parent!=win)win=win.parent;
+		win.location.href=href;
 	},
 	setPref:function(date){
 		jQuery("._userJs_Info input").each(function(){
@@ -207,7 +209,7 @@ var wfubmcTools={
 		var d=new Date();
 		if(d.getDay()<1||d.getDay()>5)return false;
 		var inTime = new Date(d.getFullYear()+" "+(d.getMonth()+1)+" "+d.getDate()+" "+this.AutoCheckInTime);
-		var mins=new Date()-inTime;// check if approach the time of check in 1 minutes
+		var mins=d-inTime;// check if approach the time of check in 1 minutes
 		if(mins>1000*60)return false;
 		var lastTime = new Date(localStorage.getItem(this._sS_lastAutoCheckIn));// check if already check in today
 		return new Date(lastTime.toDateString())-new Date(new Date().toDateString())!=0;
@@ -217,10 +219,11 @@ var wfubmcTools={
 		if(d.getDay()<1||d.getDay()>5)return false;
 		var outTime = new Date(localStorage.getItem(this._sS_lastAutoCheckIn));
 		outTime.setHours(outTime.getHours()+this.AutoCheckHour);
-		var mins=outTime-d;
-		if(mins>1000*60)return false;
-		var lastTime = new Date(localStorage.getItem(this._sS_lastAutoCheckOut));// check if already check in today
-		return new Date(lastTime.toDateString())-new Date(new Date().toDateString())!=0;
+		var mins=d-outTime;
+		if(mins<1000*60)return false;
+		// check if check in today
+		mins=new Date(outTime.toDateString())-new Date(new Date().toDateString());
+		return mins!=0;
 	},
 
 };

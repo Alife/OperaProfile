@@ -22,7 +22,7 @@
 		forceLocalStorage:true,						//强制使用localStorage,否则的话,opera和firefox会使用全局储存空间(更方便管理.);
 		backupInterval:2000,						//当聚焦到文本编辑区时,每隔多少毫秒备份一次数据.
 		delOnSubmit:false,							//当提交后,删除数据.注:提交失败,也会被删除.
-		shelfLife:2,								//每隔 shelfLife 天检查一次,如果数据保存超过 shelfLife 天,则删除.
+		shelfLife:30,								//每隔 shelfLife 天检查一次,如果数据保存超过 shelfLife 天,则删除.
 		debug:false,								//debug.
 	};
 
@@ -509,6 +509,7 @@
 		}catch(e){
 		};
 		document.addEventListener('DOMContentLoaded',init,false);
+		init();
 	}else{
 		init();
 	};
