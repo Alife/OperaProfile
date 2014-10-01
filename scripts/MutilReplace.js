@@ -64,7 +64,7 @@ function ReURL() {
 			}
 		}
 	}
-	console.log("MutilReplace:"+(new Date()-startTime)/1000+"s");
+	//console.log("MutilReplace:"+(new Date()-startTime)/1000+"s");
 }
 
 document.addEventListener('DOMContentLoaded', ReURL, false);

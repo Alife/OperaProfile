@@ -9474,7 +9474,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 document.addEventListener('DOMContentLoaded', function(){
 	if(typeof($)=="undefined"){
 		window.jQuery = window.$ = jQuery;
-		console.log("window.$ = jQuery");
+		//console.log("window.$ = jQuery");
 	}
 }, false);
 

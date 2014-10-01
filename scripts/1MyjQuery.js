@@ -58,7 +58,7 @@ if(window == window.parent){
 			//if(document.title.indexOf(dom)==-1)document.title += " "+dom+documentLoadTime/1000 +"s";
 			//if(document.title.indexOf(bodyStr)==-1)document.title += " "+bodyStr+loadTime/1000 +"s";
 		};
-		showInfo("referrer: "+document.referrer);
+		if(document.referrer!="")showInfo("referrer: "+document.referrer);
 
 		// display document.referrer
 		var ref = document.referrer;

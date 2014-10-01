@@ -127,7 +127,7 @@
 	};
 	var setBlockStyle = function(){
 		if(document.documentElement && document.documentElement.nodeName.toLowerCase() == 'html'){
-			console.log("Css AdBlock. Press Alt+Shift+A for blocking ads and Alt+Shift+U for unblocking. Press Alt+Shift+E for editing styles.");
+			//console.log("Css AdBlock. Press Alt+Shift+A for blocking ads and Alt+Shift+U for unblocking. Press Alt+Shift+E for editing styles.");
 			var css = getValue(prefix);
 			if(css)style = addStyle(css+none);
 			return true;
