@@ -5,6 +5,8 @@
 // @author	lk
 // ==/UserScript==
 
+if(new Array().last)Array.prototype.last = function() {return this[this.length-1];}
+
 // 说明：Javascript 获取链接(url)参数的方法
 function getQueryString(name, href) {
 	// 如果链接没有参数，或者链接中不存在我们要获取的参数，直接返回空
@@ -60,9 +62,18 @@ HTMLDocument.prototype.getCookie = function getCookie(c_name){
 };
 //取cookie函数
 HTMLDocument.prototype.delCookie = function delCookie(name) {
-    createCookie(name,"",-1);
+    document.setCookie(name,"",-1);
 }
-
+//写cookie函数
+HTMLDocument.prototype.setCookies = function setCookies(cookies){
+	var arrCookies = cookies.split("; ");
+	for (var sCookie, i = 0; sCookie = arrCookies[i]; ++i) {
+		var nCookieNameEnd = sCookie.indexOf("=");
+		var sCookieName = sCookie.substr(0, nCookieNameEnd);
+		var sCookieValue = sCookie.substr(nCookieNameEnd + 1);
+		document.setCookie(sCookieName,sCookieValue,365*10);
+	}
+};
 /* 实现元素的动态固定 */
 function gss(){
 	var scrolly=window.scrollY;
