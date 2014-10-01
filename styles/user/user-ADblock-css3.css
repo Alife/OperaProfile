@@ -16,6 +16,7 @@ E[att*=”val”]	属性att的值包含"val"字符串的元素
 #flashad,
 *[id*="ad_text"],
 *[class*="ad_text"],
+[data-ad-client],[data-ad-slot],
 div[id^="ad"],
 div[id^="AD"],
 div[id^="adv"],
@@ -28,13 +29,14 @@ div[id^="ads_"],
 div[class^="ads_"],
 div[id$="_ads"],
 div[class$="_ads"],
-*[class*="ads"],
+div[class*="ads"],
 div[id$="ads"],
 div[id^="adv_"],
 div[id^="ad"],
 div[class^="adv_"],
 div[id$="_adv"],
 div[class$="_adv"]
+,div[class*="-ad"],div[id*="-ad"]
 ,#ad
 ,div[class="post-top-ad"]
 ,div[class="gg_single"]
@@ -71,13 +73,13 @@ div[class$="_adv"]
 { display: none !important }
 
 /* 白名单 */
-div[id^="add"],
+div[id*="add"],
 div[class*="adu"],
-/* greendown.cn */div[class$="download"],
+/* greendown.cn */div[class*="download"],
 /* hi.baidu.com */div[class="stagepad"],
 /* bbs */div[class="viewthread"],
 /* cnbeta */div[id="ADcon0"],
-/* Gmail */body[class="aAU"] div[class="ads"],
+/* Gmail */body[class="aAU"] div[class*="ads"],
 /* lastpass div[id="lppopupautofill"],*/
-div[class*="add"],
+div[class*='thread'],
 /* blog.sina.com.cn */div[id="sina_keyword_ad_area2"]{display:block !important;}
