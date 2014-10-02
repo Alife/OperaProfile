@@ -10,6 +10,8 @@
 // @download  http://bbs.operachina.com/viewtopic.php?f=41&t=74923
 // @download  http://userscripts.org/scripts/show/84937
 // @needdatabase http://userscripts.org/scripts/show/93080
+// @todo  匹配 WordPress 文章页		→ 上一页		← 下一页
+// @todo  向上翻页自动拼接上一页
 // @include http*
 // ==/UserScript==
 
@@ -1652,11 +1654,11 @@
 			};
 
 			var working;
-			function doRequest(){
+			function doRequest(link){
 				working=true;
 				floatWO.updateColor('loading');
 				floatWO.CmodeIcon('show');
-				SSS.a_useiframe? iframeRquest(nextlink) : xhttpRequest(nextlink,XHRLoaded);
+				SSS.a_useiframe? iframeRquest(link) : xhttpRequest(link,XHRLoaded);
 			};
 
 			var ipagesmode=SSS.a_ipages[0];
@@ -1665,10 +1667,10 @@
 			var afterInsertDo=nullFn;
 			if(prefs.Aplus){
 				afterInsertDo=doRequest;
-				doRequest();
+				doRequest(nextlink);
 			}else{
 				scrollDo=doRequest;
-				if(ipagesmode)doRequest();
+				if(ipagesmode)doRequest(nextlink);
 			};
 
 
@@ -2044,10 +2046,10 @@
 						if(xbug)C.log('找到下一页链接:',nextlink);
 						doc=win=null;
 						if(ipagesmode){
-							doRequest();
+							doRequest(nextlink);
 						}else{
 							working=false;
-							afterInsertDo();
+							afterInsertDo(nextlink);
 						};
 					}else{
 						if(xbug)C.log('没有找到下一页链接',SSS.nextLink);
@@ -2120,8 +2122,15 @@
 					if(doc){//有的话,就插入到文档.
 						beforeInsertIntoDoc();
 					}else{//否则就请求文档.
-						scrollDo();
+						scrollDo(nextlink);
 					};
+				}else{
+					// scrollX
+					if(xbug)C.log('scroll: ', window.scrollX+"	"+window.scrollY);
+					if(window.scrollY==0){
+						scrollDo(prelink);
+						beforeInsertIntoDoc();
+					}
 				};
 			};
 
@@ -2378,6 +2387,8 @@
 					};
 					return a;//返回对象A
 					//return ahref;
+				}else{
+					if(xbug)C.log((type=='pre'? '上一页' : '下一页')+'匹配失败:http协议链接,非跳到当前页面的链接,非跨域:',a)
 				};
 			};
 
@@ -2505,6 +2516,17 @@
 						xbreak=true;
 						break;
 					};
+					// /^\s*[ 　\[［『「【\(←← 下下一下1翻下后後舊早期次]{0,2}张[ 　\]］>﹥›»>>』」】\) »→ >]{0,3}\s*$/i.test(atext)
+					// 匹配 WordPress 文章页		→ 上一页		← 下一页
+					// /^\s*[ 　\[［『「【\(←← 下下一下1翻下后後舊早期次]{0,2}\s*$/i.test("← ")
+					if(!_nextlink){
+						keytext=new RegExp(keytext.source.substring(0,keytext.source.indexOf("}")+1)+"\s*$");
+						atext=atext.substring(0,2);
+						if(atext.trim()!=""&&keytext.test(atext)){
+							_nextlink=finalCheck(a,'next');xbreak=true;
+							if(xbug)C.log('链接匹配: ',' '+keytext+' '+atext+'='+keytext.test(atext)+'')
+						}
+					}
 					if(xbreak || _nextlink)continue;
 				};
 				if(!_prelink){
@@ -2514,6 +2536,16 @@
 						_prelink=finalCheck(a,'pre');
 						break;
 					};
+					// /^\s*[ 　\]］>﹥›»>>』」】\) »→ >]{0,3}\s*$/i.test(" →")
+					if(!_prelink){
+						var temkey=keytext.source.substring(keytext.source.indexOf("}")+1,keytext.source.length);
+						keytext=new RegExp("^\s*"+temkey.substring(temkey.indexOf("["),temkey.length));
+						atext=atext.substring(atext.length+1-3,atext.length);// 来，我们社交吧！ →
+						if(atext.trim()!=""&&keytext.test(atext)){
+							_prelink=finalCheck(a,'pre');
+							xbreak=true;
+						}
+					}
 				};
 			};
 
