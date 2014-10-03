@@ -33,7 +33,7 @@
 		debug:false	,//debug,firefox打开firebug切换到错误控制台,chrome打开自带调试工具,opera打开dragonfly切换到命令行.
 		someValue:'Powered by Super_preloader'	,//显示在翻页导航最右边的一个小句子..-_-!!..
 		DisableI:true	,//只在顶层窗口加载JS..提升性能..如果开启了这项,那么DIExclude数组有效,里面的网页即使不在顶层窗口也会加载....
-		arrowKeyPage:true	,//允许使用 左右方向键 翻页..
+		arrowKeyPage:false	,//允许使用 左右方向键 翻页..
 		updateSet:[false,7,true]	,//(不支持chrome)3项分别为:使用自动更新提醒,检查间隔(天),给firefoxGM注册右键
 		sepStartN:1	,//翻页导航上的,从几开始计数.(貌似有人在意这个,所以弄个开关出来,反正简单.-_-!!)
 	};
@@ -66,7 +66,7 @@
 			next:{//下一页关键字后面的字符
 				enable:true,
 				maxSubfix:3,
-				character:[' ','　',']','］','>','﹥','›','»','>>','』','」','】',')',' »','→ ']
+				character:[' ','　',']','］','>','﹥','›','»','>>','』','」','】',')',' »','→ ',' >']
 			}
 		},
 		useiframe:false	,//(预读)是否使用iframe..
@@ -126,30 +126,30 @@
 	//翻页所要的站点信息.
 	//高级规则的一些默认设置..如果你不知道是什么..请务必不要修改(删除)它.此修改会影响到所有高级规则...
 	var SITEINFO_D={
-		enable:true							,//启用
-		useiframe:false				,//(预读)是否使用iframe..
-		viewcontent:false			,//查看预读的内容,显示在页面的最下方.
+		enable:true,			//启用
+		useiframe:false,		//(预读)是否使用iframe..
+		viewcontent:false,		//查看预读的内容,显示在页面的最下方.
 		autopager:{
-			enable:true						,//启用自动翻页...
-			manualA:false				,//手动翻页.
-			useiframe:false			,//(翻页)是否使用iframe..
-				iloaded:false			,//是否在iframe完全load后操作..否则在DOM完成后操作
-				itimeout:0						,//延时多少毫秒后,在操作..
-			remain:1							,//剩余页面的高度..是显示高度的 remain 倍开始翻页..
-			maxpage:99						,//最多翻多少页..
-			ipages:[false,2]			,//立即翻页,第一项是控制是否在js加载的时候立即翻第二项(必须小于maxpage)的页数,比如[true,3].就是说JS加载后.立即翻3页.
-			separator:true				//显示翻页导航..(推荐显示.)
+			enable:true,		//启用自动翻页...
+			manualA:false,		//手动翻页.
+			useiframe:false,	//(翻页)是否使用iframe..
+				iloaded:false,	//是否在iframe完全load后操作..否则在DOM完成后操作
+				itimeout:0,		//延时多少毫秒后,在操作..
+			remain:1,			//剩余页面的高度..是显示高度的 remain 倍开始翻页..
+			maxpage:99,			//最多翻多少页..
+			ipages:[false,2],	//立即翻页,第一项是控制是否在js加载的时候立即翻第二项(必须小于maxpage)的页数,比如[true,3].就是说JS加载后.立即翻3页.
+			separator:true		//显示翻页导航..(推荐显示.)
 		}
 	};
 
 	//高优先级规则,第一个是教程.
 	var SITEINFO=[
-		{siteName:'google搜索',																																//站点名字...(可选)
-			url:/^https?:\/\/\w{3,10}\.google(?:\.\w{1,4}){1,2}\/search/i,											//站点正则...(~~必须~~)
-			siteExample:'http://www.google.com',																								//站点实例...(可选)
-			enable:true,																																			//启用.(总开关)(可选)
-			useiframe:false,																																		//是否用iframe预读...(可选)
-			viewcontent:false,																																	//查看预读的内容,显示在页面的最下方.(可选)
+		{siteName:'google搜索',		//站点名字...(可选)
+			url:/^https?:\/\/\w{3,10}\.google(?:\.\w{1,4}){1,2}\/search/i,	//站点正则...(~~必须~~)
+			siteExample:'http://www.google.com',	//站点实例...(可选)
+			enable:true,			//启用.(总开关)(可选)
+			useiframe:false,		//是否用iframe预读...(可选)
+			viewcontent:false,		//查看预读的内容,显示在页面的最下方.(可选)
 			nextLink:'auto;',
 			//nextLink:'//table[@id="nav"]/descendant::a[last()][parent::td[@class="b"]]',				//下一页链接 xpath 或者 CSS选择器 或者 函数返回值(此函数必须使用第一个传入的参数作为document对象) (~~必选~~)
 			//nextLink:'css;table#nav>tbody>tr>td.b:last-child>a',
@@ -157,20 +157,20 @@
 			preLink:'auto;',
 			//preLink:'//table[@id="nav"]/descendant::a[1][parent::td[@class="b"]]',			//上一页链接 xpath 或者 CSS选择器 或者 函数返回值 (可选)
 			autopager:{
-				enable:true	,																								//启用(自动翻页)(可选)
-				useiframe:false,																						//是否使用iframe翻页(可选)
-					iloaded:false,																						//是否在iframe完全load之后操作..否则在DOM完成后操作.
-					itimeout:0,																								//延时多少毫秒后,在操作..
-				pageElement:'//div[@id="ires"]',														//主体内容 xpath 或 CSS选择器 或函数返回值(~~必须~~)
+				enable:true	,		//启用(自动翻页)(可选)
+				useiframe:false,	//是否使用iframe翻页(可选)
+					iloaded:false,	//是否在iframe完全load之后操作..否则在DOM完成后操作.
+					itimeout:0,		//延时多少毫秒后,在操作..
+				pageElement:'//div[@id="ires"]',	//主体内容 xpath 或 CSS选择器 或函数返回值(~~必须~~)
 				//pageElement:'css;div#ires',
-				remain:1/3,																									//剩余页面的高度..是显示高度的 remain 倍开始翻页(可选)
-				replaceE:'//div[@id="navcnt"]',															//需要替换的部分 xpat h或 CSS选择器 一般是页面的本来的翻页导航(可选);
+				remain:1/3,			//剩余页面的高度..是显示高度的 remain 倍开始翻页(可选)
+				replaceE:'//div[@id="navcnt"]',	//需要替换的部分 xpat h或 CSS选择器 一般是页面的本来的翻页导航(可选);
 				//replaceE:'css;div#navcnt',
-				ipages:[false,3],																					//立即翻页,第一项是控制是否在js加载的时候立即翻第二项(必须小于maxpage)的页数,比如[true,3].就是说JS加载后.立即翻3页.(可选)
-				separator:true,																							//是否显示翻页导航(可选)
-				maxpage:66,																									//最多翻页数量(可选)
-				manualA:false,																							//是否使用手动翻页.
-				HT_insert:['//div[@id="res"]',2],														//插入方式此项为一个数组: [节点xpath或CSS选择器,插入方式(1：插入到给定节点之前;2：附加到给定节点的里面;)](可选);
+				ipages:[false,3],	//立即翻页,第一项是控制是否在js加载的时候立即翻第二项(必须小于maxpage)的页数,比如[true,3].就是说JS加载后.立即翻3页.(可选)
+				separator:true,		//是否显示翻页导航(可选)
+				maxpage:66,			//最多翻页数量(可选)
+				manualA:false,		//是否使用手动翻页.
+				HT_insert:['//div[@id="res"]',2],	//插入方式此项为一个数组: [节点xpath或CSS选择器,插入方式(1：插入到给定节点之前;2：附加到给定节点的里面;)](可选);
 				//HT_insert:['css;div#res',2],
 			}
 		},

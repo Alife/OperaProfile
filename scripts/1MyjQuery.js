@@ -71,7 +71,7 @@ if(window == window.parent){
 				refLink.style.color="red";
 				if(!refLink.id)refLink.id="referrer";
 				if(!refLink.title)refLink.title="referrer";
-				location.href = "#referrer";
+				//location.href = "#referrer";
 			});
 		}
 		}, false);

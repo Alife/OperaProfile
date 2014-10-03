@@ -1550,12 +1550,14 @@
 
 			var addIntoDoc;
 			if(insertMode==2){
-				addIntoDoc=function(obj){
-					insertPoint.appendChild(obj)
+				addIntoDoc=function(obj,type){
+					if(type=='pre')insertPoint.insertBefore(obj, insertPoint.childNodes[0]);
+					else insertPoint.appendChild(obj)
 				};
 			}else{
-				addIntoDoc=function(obj){
-					insertPointP.insertBefore(obj,insertPoint)
+				addIntoDoc=function(obj,type){
+					if(type=='pre')insertPointP.insertBefore(obj, insertPointP.childNodes[0]);
+					else insertPointP.insertBefore(obj,insertPoint)
 				};
 			};
 
@@ -1838,12 +1840,12 @@
 				manualDiv.style.display='block';
 			};
 
-			function beforeInsertIntoDoc(){
+			function beforeInsertIntoDoc(type){
 				working=true;
 				if(SSS.a_manualA && !ipagesmode){//显示手动翻页触发条.
 					manualAdiv();
 				}else{//直接拼接.
-					insertedIntoDoc();
+					insertedIntoDoc(type);
 				};
 			};
 
@@ -1972,7 +1974,7 @@
 
 
 			var paged=0;
-			function insertedIntoDoc(){
+			function insertedIntoDoc(type){ // default type=next
 				if(!doc)return;
 				var fragment=document.createDocumentFragment();
 				var sepdiv=createSep();
@@ -1993,7 +1995,8 @@
 						};
 						fragment.appendChild(pe_x);
 					};
-					addIntoDoc(fragment);
+					if(type=="pre")fragment.appendChild(sepdiv);
+					addIntoDoc(fragment,type);
 					if(SSS.a_replaceE){
 						var oldE=getAllElements(SSS.a_replaceE);
 						var oldE_lt=oldE.length;
@@ -2013,7 +2016,7 @@
 							};
 						};
 					};
-					paged+=1;
+					paged+=type=="pre"?-1:1;
 					if(ipagesmode && paged>=ipagesnumber){
 						ipagesmode=false;
 					};
@@ -2042,20 +2045,37 @@
 						removeL();
 						return;
 					};
-					if(nextlink){
-						if(xbug)C.log('找到下一页链接:',nextlink);
-						doc=win=null;
-						if(ipagesmode){
-							doRequest(nextlink);
+					if(type!="pre"){
+						if(nextlink){
+							if(xbug)C.log('找到下一页链接:',nextlink);
+							doc=win=null;
+							if(ipagesmode){
+								doRequest(nextlink);
+							}else{
+								working=false;
+								afterInsertDo(nextlink);
+							};
 						}else{
-							working=false;
-							afterInsertDo(nextlink);
+							if(xbug)C.log('没有找到下一页链接',SSS.nextLink);
+							removeL();
+							return;
 						};
 					}else{
-						if(xbug)C.log('没有找到下一页链接',SSS.nextLink);
-						removeL();
-						return;
-					};
+						if(prelink){
+							if(xbug)C.log('找到上一页链接:',prelink);
+							doc=win=null;
+							if(ipagesmode){
+								doRequest(prelink);
+							}else{
+								working=false;
+								afterInsertDo(prelink);
+							};
+						}else{
+							if(xbug)C.log('没有找到上一页链接',SSS.nextLink);
+							removeL();
+							return;
+						};
+					}
 				}else{
 					if(xbug)C.log('获取下一页的主要内容失败',SSS.a_pageElement);
 					removeL();
@@ -2125,12 +2145,10 @@
 						scrollDo(nextlink);
 					};
 				}else{
-					// scrollX
-					if(xbug)C.log('scroll: ', window.scrollX+"	"+window.scrollY);
-					if(window.scrollY==0){
-						scrollDo(prelink);
-						beforeInsertIntoDoc();
-					}
+					/* if(window.scrollY==0){
+						beforeInsertIntoDoc("pre");
+						window.scroll(0,1);
+					} */
 				};
 			};
 
@@ -2512,6 +2530,7 @@
 					for(k=0;k<_nPKL;k++){
 						keytext=_nextPageKey[k];
 						if(!(keytext.test(atext)))continue;
+						if(xbug)C.log('链接匹配 nextlink: ',' '+keytext+'.test("'+atext+'")='+keytext.test(atext)+'');
 						_nextlink=finalCheck(a,'next');
 						xbreak=true;
 						break;
@@ -2520,11 +2539,11 @@
 					// 匹配 WordPress 文章页		→ 上一页		← 下一页
 					// /^\s*[ 　\[［『「【\(←← 下下一下1翻下后後舊早期次]{0,2}\s*$/i.test("← ")
 					if(!_nextlink){
-						keytext=new RegExp(keytext.source.substring(0,keytext.source.indexOf("}")+1)+"\s*$");
-						atext=atext.substring(0,2);
-						if(atext.trim()!=""&&keytext.test(atext)){
+						keytext=new RegExp(keytext.source.substring(0,keytext.source.indexOf("{"))+"\s*$");
+						var atex=atext.substring(0,2);
+						if(atex.trim()!=""&&keytext.test(atex)){
+							if(xbug)C.log('链接匹配 nextlink: ',' '+keytext+'.test("'+atex+'")='+keytext.test(atex)+'');
 							_nextlink=finalCheck(a,'next');xbreak=true;
-							if(xbug)C.log('链接匹配: ',' '+keytext+' '+atext+'='+keytext.test(atext)+'')
 						}
 					}
 					if(xbreak || _nextlink)continue;
@@ -2533,15 +2552,17 @@
 					for(k=0;k<_pPKL;k++){
 						keytext=_prePageKey[k];
 						if(!(keytext.test(atext)))continue;
+						if(xbug)C.log('链接匹配 prelink: ',' '+keytext+'.test("'+atext+'")='+keytext.test(atext)+'');
 						_prelink=finalCheck(a,'pre');
 						break;
 					};
 					// /^\s*[ 　\]］>﹥›»>>』」】\) »→ >]{0,3}\s*$/i.test(" →")
 					if(!_prelink){
 						var temkey=keytext.source.substring(keytext.source.indexOf("}")+1,keytext.source.length);
-						keytext=new RegExp("^\s*"+temkey.substring(temkey.indexOf("["),temkey.length));
-						atext=atext.substring(atext.length+1-3,atext.length);// 来，我们社交吧！ →
-						if(atext.trim()!=""&&keytext.test(atext)){
+						keytext=new RegExp("^\s*"+temkey.substring(temkey.indexOf("["),temkey.indexOf("{"))+"\s*$");
+						var atex=atext.substring(atext.length+1-3,atext.length);// 来，我们社交吧！ →
+						if(atex.trim()!=""&&keytext.test(atex)){
+							if(xbug)C.log('链接匹配 prelink: ',' '+keytext+'.test("'+atex+'")='+keytext.test(atex)+'');
 							_prelink=finalCheck(a,'pre');
 							xbreak=true;
 						}
