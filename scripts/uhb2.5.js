@@ -365,7 +365,7 @@ function UltimateHighlightKeywords(findtext) {
 // Auto-highlighting of search terms when google is referrer
 if(p000_UHOption_AutoHighlight){
 	if( ! location.hostname.match(/(^|\.)google\.([^\.]+|[^\.]{2,3}\.[^\.]{2})$/) ) {
-		document.addEventListener('load',function(e) {UltimateHighlight(true,true);}, false);
+		document.addEventListener('DOMContentLoaded',function(e) {UltimateHighlight(true,true);}, false);
 	}
 }
 
