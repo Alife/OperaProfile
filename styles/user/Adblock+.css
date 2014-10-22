@@ -104,5 +104,6 @@ HTML[class="bbs.xmfish.com"] > BODY > DIV[id="header"]:nth-child(2) > DIV[class=
 HTML[class="bbs.xmfish.com"] > BODY > DIV[class="main-wrap"]:nth-child(3) > DIV[id="main"] > DIV[class="t3 cc"]:nth-child(13) > DIV:nth-child(9),
 HTML[class="cnbeta.com"] DIV[id="logo"]:nth-child(1) > DIV[height="60"][width="468"]:nth-child(3) > A[href="http://www.u17.com/comic/4430.html?from=cnbeta2"],
 HTML[class="cnbeta.com"] DIV[id="userInfo"]:nth-child(2),
-HTML[class="cnblogs.com"] DIV[id="main"] > DIV[class="commentform"]:nth-child(3)
+HTML[class="cnblogs.com"] DIV[id="main"] > DIV[class="commentform"]:nth-child(3),
+html[class="iplaysoft.com"] div[class^='d']
 { display: none !important }

@@ -3,7 +3,7 @@
 // @name Opera port of GooglePreview
 // @author Edward Ackroyd, adapted to Opera by Sombria
 // @version 1.0 (GooglePreview 2.1.3)
-// @include http://www.google.*/search*
+// @include http*://www.google.*/search*
 // @include http://*search.yahoo.*/search*
 // ==/UserScript==
 
@@ -116,7 +116,8 @@ function getImageURL(href) {
 }
 
 function amazonifiy() {
-  var allLinks = document.getElementsByTagName("a");
+  //var allLinks = document.getElementsByTagName("a");
+  var allLinks = document.querySelectorAll("#ires h3 a");
   for(i=0; i<allLinks.length; i++) {
     var href = allLinks[i].href;
 
@@ -170,8 +171,12 @@ function stockify() {
 }
 
 function getFullDomain(href) {
+	//http://www.google.com/url?q=http://qrcode.kaywa.com/
+	var _href=href;
+	if(href.indexOf("//www.google.com")>-1)_href=getQueryString("q",href);
+	if(!_href)href=getQueryString("url",href);
     domain = href.match(/http(?:s)?:\/\/[^\/]+/i);
-    return domain ? domain[0].toLowerCase() : href;
+    return domain ? domain[0].toLowerCase() : _href;
 }
 
 function getRealURL(href)

@@ -44,7 +44,7 @@ div[class$="_adv"]
 ,div[class^="ad_"],div[id^="ad_"],div[id$="_ad"],div[class$="_ad"],div[id^="ads_"],div[id="adbottom"],div[id="adtop"],div[class^="ads_"],div[class^="adv_"],div[class^="adText_"],div[class="bannerad"],div[id^="Ad"]
 ,div[class$="_ad"],div[class^="A_ad"],div[id^="AD"],div[id^="Bar"],div[id^="Float"],div[class="adSpace"],.adnpace
 /* greendown.cn */
-,div[class*="ad-"]
+,div[class^="ad-"]
 /* cn.yahoo.com */
 ,div[class*="-ad-"]
 /* google Ads */

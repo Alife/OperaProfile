@@ -70,3 +70,6 @@ html{background-color:transparent !important}
 /* http://grepcode.com/project/ */
 #entity-view-main{width:auto !important;}
 
+/* google search */
+#mn>tbody>tr>th:nth-child(2){width:100% !important;}
+#ires li.g{clear:none !important;float:left;width:49%;border-bottom: 1px solid #EEE;padding:0 !important;min-height:106px;}

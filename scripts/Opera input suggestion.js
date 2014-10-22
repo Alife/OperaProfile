@@ -217,7 +217,7 @@ OpS.setupInputs = function() {
 		}
 	}
 
-	OpS.view.init();
+	if(domInputs&&domInputs.length>0)OpS.view.init();
 }
 
 OpS.prototype.setupInput = function() { with (this) {
@@ -480,6 +480,7 @@ OpS.view = {
 		this._arrMenuButtons = [];
 
 		var domListBox = document.createElement("DIV");
+		domListBox.id = "domListBox";
 		domListBox.style = Style.ListBox;
 		domListBox.style.display = "none";
 
@@ -489,6 +490,7 @@ OpS.view = {
 		};
 
 		var domScrollBox = document.createElement("DIV");
+		domScrollBox.id = "domScrollBox";
 		domScrollBox.style = Style.ScrollBox;
 
 		var domList = document.createElement("UL");
@@ -504,12 +506,14 @@ OpS.view = {
 		domListItemEnd.style = "margin:0; padding:0";
 
 		var domListMenu = document.createElement("DIV");
+		domListMenu.id = "domListMenu";
 		domListMenu.style = Style.ListMenu;
 
 		domListMenu.appendChild(this.createMenuButton(Actions.HideSuggestionList));
 		domListMenu.appendChild(this.createMenuButton(Actions.ShowAllSuggestions, true));
 
 		var domItemMenu = document.createElement("DIV");
+		domItemMenu.id = "domItemMenu";
 		domItemMenu.style = Style.ItemMenu;
 		domItemMenu.style.display = "none";
 
