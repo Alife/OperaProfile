@@ -5,6 +5,16 @@
 // @author	lk
 // ==/UserScript==
 
+/* support qSelectorAll for UserJs that replaced querySelectorAll for 9.64   */
+if(typeof(jQuery)!='undefined'){
+	if(!document.qSelectorAll){
+		HTMLDocument.prototype.qSelectorAll = function(str) {
+			if(this.querySelectorAll) return this.querySelectorAll(str);
+			else return jQuery.makeArray(jQuery(str));
+		}
+	}
+}
+
 if(new Array().last)Array.prototype.last = function() {return this[this.length-1];}
 
 // 说明：Javascript 获取链接(url)参数的方法

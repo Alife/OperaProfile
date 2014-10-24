@@ -273,6 +273,8 @@
    }, true);
 
    window.addEventListener('DOMContentLoaded', function(e) {
+	if(document.body.innerHTML==""||document.body.innerText=="")return;
+	if(document.querySelectorAll("input").length==0)return;
       var style = document.createElement('style');
       style.innerHTML = '#autocomplete {font-family: arial,sans-serif; font-size: 13px; font-weight: normal; line-height: normal; color: #000; text-align: left; position: absolute; overflow: auto; max-height: 90px; background-color: #fff; border: solid 1px; z-index: 100;} div#autocomplete div.selected {background-color: #627aad; color: #fff;} #helperDiv {position: absolute; visibility: hidden; width: auto;}';
       if(document.getElementsByTagName('head').length>0)document.getElementsByTagName('head')[0].appendChild(style);

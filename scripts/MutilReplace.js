@@ -2,11 +2,6 @@
 // @ujs:modified 2009年3月2日17:22:27
 // ==/UserScript==
 
-// @include http://*.googleusercontent.com/*
-// @include http://*.twitter.com/*
-// @include http://t.sina.com.cn/*
-// @include http://*.smallcat.co.cc/*
-
 //window.opera.addEventListener(
 //    "BeforeEvent.load",
 //    function (e) {
@@ -17,11 +12,13 @@
 (function(){
 	var res = ["http://webcache.googleusercontent.com"];
 	var repl = ["https://webcache.googleusercontent.com"];
-	res.push("http://twitter.com");repl.push("https://twitter.com");
+	//res.push("http://twitter.com");repl.push("https://twitter.com");
 	res.push("http://t.sina.com.cn");repl.push("http://t.sina.cn");
-	res.push("weibo.com");repl.push("weibo.cn");
+	res.push("http://weibo.com");repl.push("http://weibo.cn");
 	//res.push("http://igfw.net");repl.push("");
-	res.push("http://www.youtube");repl.push("https://www.youtube");
+	//res.push("http://www.youtube");repl.push("https://www.youtube");
+	res.push("http://jude.me/404/");repl.push("http://jude.me");
+	res.push("http://blog.judes.me/");repl.push("http://jude.me/");
 function ReURL() {
 	var startTime=new Date();
 	var atag = document.getElementsByTagName("a");

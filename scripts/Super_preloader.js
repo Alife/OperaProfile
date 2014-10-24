@@ -10,8 +10,9 @@
 // @download  http://bbs.operachina.com/viewtopic.php?f=41&t=74923
 // @download  http://userscripts.org/scripts/show/84937
 // @needdatabase http://userscripts.org/scripts/show/93080
-// @todo  匹配 WordPress 文章页		→ 上一页		← 下一页
-// @todo  向上翻页自动拼接上一页
+// @todo √	匹配 WordPress 文章页		→ 上一页		← 下一页
+// @todo	向上翻页自动拼接上一页
+// @todo	switch for 上一页 <==> 下一页
 // @include http*
 // ==/UserScript==
 
@@ -2529,6 +2530,7 @@
 					xbreak=false;
 					for(k=0;k<_nPKL;k++){
 						keytext=_nextPageKey[k];
+						if(xbug&&k==0&&0==i)C.log('链接匹配 nextlink: ',' '+keytext+'.test("'+atext+'")='+keytext.test(atext)+'');
 						if(!(keytext.test(atext)))continue;
 						if(xbug)C.log('链接匹配 nextlink: ',' '+keytext+'.test("'+atext+'")='+keytext.test(atext)+'');
 						_nextlink=finalCheck(a,'next');
@@ -2551,6 +2553,7 @@
 				if(!_prelink){
 					for(k=0;k<_pPKL;k++){
 						keytext=_prePageKey[k];
+						if(xbug&&k==0&&0==i)C.log('链接匹配 prelink: ',' '+keytext+'.test("'+atext+'")='+keytext.test(atext)+'');
 						if(!(keytext.test(atext)))continue;
 						if(xbug)C.log('链接匹配 prelink: ',' '+keytext+'.test("'+atext+'")='+keytext.test(atext)+'');
 						_prelink=finalCheck(a,'pre');

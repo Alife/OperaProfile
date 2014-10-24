@@ -18,22 +18,21 @@ if(typeof(jQuery)!='undefined'){
 		}
 	}
 	// qSelectorAll 重命名,否则与 jQuery 会发生循环调用
-	HTMLDocument.prototype.qSelectorAll = function(str) {
-		if(this.querySelectorAll) return this.querySelectorAll(str);
-		else return jQuery.makeArray(jQuery(str));
-	}
-	HTMLElement.prototype.qSelectorAll = function(str) {
-		if(this.querySelectorAll) return this.querySelectorAll(str);
-		else return jQuery.makeArray(jQuery(str));
-	}
-	/*替换作者脚本中的 querySelectorAll 为 qSelectorAll*/
-	window.opera.addEventListener("BeforeScript",function (e) {
-		if(e.element.text){// 不替换 jquery
-			if(e.element.text.indexOf(".fn.init")>-1||e.element.text.indexOf("(jQuery)")>-1)return;
-			e.element.text = e.element.text.replace(new RegExp("querySelectorAll","gm"),"qSelectorAll");
+	if(!document.querySelectorAll){
+		HTMLDocument.prototype.qSelectorAll = function(str) {
+			if(this.querySelectorAll) return this.querySelectorAll(str);
+			else return jQuery.makeArray(jQuery(str));
 		}
-	}, false);
+		/*替换作者脚本中的 querySelectorAll 为 qSelectorAll*/
+		window.opera.addEventListener("BeforeScript",function (e) {
+			if(e.element.text){// 不替换 jquery
+				if(e.element.text.indexOf(".fn.init")>-1||e.element.text.indexOf("(jQuery)")>-1)return;
+				e.element.text = e.element.text.replace(new RegExp("querySelectorAll","gm"),"qSelectorAll");
+			}
+		}, false);
+	}
 }
+
 /* support window.log for 9.64 */
 if (!window.console) {
 	window.console = {};

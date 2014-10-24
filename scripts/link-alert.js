@@ -11,7 +11,9 @@ opera.addEventListener('AfterEvent.load',function (e) {
 	if( !document.body || document.body.getElementsByTagName('*').length == 1 ) { return; }
 	var hed = document.getElementsByTagName('head')[0];
 	if( !hed ) { var oTitle = document.getElementsByTagName('title')[0]; if( !oTitle ) { return; } }
-
+	if(document.body.innerHTML==""||document.body.innerText=="")return;
+	if(document.querySelectorAll("a").length==0)return;
+	
 /*********************
 Configure options here
 *********************/

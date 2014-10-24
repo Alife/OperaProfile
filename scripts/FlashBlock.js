@@ -231,6 +231,7 @@
 			document.documentElement.appendChild(f);
 		};
 
+		addStyle(css);
 		reloadImage(flash);
 		reloadImage(play);
 	};
@@ -241,7 +242,6 @@
 
 	// Blocking
 	if(getValue(prefix) != 'unblocked'){
-		addStyle(css);
 		// unblock flash
 		document.addEventListener('click', unblockFlash, true);
 		// show title

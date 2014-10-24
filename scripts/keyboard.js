@@ -9,8 +9,161 @@
 // @ujs:documentation [Chinese] http://bbs.operachina.com/viewtopic.php?f=41&t=34560
 // ==/UserScript==
 
-window.addEventListener('load', function() {
+document.addEventListener('DOMContentLoaded', function(){
   function VKI_buildKeyboardInputsUserScript() {
+  var VKI_link = document.createElement('link');
+      VKI_link.setAttribute('rel', "stylesheet");
+      VKI_link.setAttribute('type', "text/css");
+      VKI_link.setAttribute('href', "data:text/css,#keyboardInputMasterUserScript {\
+  position:absolute;\
+  border-top:2px solid #eeeeee;\
+  border-right:2px solid #6e6e6e;\
+  border-bottom:2px solid #6e6e6e;\
+  border-left:2px solid #eeeeee;\
+  border-radius:5px;\
+  box-shadow:0px 2px 10px #444444;\
+  opacity:0.9;\
+  color:#000000;\
+  background-color:#dddddd;\
+  text-align:left;\
+  z-index:1000000;\
+  width:auto;\
+  margin:0px;\
+  font:normal 11px Arial,sans-serif;\
+  line-height:1;\
+}\
+#keyboardInputMasterUserScript * {\
+  color:#000000;\
+  background:transparent;\
+  font:normal 11px Arial,sans-serif;\
+  margin:0px;\
+  padding:0px;\
+  border:0px none;\
+  outline:0px;\
+  vertical-align:baseline;\
+}\
+\
+#keyboardInputMasterUserScript thead tr th {\
+  text-align:left;\
+  padding:2px 5px 2px 4px;\
+  background-color:inherit;\
+}\
+#keyboardInputMasterUserScript thead tr th select {\
+  margin-right:5px;\
+  border:1px inset #888888;\
+  background-color:#f6f6f6;\
+}\
+#keyboardInputMasterUserScript thead tr th label input {\
+  width:12px;\
+  height:12px;\
+  margin-right:5px;\
+  vertical-align:middle;\
+}\
+#keyboardInputMasterUserScript thead tr td {\
+  text-align:right;\
+  vertical-align:middle;\
+  padding:2px 4px 2px 5px;\
+}\
+#keyboardInputMasterUserScript thead tr td span {\
+  padding:2px 4px;\
+  font-weight:bold;\
+  border-top:1px solid #e5e5e5;\
+  border-right:1px solid #5d5d5d;\
+  border-bottom:1px solid #5d5d5d;\
+  border-left:1px solid #e5e5e5;\
+  background-color:#cccccc;\
+  cursor:pointer;\
+}\
+\
+#keyboardInputMasterUserScript tbody tr td {\
+  text-align:left;\
+  padding:0px 4px 3px 4px;\
+}\
+#keyboardInputMasterUserScript tbody tr td div {\
+  text-align:center;\
+  position:relative;\
+  height:0px;\
+}\
+#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout {\
+  height:auto;\
+}\
+#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table {\
+  height:20px;\
+  white-space:nowrap;\
+  width:100%;\
+  border-collapse:separate;\
+  border-spacing:0px;\
+}\
+#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table.keyboardInputCenter {\
+  width:auto;\
+  margin:0px auto;\
+}\
+#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td {\
+  vertical-align:middle;\
+  padding:0px 5px;\
+  white-space:pre;\
+  font-family:'Lucida Console',monospace;\
+  border-top:1px solid #e5e5e5;\
+  border-right:1px solid #5d5d5d;\
+  border-bottom:1px solid #5d5d5d;\
+  border-left:1px solid #e5e5e5;\
+  background-color:#eeeeee;\
+  cursor:default;\
+  min-width:0.75em;\
+}\
+#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td.last {\
+  width:99%;\
+}\
+#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td.space {\
+  padding:0px 45px;\
+}\
+#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td.alive {\
+  background-color:#ccccdd;\
+}\
+#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td.target {\
+  background-color:#ddddcc;\
+}\
+#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td.hover {\
+  border-top:1px solid #d5d5d5;\
+  border-right:1px solid #555555;\
+  border-bottom:1px solid #555555;\
+  border-left:1px solid #d5d5d5;\
+  background-color:#cccccc;\
+}\
+#keyboardInputMasterUserScript thead tr td span.pressed,\
+#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td.pressed,\
+#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td.dead {\
+  border-top:1px solid #555555;\
+  border-right:1px solid #d5d5d5;\
+  border-bottom:1px solid #d5d5d5;\
+  border-left:1px solid #555555;\
+  background-color:#cccccc;\
+}\
+\
+#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td span {\
+  display:block;\
+  text-align:center;\
+  font-size:0.6em;\
+}\
+\
+#keyboardInputMasterUserScript tbody tr td div var {\
+  position:absolute;\
+  bottom:0px;\
+  right:0px;\
+  font-weight:bold;\
+  font-style:italic;\
+  color:#444444;\
+}");
+
+  var VKI_head = VKI_title = 0;
+  try {
+    if (VKI_head = document.getElementsByTagName('head')[0]) {
+      VKI_head.appendChild(VKI_link);
+    } else if (VKI_title = document.getElementByTagName('title')[0])
+      VKI_title.parentNode.insertBefore(VKI_link, VKI_title);
+  } catch(e) {}
+	if (!(VKI_head || VKI_title)) return;
+
     var self = this;
 
     this.VKI_version = "1.32";
@@ -620,159 +773,8 @@ window.addEventListener('load', function() {
     if (window.opera) elem.onmousedown = function() { return false; };
   }
 
-
-  var VKI_link = document.createElement('link');
-      VKI_link.setAttribute('rel', "stylesheet");
-      VKI_link.setAttribute('type', "text/css");
-      VKI_link.setAttribute('href', "data:text/css,#keyboardInputMasterUserScript {\
-  position:absolute;\
-  border-top:2px solid #eeeeee;\
-  border-right:2px solid #6e6e6e;\
-  border-bottom:2px solid #6e6e6e;\
-  border-left:2px solid #eeeeee;\
-  border-radius:5px;\
-  box-shadow:0px 2px 10px #444444;\
-  opacity:0.9;\
-  color:#000000;\
-  background-color:#dddddd;\
-  text-align:left;\
-  z-index:1000000;\
-  width:auto;\
-  margin:0px;\
-  font:normal 11px Arial,sans-serif;\
-  line-height:1;\
-}\
-#keyboardInputMasterUserScript * {\
-  color:#000000;\
-  background:transparent;\
-  font:normal 11px Arial,sans-serif;\
-  margin:0px;\
-  padding:0px;\
-  border:0px none;\
-  outline:0px;\
-  vertical-align:baseline;\
-}\
-\
-#keyboardInputMasterUserScript thead tr th {\
-  text-align:left;\
-  padding:2px 5px 2px 4px;\
-  background-color:inherit;\
-}\
-#keyboardInputMasterUserScript thead tr th select {\
-  margin-right:5px;\
-  border:1px inset #888888;\
-  background-color:#f6f6f6;\
-}\
-#keyboardInputMasterUserScript thead tr th label input {\
-  width:12px;\
-  height:12px;\
-  margin-right:5px;\
-  vertical-align:middle;\
-}\
-#keyboardInputMasterUserScript thead tr td {\
-  text-align:right;\
-  vertical-align:middle;\
-  padding:2px 4px 2px 5px;\
-}\
-#keyboardInputMasterUserScript thead tr td span {\
-  padding:2px 4px;\
-  font-weight:bold;\
-  border-top:1px solid #e5e5e5;\
-  border-right:1px solid #5d5d5d;\
-  border-bottom:1px solid #5d5d5d;\
-  border-left:1px solid #e5e5e5;\
-  background-color:#cccccc;\
-  cursor:pointer;\
-}\
-\
-#keyboardInputMasterUserScript tbody tr td {\
-  text-align:left;\
-  padding:0px 4px 3px 4px;\
-}\
-#keyboardInputMasterUserScript tbody tr td div {\
-  text-align:center;\
-  position:relative;\
-  height:0px;\
-}\
-#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout {\
-  height:auto;\
-}\
-#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table {\
-  height:20px;\
-  white-space:nowrap;\
-  width:100%;\
-  border-collapse:separate;\
-  border-spacing:0px;\
-}\
-#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table.keyboardInputCenter {\
-  width:auto;\
-  margin:0px auto;\
-}\
-#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td {\
-  vertical-align:middle;\
-  padding:0px 5px;\
-  white-space:pre;\
-  font-family:'Lucida Console',monospace;\
-  border-top:1px solid #e5e5e5;\
-  border-right:1px solid #5d5d5d;\
-  border-bottom:1px solid #5d5d5d;\
-  border-left:1px solid #e5e5e5;\
-  background-color:#eeeeee;\
-  cursor:default;\
-  min-width:0.75em;\
-}\
-#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td.last {\
-  width:99%;\
-}\
-#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td.space {\
-  padding:0px 45px;\
-}\
-#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td.alive {\
-  background-color:#ccccdd;\
-}\
-#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td.target {\
-  background-color:#ddddcc;\
-}\
-#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td.hover {\
-  border-top:1px solid #d5d5d5;\
-  border-right:1px solid #555555;\
-  border-bottom:1px solid #555555;\
-  border-left:1px solid #d5d5d5;\
-  background-color:#cccccc;\
-}\
-#keyboardInputMasterUserScript thead tr td span.pressed,\
-#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td.pressed,\
-#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td.dead {\
-  border-top:1px solid #555555;\
-  border-right:1px solid #d5d5d5;\
-  border-bottom:1px solid #d5d5d5;\
-  border-left:1px solid #555555;\
-  background-color:#cccccc;\
-}\
-\
-#keyboardInputMasterUserScript tbody tr td div#keyboardInputLayout table tbody tr td span {\
-  display:block;\
-  text-align:center;\
-  font-size:0.6em;\
-}\
-\
-#keyboardInputMasterUserScript tbody tr td div var {\
-  position:absolute;\
-  bottom:0px;\
-  right:0px;\
-  font-weight:bold;\
-  font-style:italic;\
-  color:#444444;\
-}");
-
-  var VKI_head = VKI_title = 0;
-  try {
-    if (VKI_head = document.getElementsByTagName('head')[0]) {
-      VKI_head.appendChild(VKI_link);
-    } else if (VKI_title = document.getElementByTagName('title')[0])
-      VKI_title.parentNode.insertBefore(VKI_link, VKI_title);
-  } catch(e) {}
-
-	if(!(document instanceof HTMLDocument))return;
-  if (VKI_head || VKI_title) VKI_buildKeyboardInputsUserScript();
+  if(!(document instanceof HTMLDocument))return;
+  if(document.body.innerHTML==""||document.body.innerText=="")return;
+  if(document.querySelectorAll("input").length==0&&document.querySelectorAll("textarea").length==0)return;
+  VKI_buildKeyboardInputsUserScript();
 }, false);
