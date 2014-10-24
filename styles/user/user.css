@@ -42,21 +42,16 @@ a[onClick^="ConvertURL2FG"]{-o-link:attr(fg) !important; -o-link-source:current 
 div[class="f"]>textarea.l{min-height:300px !important;}
 col.I{width:300px !important;}
 
-/* Discuz AD */
-div[class="a_pt"]>a,
-/*http://cn.mail.yahoo.com/*/
-#northbanner,#ygmauser,#swads,#ygmabot,
+/* Discuz AD */div[class="a_pt"]>a,
+/* http://cn.mail.yahoo.com */ #northbanner,#ygmauser,#swads,#ygmabot,
 /* Gmail ad */
 div[class$="adC"]>div[class="nH"]>div[class="nH"],
-html[class="t66y.com"] div[class="tips"],
-html[class="t66y.com"]>body>center,
+
 html[class="dapenti.com"] div[id="center"][class="box4"]>div[align="center"],
 html[class="dapenti.com"] .oblog_text>table[width="600"],
-/* display none botton ad for dapenti.com */
-#gsr #subform_ctrl,div[id^='tanxssp_con_mm_'],
-/* 必应屏幕取词*/
-#bingCW_ht_footer,
-div#main div.tips{display:none !important;}
+/* display none botton ad for dapenti.com */#gsr #subform_ctrl,div[id^='tanxssp_con_mm_'],
+/* 必应屏幕取词*/#bingCW_ht_footer,div#main div.tips
+ {display:none !important;}
 
 #search{padding:3px 0 !important}
 #top-bar{height:auto !important;}
@@ -70,6 +65,20 @@ html{background-color:transparent !important}
 /* http://grepcode.com/project/ */
 #entity-view-main{width:auto !important;}
 
-/* google search */
+/* google search double column */
 #mn>tbody>tr>th:nth-child(2){width:100% !important;}
+#ires ol{overflow:hidden}
 #ires li.g{clear:none !important;float:left;width:49%;border-bottom: 1px solid #EEE;padding:0 !important;min-height:106px;}
+
+/* widget.weibo.com iframe height fixed */
+html[class$="widget.weibo.com"] .weiboShow_main_feed{height:auto !important}
+html[class$="widget.weibo.com"] #pl_weibo_show{height:auto !important}
+
+.div_body{overflow:hidden;}
+
+/* panoramio.com show maps */
+html[class$="www.panoramio.com"] #photo-col{width:auto !important}
+html[class$="www.panoramio.com"] #info-col{display:block !important}
+html[class$="www.panoramio.com"] #info-col .interim-info-card{width:auto !important}
+html[class$="www.panoramio.com"] #minimap1{width:auto !important;height:600px !important;}
+
