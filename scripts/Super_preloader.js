@@ -11,7 +11,8 @@
 // @download  http://userscripts.org/scripts/show/84937
 // @needdatabase http://userscripts.org/scripts/show/93080
 // @todo √	匹配 WordPress 文章页		→ 上一页		← 下一页
-// @todo	向上翻页自动拼接上一页
+// @todo 	user Ctrl+←→ 翻页
+// @todo √	向上翻页自动拼接上一页
 // @todo	switch for 上一页 <==> 下一页
 // @include http*
 // ==/UserScript==
@@ -2413,13 +2414,14 @@
 
 			if(xbug){C.log('全文档链接数量:',alllinksl)}
 
+			var allTexts=new Array();
 			for(i=0;i<alllinksl;i++){
 				if(_nextlink && _prelink)break;
 				a=alllinks[i];
 				if(!a)continue;//undefined跳过
 				//links集合返回的本来就是包含href的a元素..所以不用检测
 				//if(!a.hasAttribute("href"))continue;
-				atext=a.textContent;
+				atext=a.textContent.trim();
 
 				if(atext){
 					if(DCEnable){
@@ -2524,51 +2526,88 @@
 						if(atext)break;
 					};
 				};
+				allTexts[i]=(atext);
 				if(!atext)continue;
 				//alert(atext);
 				if(!_nextlink){
 					xbreak=false;
 					for(k=0;k<_nPKL;k++){
 						keytext=_nextPageKey[k];
-						if(xbug&&k==0&&0==i)C.log('链接匹配 nextlink: ',' '+keytext+'.test("'+atext+'")='+keytext.test(atext)+'');
 						if(!(keytext.test(atext)))continue;
-						if(xbug)C.log('链接匹配 nextlink: ',' '+keytext+'.test("'+atext+'")='+keytext.test(atext)+'');
 						_nextlink=finalCheck(a,'next');
 						xbreak=true;
 						break;
 					};
-					// /^\s*[ 　\[［『「【\(←← 下下一下1翻下后後舊早期次]{0,2}张[ 　\]］>﹥›»>>』」】\) »→ >]{0,3}\s*$/i.test(atext)
-					// 匹配 WordPress 文章页		→ 上一页		← 下一页
-					// /^\s*[ 　\[［『「【\(←← 下下一下1翻下后後舊早期次]{0,2}\s*$/i.test("← ")
-					if(!_nextlink){
-						keytext=new RegExp(keytext.source.substring(0,keytext.source.indexOf("{"))+"\s*$");
-						var atex=atext.substring(0,2);
-						if(atex.trim()!=""&&keytext.test(atex)){
-							if(xbug)C.log('链接匹配 nextlink: ',' '+keytext+'.test("'+atex+'")='+keytext.test(atex)+'');
-							_nextlink=finalCheck(a,'next');xbreak=true;
-						}
-					}
-					if(xbreak || _nextlink)continue;
 				};
 				if(!_prelink){
 					for(k=0;k<_pPKL;k++){
 						keytext=_prePageKey[k];
-						if(xbug&&k==0&&0==i)C.log('链接匹配 prelink: ',' '+keytext+'.test("'+atext+'")='+keytext.test(atext)+'');
 						if(!(keytext.test(atext)))continue;
-						if(xbug)C.log('链接匹配 prelink: ',' '+keytext+'.test("'+atext+'")='+keytext.test(atext)+'');
 						_prelink=finalCheck(a,'pre');
 						break;
 					};
+				};
+			};
+
+			// 匹配 WordPress 文章页 →  ← 
+			// /^\s*[ 　\[［『「【\(←← 下下一下1翻下后後舊早期次]{0,2}\s*$/i.test("← ")
+			var nextRegexp=_nextPageKey[0];
+			var nextRegexp_1=new RegExp(nextRegexp.source.substring(0,nextRegexp.source.indexOf("{"))+"\\s*$","i");
+			var preRegexp=_prePageKey[0];
+			var preRegexp_1=new RegExp(preRegexp.source.substring(0,preRegexp.source.indexOf("{"))+"\\s*$","i");
+			if(!_nextlink||!_prelink)
+			for(i=0;i<allTexts.length;i++){
+				a=alllinks[i];atext=allTexts[i];
+				if(!atext)continue;
+				var atex=atext.substring(0,2);
+				if(!_nextlink){
+					xbreak=false;
+					if(xbug&&0==i)C.log('链接匹配 nextlink: 1 ',' '+nextRegexp_1+'.test("'+atext+'")='+nextRegexp_1.test(atext)+'');
+					if(atex.trim()!=""&&nextRegexp_1.test(atex)){
+						if(xbug)C.log('链接匹配 nextlink: 1 ',' '+nextRegexp_1+'.test("'+atex+'")='+nextRegexp_1.test(atex)+'');
+						_nextlink=finalCheck(a,'next');xbreak=true;
+					}
+					if(xbreak || _nextlink)continue;
+				};
+				if(!_prelink){
 					// /^\s*[ 　\]］>﹥›»>>』」】\) »→ >]{0,3}\s*$/i.test(" →")
-					if(!_prelink){
-						var temkey=keytext.source.substring(keytext.source.indexOf("}")+1,keytext.source.length);
-						keytext=new RegExp("^\s*"+temkey.substring(temkey.indexOf("["),temkey.indexOf("{"))+"\s*$");
-						var atex=atext.substring(atext.length+1-3,atext.length);// 来，我们社交吧！ →
-						if(atex.trim()!=""&&keytext.test(atex)){
-							if(xbug)C.log('链接匹配 prelink: ',' '+keytext+'.test("'+atex+'")='+keytext.test(atex)+'');
-							_prelink=finalCheck(a,'pre');
-							xbreak=true;
-						}
+					atex=atext.substring(0,2);
+					if(xbug&&0==i)C.log('链接匹配 prelink : 2 ',' '+preRegexp_1+'.test("'+atext+'")='+preRegexp_1.test(atext)+'');
+					if(atex.trim()!=""&&preRegexp_1.test(atex)){
+						if(xbug)C.log('链接匹配 prelink : 2 ',' '+preRegexp_1+'.test("'+atex+'")='+preRegexp_1.test(atex)+'');
+						_prelink=finalCheck(a,'pre');
+						xbreak=true;
+					}
+				};
+			};
+
+			// 匹配 WordPress 文章页 →  ← 
+			// /^\s*[ 　\[［『「【\(←← 下下一下1翻下后後舊早期次]{0,2}\s*$/i.test("← ")
+			var temkey=nextRegexp.source.substring(nextRegexp.source.indexOf("}")+1,nextRegexp.source.length);
+			var nextRegexp_2=new RegExp("^\\s*"+temkey.substring(temkey.indexOf("["),temkey.indexOf("{"))+"\\s*$","i");
+			var temkey=preRegexp.source.substring(preRegexp.source.indexOf("}")+1,preRegexp.source.length);
+			var preRegexp_2=new RegExp("^\\s*"+temkey.substring(temkey.indexOf("["),temkey.indexOf("{"))+"\\s*$","i");
+			if(!_nextlink||!_prelink)
+			for(i=0;i<allTexts.length;i++){
+				a=alllinks[i];atext=allTexts[i];
+				if(!atext)continue;
+				var atex=atext.substring(atext.length+1-3,atext.length);
+				if(!_nextlink){
+					xbreak=false;
+					if(xbug&&0==i)C.log('链接匹配 nextlink: 2 ',' '+nextRegexp_2+'.test("'+atext+'")='+nextRegexp_2.test(atext)+'');
+					if(atex.trim()!=""&&nextRegexp_2.test(atex)){
+						if(xbug)C.log('链接匹配 nextlink: 2 ',' '+nextRegexp_2+'.test("'+atex+'")='+nextRegexp_2.test(atex)+'');
+						_nextlink=finalCheck(a,'next');
+						xbreak=true;
+					}
+					if(xbreak || _nextlink)continue;
+				};
+				if(!_prelink){
+					atex=atext.substring(atext.length+1-3,atext.length);
+					if(xbug&&0==i)C.log('链接匹配 prelink : 1 ',' '+preRegexp_2+'.test("'+atext+'")='+preRegexp_2.test(atext)+'');
+					if(atex.trim()!=""&&preRegexp_2.test(atex)){
+						if(xbug)C.log('链接匹配 prelink : 1 ',' '+preRegexp_2+'.test("'+atex+'")='+preRegexp_2.test(atex)+'');
+						_prelink=finalCheck(a,'pre');xbreak=true;
 					}
 				};
 			};
@@ -2771,6 +2810,7 @@
 			if(xbug)C.log('添加键盘左右方向键翻页监听.');
 			document.addEventListener('keyup',function(e){
 				//alert(e.keyCode);
+			if(!e.shiftKey && e.ctrlKey && !e.altKey){// Ctrl+key
 				var tarNN=e.target.nodeName;
 				if(tarNN!='BODY' && tarNN!='HTML')return;
 				switch(e.keyCode){
@@ -2782,6 +2822,7 @@
 					}break;
 					default:break;
 				};
+			}
 			},false);
 		};
 

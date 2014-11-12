@@ -7,6 +7,7 @@
 // @mender    xxtzz2z 
 // @description Adds a virtual keyboard to text fields, password fields and textareas allowing keyboardless input of text and special characters.  Install the script and double-click on one of the form element types above to display the keyboard.
 // @ujs:documentation [Chinese] http://bbs.operachina.com/viewtopic.php?f=41&t=34560
+// @description modify double-click to 三连击
 // ==/UserScript==
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -218,14 +219,28 @@ document.addEventListener('DOMContentLoaded', function(){
     };
 
 
-
     /* ****************************************************************
      * Attach the keyboard to an element
      *
      */
     this.VKI_attachKeyboardUserScript = function(elem) {
+
+		// http://www.cnblogs.com/lvdabao/p/3315942.html
+		var e = new CustomEvent('tripleclick', {'detail' : 'somemsg'});
+		var counter = 0;
+		elem.onclick = function () {
+			setTimeout(function () {
+				counter = 0;
+			}, 500);
+			if (++counter == 3) {
+				elem.dispatchEvent(e);
+			}
+		}
+
       if (elem.VKI_attached) return false;
-      elem.addEventListener('dblclick', function() { self.VKI_show(this); }, false);
+      //elem.addEventListener('dblclick', function() { self.VKI_show(this); }, false);
+		elem.addEventListener('tripleclick',function(event){self.VKI_show(this);},false);
+
       elem.VKI_attachedUserScript = true;
       if (this.VKI_isIE) {
         elem.onclick = elem.onselect = elem.onkeyup = function(e) {
@@ -234,6 +249,7 @@ document.addEventListener('DOMContentLoaded', function(){
         };
       }
     };
+
 
 
     /* ***** Find tagged input & textarea elements ***************** */

@@ -1,6 +1,6 @@
 if (opera.version() >= 10.5) {
 	window.addEventListener('DOMContentLoaded', function (e) {
-		if(document.body.innerHTML==""||document.body.innerText=="")return;
+		if(document.body.innerHTML==""||document.body.innerText==""||document.contentType!="text/html")return;
 		var css =
 			'#consoleOverlay{' +
 			'position: fixed;' +

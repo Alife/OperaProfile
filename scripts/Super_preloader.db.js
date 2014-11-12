@@ -30,10 +30,10 @@
 		s_ease:2	,//淡入淡出效果 0：淡入 1：淡出 2：淡入淡出
 		s_FPS:60	,//帧速.(单位:帧/秒)
 		s_duration:333	,//动画持续时长.(单位:毫秒);
-		debug:false	,//debug,firefox打开firebug切换到错误控制台,chrome打开自带调试工具,opera打开dragonfly切换到命令行.
+		debug:true	,//debug,firefox打开firebug切换到错误控制台,chrome打开自带调试工具,opera打开dragonfly切换到命令行.
 		someValue:'Powered by Super_preloader'	,//显示在翻页导航最右边的一个小句子..-_-!!..
 		DisableI:true	,//只在顶层窗口加载JS..提升性能..如果开启了这项,那么DIExclude数组有效,里面的网页即使不在顶层窗口也会加载....
-		arrowKeyPage:false	,//允许使用 左右方向键 翻页..
+		arrowKeyPage:true	,//允许使用 Ctrl+ 左右方向键 翻页..
 		updateSet:[false,7,true]	,//(不支持chrome)3项分别为:使用自动更新提醒,检查间隔(天),给firefoxGM注册右键
 		sepStartN:1	,//翻页导航上的,从几开始计数.(貌似有人在意这个,所以弄个开关出来,反正简单.-_-!!)
 	};
@@ -49,24 +49,24 @@
 			previous:{//上一页关键字前面的字符,例如 "上一页" 要匹配 "[上一页" ,那么prefix要的设置要不小于1,并且character要包含字符 "["
 				enable:true,
 				maxPrefix:6,// max of character.length+1
-				character:[' ','　','[','［','<','＜','‹','«','« ','<<','『','「','【','(','←','上','上一','上1','翻上','前','新','较新','Next','Newer']
+				character:[' ','[','［','<','＜','‹','«','«','<<','『','「','【','(','←','←','上','上一','上1','翻上','前','舊','早期','previous','prev','Older','較舊的']
 			},
 			next:{//下一页关键字前面的字符
 				enable:true,
 				maxPrefix:9,// max of character.length+1
-				character:[' ','　','[','［','『','「','【','(','←','← ','«','下','下一','下1','翻下','后','後','舊','早期','次','previous','Older']
+				character:[' ','　','[','［','『','「','【','(','«','下','下一','下1','翻下','后','後','次','新','较新','Next','Newer','較新的']
 			}
 		},
 		sfwordl:{//关键字后面的字符限定.
 			previous:{//上一页关键字后面的字符
 				enable:true,
 				maxSubfix:2,
-				character:[' ','　',']','］','』','」','】',')','→','→ ','»']
+				character:[' ','　',']','］','』','」','】',')','»']
 			},
 			next:{//下一页关键字后面的字符
 				enable:true,
 				maxSubfix:3,
-				character:[' ','　',']','］','>','﹥','›','»','>>','』','」','】',')',' »','→ ',' >']
+				character:[' ','　',']','］','>','﹥','›','»','>>','』','」','】','»','→','→','>']
 			}
 		},
 		useiframe:false	,//(预读)是否使用iframe..
@@ -85,8 +85,8 @@
 	};
 
 	//上一页关键字	//下一页关键字
-	var prePageKey= ['张','張','幅','章','节','節','篇','页','頁','后退','往前','文章','へ','<','→','previous Page','Entries','Older','後退'];
-	var nextPageKey=['张','張','幅','章','节','節','篇','页','頁','前进','往后','文章','へ','>','←','Next Page'    ,'Entries','Newer','翻页','翻頁'];
+	var prePageKey= ['张','張','幅','章','节','節','篇','页','頁','后退','往前','文章','へ','<','→','Page','Entries','後退','Post'];
+	var nextPageKey=['张','張','幅','章','节','節','篇','页','頁','前进','往后','文章','へ','>','←','Page','Entries','翻页','Post','翻頁',"Load older Tweets"];
 
 	//分页导航的6个图标:
 	var sep_icons={

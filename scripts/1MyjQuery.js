@@ -1,4 +1,4 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name all jquery user js
 // @description 
 // @depends jquery.js like 0jquery-1.8.3.js
@@ -33,7 +33,7 @@ if(typeof(jQuery)!='undefined'){
 // add dom load time and body load time to title
 if(window == window.parent){
 	function showInfo(msg){
-		if(document.body.innerHTML==""||document.body.innerText=="")return;
+		if(document.body.innerHTML==""||document.body.innerText==""||document.contentType!="text/html")return;
 		var _pageInfo =document.getElementById("_userJs_pageInfo")
 		if(!_pageInfo){
 			_pageInfo = document.createElement('div');
