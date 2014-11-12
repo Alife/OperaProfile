@@ -174,8 +174,8 @@ function getFullDomain(href) {
 	//http://www.google.com/url?q=http://qrcode.kaywa.com/
 	var _href=href;
 	if(href.indexOf("//www.google.com")>-1)_href=getQueryString("q",href);
-	if(!_href)href=getQueryString("url",href);
-    domain = href.match(/http(?:s)?:\/\/[^\/]+/i);
+	if(!_href)_href=getQueryString("url",href);
+    domain = _href.match(/http(?:s)?:\/\/[^\/]+/i);
     return domain ? domain[0].toLowerCase() : _href;
 }
 

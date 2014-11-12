@@ -11,8 +11,8 @@ E[att*=”val”]	属性att的值包含"val"字符串的元素
 
 [id="ad"],[class="ad"],
 
-[id^="ad"],[class^="ad"],
-/*[id$="ad"]*/,[class$="ad"],
+/*[id^="ad"],[class^="ad"],
+[id$="ad"],[class$="ad"],*/
 [id^="adB"],[class^="adB"],
 
 [id^="Ad"],[class^="Ad"],
@@ -23,14 +23,14 @@ E[att*=”val”]	属性att的值包含"val"字符串的元素
 [id*="ad_"],[class*="ad_"],
 [id*="_ad"],[class*="_ad"],
 
-[class*="-ad"],[id*="-ad"],
+[class$="-ad"],[id$="-ad"],
 [class^="ad-"],[id^="ad-"],
 
 /* [id^="ads_"],[class^="ads_"],
 [id$="_ads"],[class$="_ads"], */
-[id*="ads"],[class*="ads"],[name*="ads"],
+[id*="ads"],[class*="ads"],
 
-[id*="adv_"],[class*="adv_"],[name*="adv_"],
+[id*="adv_"],[class*="adv_"],
 
 [class="gg"],[id="gg"],
 [class^="gg"],[id^="gg"],
@@ -42,7 +42,7 @@ E[att*=”val”]	属性att的值包含"val"字符串的元素
 [id^="banner"],[class^="banner"],
 [id$="banner"],[class$="banner"],
 
-[id*="alimama"],[class*="alimama"],
+[id*="alimama"],[class*="alimama"]{display: none !important }
 
 [href*="/ads/"],[src*="/ads/"],
 [href*="/adpuba/"],[src*="/adpuba/"],
@@ -124,6 +124,9 @@ E[att*=”val”]	属性att的值包含"val"字符串的元素
 [src*="/Ggao/"],[src*="/ggao/"],
 [src*="/adunion."],
 
+iframe[src*="/s.asp?q="],
+iframe[src*="ggbd"]{display: none !important }
+
 div[id^="Bar"],div[id^="Float"],
 
 [data-ad-client],[data-ad-slot],
@@ -145,17 +148,27 @@ iframe#frm_tt1,
 /* 雅虎广告隐藏 */
 .yahoocom #northbanner,.yahoocom #rads,.yahoocom #ygmauser a,
 
+body[id="greendown"] div[class*="content ad"],
+
 #feed-pyv-container,
-#ShowQQ,#focusflash,#eteUnionUpFloat,#FrameWinLayer,.t_signature
-{display: none !important }
+#ShowQQ,#focusflash,#eteUnionUpFloat,#FrameWinLayer,.t_signature{display: none !important }
 
 /* 白名单 */
+[id*="head"],[class*="head"],
+[id*="adm"],[class*="adm"],
+[id*="advance"],[class*="advance"],
+/* bbs */[id*="thread"],[class*="thread"],
 div[id*="add"],
 div[class*="adu"],
-/* greendown.cn */div[class*="download"],
+/* greendown.cn */[id*="download"],[class*="download"],
 /* hi.baidu.com */div[class="stagepad"],
 /* cnbeta */div[id="ADcon0"],
 /* Gmail */body[class="aAU"] div[class*="ads"],
 /* lastpass div[id="lppopupautofill"],*/
 /* bbs */[class*='thread'],
 /* blog.sina.com.cn */div[id="sina_keyword_ad_area2"]{display:block !important;}
+
+
+/* bbs */a[id*="thread"],a[class*="thread"],a[id*="download"],a[class*="download"]{display:inline !important;}
+/* bbs */table[id*="thread"],table[class*="thread"]{display:table !important;}
+/* bbs */td[id*="thread"],td[class*="thread"]{display:table-cell !important;}
