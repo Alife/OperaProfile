@@ -17,6 +17,9 @@ if(typeof(jQuery)!='undefined'){
 
 if(new Array().last)Array.prototype.last = function() {return this[this.length-1];}
 
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
 // 说明：Javascript 获取链接(url)参数的方法
 function getQueryString(name, href) {
 	// 如果链接没有参数，或者链接中不存在我们要获取的参数，直接返回空

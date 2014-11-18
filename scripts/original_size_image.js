@@ -2194,7 +2194,7 @@
 		isOpera = !!window.opera;
 	}
 	if(!(document instanceof HTMLDocument))return;
-	if(document.head.innerHTML==""||document.head.innerText=="")return;
+	if(!document.head||document.head.innerHTML==""||document.head.innerText=="")return;
 	//if(document.querySelectorAll("img").length==0)return;
 	main_function();
 })(window.JSON);
