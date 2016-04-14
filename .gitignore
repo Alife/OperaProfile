@@ -1,6 +1,6 @@
 **
 !*/
-!scripts/*
-!styles/*
-!menu/*
-!keyboard/*
+!scripts/**
+!styles/**
+!menu/**
+!keyboard/**
