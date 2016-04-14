@@ -66,9 +66,10 @@ small.ua{color:#ccc !important;text-align:right}
 #entity-view-main{width:auto !important;}
 
 /* google search double column */
-#mn>tbody>tr>th:nth-child(2){width:100% !important;}
+#mn>tbody>tr>th:nth-child(2){width:50% !important;}
+#mn>tbody>tr>th:nth-child(3){width:0 !important;}
 #ires ol{overflow:hidden}
-#ires li.g{clear:none !important;float:left;width:49%;border-bottom: 1px solid #EEE;padding:0 !important;min-height:106px;}
+/* #ires li.g{clear:none !important;float:left;width:37%;border-bottom: 1px solid #EEE;padding:0 !important;min-height:106px;} */
 
 /* widget.weibo.com iframe height fixed */
 html[class$="widget.weibo.com"] .weiboShow_main_feed{height:auto !important}
@@ -81,4 +82,11 @@ html[class$="www.panoramio.com"] #photo-col{width:auto !important}
 html[class$="www.panoramio.com"] #info-col{display:block !important}
 html[class$="www.panoramio.com"] #info-col .interim-info-card{width:auto !important}
 html[class$="www.panoramio.com"] #minimap1{width:auto !important;height:600px !important;}
+
+html[class*="iplaysoft.com"] #content>div.post+div,
+html[class*="mianbao99.com"] .letter-union{ display: none !important }
+
+html[class*="mianbao99.com"] #serial-box,
+html[class*="mianbao99.com"]  .serial-union,
+html[class*="mianbao99.com"] .txt-list {width: 975px !important;}
 

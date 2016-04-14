@@ -124,15 +124,17 @@ if(window == window.parent){
 		if(isT){
 			if(!document._dict_status){_load_dict();}
 		}		
-			if(document.getCookie("googtrans")==="")document.setCookie("googtrans","\/auto\/zh-CN",365,'/',document.domain);
-			googleTranslateElementInit();
+		//if(document.getCookie("googtrans")==="")document.setCookie("googtrans","\/auto\/zh-CN",365,'/',document.domain);
+		//	googleTranslateElementInit();
 		jQuery("select[class=goog-te-combo]>option").each(function(){if(this.value==="zh-CN"||this.value==="en"){}else jQuery(this).remove();});
    }, false);
 }
 })();
 
 // http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit
-//(function () {
+
+(function () {
+	return;
 	var d = window,
 	e = document,
 	f = "text/javascript",
@@ -204,10 +206,11 @@ if(window == window.parent){
 		_loadJs(b + '/translate_static/js/element/main.js');
 	})();
 	}
-//})()
+})();
 
 // http://translate.googleapis.com/translate_static/js/element/main.js
 (function () {
+	return;
 	var c = document,
 	d = "length",
 	e = " translation",
@@ -335,10 +338,10 @@ if(window == window.parent){
 		x("google.translate.m", z);
 		x("google.translate.v", B)
 	};
-})()
+})();
 
 function _load_dict() {log("_load_dict()");
 	var element = document.createElement('script');
 	element.setAttribute('src', 'http://dict.cn/hc/init.php');
 	document.body.appendChild(element);
-}
+} 

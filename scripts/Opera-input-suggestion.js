@@ -197,7 +197,8 @@ OpS.setupInputs = function() {
 	var domInputs = null;
 
 	domInputs = document.getElementsByTagName("INPUT");
-
+	domInputs = Array.prototype.slice.call(domInputs);
+	domInputs = domInputs.concat(Array.prototype.slice.call(document.getElementsByTagName("textarea")))
 	if (!domInputs || !domInputs.length)
 		return;
 
@@ -936,7 +937,8 @@ Cookie.prototype.save = function() {
 //~ OpS class
 
 var Utils_Dom = {
-	AgentIsOp9: opera.version() >= 9,
+	//AgentIsOp9: opera.version() >= 9,
+	AgentIsOp9: true,
 
 	newOffset: function(nTop, nLeft) { return { nTop: nTop || 0, nLeft: nLeft || 0 }; },
 

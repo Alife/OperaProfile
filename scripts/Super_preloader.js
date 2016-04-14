@@ -138,7 +138,7 @@
 		};
 		//--------
 
-		if(opera.version()<10.5){
+		if(typeof opera != 'undefined'&&opera.version()<10.5){
 			if(typeof(db)=='undefined'){return;}else{
 				initdata(window.superPreloader_db);
 				window.superPreloader_db=null;
@@ -173,7 +173,7 @@
 			log:nullFn,//一般信息.
 			err:nullFn,//错误信息.
 		};
-		if(browser.opera && opera.version()<10.5){
+		if(typeof opera != 'undefined'&&browser.opera && opera.version()<10.5){
 			C.log=C.err=function(){
 				opera.postError.apply(opera,arguments);
 			};
@@ -437,6 +437,7 @@
 			var registerMenuCommand=updateSet[2];
 			//alert(registerMenuCommand);
 			if(registerMenuCommand){
+				if(typeof GM_registerMenuCommand !="undefined")
 				GM_registerMenuCommand('检查 '+userJSName+' 更新',checkUpdateM);
 				if(opera){
 					//alert(userJSName+'_checkUpdate');
@@ -2627,7 +2628,9 @@
 		function parseKWRE(){
 			function modifyPageKey(name,pageKey,pageKeyLength){
 				function strMTE(str){
-					return (str.replace(/\\/g, '\\\\')
+					if(typeof str != "string")
+						return str.source;
+					else return (str.replace(/\\/g, '\\\\')
 								.replace(/\+/g, '\\+')
 								.replace(/\./g, '\\.')
 								.replace(/\?/g, '\\?')

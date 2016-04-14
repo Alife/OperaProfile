@@ -74,7 +74,7 @@
 						setTimeout(function(){xwindow.document.title=alt;},1000);
 					};
 					//alert(xwindow);
-					//window.addEventListener('beforeunload',function(){alert('00')},false);
+					//window.opera.addEventListener('beforeunload',function(){alert('00')},false);
 					location.href="javascript:if(typeof PlayerPause!=='undefined')PlayerPause(true);void(0);"
 				};
 			};
@@ -1160,6 +1160,7 @@
 	//javascript:Super_prefetch_checkUpdate();
 
 
+if(typeof GM_getValue !="undefined"){
 	var registerMenuCommand=GM_getValue(id+'_registerMenuCommand',null);
 	//alert(registerMenuCommand)
 	if(registerMenuCommand===null){
@@ -1167,6 +1168,7 @@
 		GM_setValue(id+'_registerMenuCommand',registerMenuCommand);
 	};
 	if(registerMenuCommand){
+	if(typeof GM_registerMenuCommand !="undefined")
 		GM_registerMenuCommand('检查 '+userJSName+' 更新',checkUpdateM);
 	};
 
@@ -1206,4 +1208,5 @@
 	var isDownloadPage=(curURL.indexOf(downloadPage)==0);
 	//needCheck=true;
 	if(needCheck || isDownloadPage)checkUpdate();
+}
 })();

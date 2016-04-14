@@ -248,9 +248,10 @@ document.addEventListener("DOMContentLoaded",function(){
     var codTT;
     if(/\/.*?\/forums\//.test(location.pathname) && (codTT=document.forms.addcomment))
       opera.AddCodeTools(codTT.comment,codTT)
-    else if(codTT=document.selectSingleNode('//form//textarea[@id="message" or @name="comment"]')){
+    else if(typeof document.selectSingleNode!="undefined"
+		&&(codTT==document.selectSingleNode('//form//textarea[@id="message"]')||codTT==document.selectSingleNode('//form//textarea[@name="comment"]'))){
       var widgetsPage=location.hostname=='widgets.opera.com',selWid=widgetsPage?54:40;
-      opera.AddCodeTools(
+      if(codTT)opera.AddCodeTools(
         codTT,(widgetsPage?codTT:codTT.form),
         {
          Styles:' DIV.OperaEditTools>IMG{margin-right:-.7pt;width:22px} '+
@@ -260,7 +261,8 @@ document.addEventListener("DOMContentLoaded",function(){
          NoAutoAdjust:1
         }
       )
-    }else if(codTT=document.selectSingleNode('//form//textarea[@name="message"]'))
+    }else if(typeof document.selectSingleNode!="undefined"
+		&&codTT==document.selectSingleNode('//form//textarea[@name="message"]'))
       opera.AddCodeTools(codTT,codTT,{Styles:' DIV.OperaEditTools>IMG{margin-right:0px;} div.OperaEditTools>div.flRight{display:none}'})
 },false);
 })(window.opera||window);

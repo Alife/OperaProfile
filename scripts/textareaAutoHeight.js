@@ -91,7 +91,7 @@
 
 
 	var styleText='';
-	if(prefs.transition && window.opera && window.opera.version()>=10.5){
+	if(prefs.transition &&typeof opera != 'undefined'&& window.opera && window.opera.version()>=10.5){
 		var timingFn=(prefs.timingFn.indexOf(',')==-1)? prefs.timingFn : 'cubic-bezier('+prefs.timingFn+')';
 		var duration=prefs.duration/1000+'s';
 		styleText=';-o-transition:height '+duration+' '+timingFn+';';

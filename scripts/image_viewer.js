@@ -11,6 +11,7 @@
 // ==/UserScript==
 
 (function(){
+ if(document.contentType!="image/jpeg")return;
 /*--------------------设置-----------------------*/
 	//opera首选项中的页面缩放值
 	//注：对于 Opera 11.10 以下的版本，如果你的页面缩放不是100%，不调整这项值会造成居中错误的问题。Opera 11.10 可不必理会此项。
@@ -129,7 +130,7 @@
 			angle_now = angle_org - get_angle(img_ox, img_oy, ev.pageX, ev.pageY) + angle_now;
 		}
 		flag_rotate = false;
-		if(window.opera.version() >= 10.50)
+		if(typeof opera != 'undefined'&&window.opera.version() >= 10.50)
 			flag_drag = false;
 		window.removeEventListener('mousemove', mouse_drag_handler, false);
 		window.removeEventListener('mousemove', rotate_handler, false);
@@ -182,7 +183,7 @@
 		window.addEventListener('mousemove', mouse_drag_handler, false);
 		window.addEventListener('mouseup', mouse_up_handler, false);
 		var x = ev.pageX, y = ev.pageY;
-		if(ROTATE_ENABLE && window.opera.version() >= 10.50){
+		if(ROTATE_ENABLE && typeof opera != 'undefined'&&window.opera.version() >= 10.50){
 			if(ROTATE_STYLE == 0 || ROTATE_STYLE == 2){
 				if(timmer_rotate == null)
 					timmer_rotate = setTimeout(function(){start_rotate(img_ox, img_oy, x, y)}, LONG_PRESS_TIME);
@@ -254,6 +255,7 @@
 	}
 	
 	function initMain(){
+		if(document.getElementsByTagName('img').length==0)return;
 		img = document.getElementsByTagName('img')[0];
 		img_org_w = img.width;
 		img_org_h = img.height;
@@ -291,8 +293,8 @@
 		window.removeEventListener('mousemove', mouse_drag_handler, false);
 	}
 	
-	if(document.selectSingleNode('//head/link[@href="opera:style/image.css"]') != null){
-		if(opera.version() >= 11.10)
+	//if(document.selectSingleNode('//head/link[@href="opera:style/image.css"]') != null){
+		if(typeof opera != 'undefined'&&opera.version() >= 11.10)
 			OP_PAGE_PERCENTAGE = 100;
 		initMain();
 		window.addEventListener('mousedown', mouse_down_handler, false);
@@ -301,11 +303,10 @@
 		window.addEventListener('load', get_final_size, false);
 		window.addEventListener('blur', remove_mouse_down_hdlr, false);
 		window.onmousewheel = mouse_wheel_handler;
-		window.opera.addEventListener(
-			"BeforeScript",
-			function (e) {
-				e.preventDefault();
-			}, false
-		);
-	}
+		if (typeof opera != 'undefined') {
+		window.opera.addEventListener("BeforeScript",function (e){
+			e.preventDefault();
+		}, false);
+		}
+	//}
 })();

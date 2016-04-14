@@ -4,6 +4,7 @@
 // @author Edward Ackroyd, adapted to Opera by Sombria
 // @version 1.0 (GooglePreview 2.1.3)
 // @include http*://www.google.*/search*
+// @include http*://*/search?*q=*
 // @include http://*search.yahoo.*/search*
 // ==/UserScript==
 
@@ -204,28 +205,26 @@ function getRealURL(href)
 function createThumbnail(href)
 {
   href = getRealURL(href);
-    thumb = document.createElement("img");
-    thumb.setAttribute("align", "left");
+	thumb = document.createElement("img");
+	thumb.setAttribute("align", "left");
+	thumb.setAttribute("class", "google-preview");
+	thumb.onerror=function(){this.src=this.src.replace("http:","https:")};
   if (!getASIN(href)) {
     thumb.setAttribute("src", getImageURL(href));
-        thumb.style.width = "111px";
-        thumb.style.height = "82px";
     thumb.style.backgroundImage = "url("+IMG_LOADING+")";
-
-        thumb.style.backgroundPosition = "center";
+		thumb.style.backgroundPosition = "center";
     thumb.style.backgroundRepeat = "no-repeat";
     thumb.style.border = "1px solid #BBBBBB";
   } else {
       thumb.setAttribute("src", IMG_PIXEL);
-      thumb.style.margin = "2px 0px 2px 0px";
-        thumb.style.width = "115px";
-    thumb.style.backgroundImage = "url("+getImageURL(href)+")";
-    thumb.style.backgroundPosition = "top";
-    thumb.style.backgroundRepeat = "no-repeat";
-    thumb.style.border = "1px solid #FFFFFF";
-    }
-  thumb.style.margin = "2px 4px 5px 0px";
-    return thumb;
+			thumb.style.backgroundImage = "url("+getImageURL(href)+")";
+			thumb.style.backgroundPosition = "top";
+			thumb.style.backgroundRepeat = "no-repeat";
+			thumb.style.border = "1px solid #FFFFFF";
+  }
+	thumb.style.width = "100px";
+  thumb.style.margin = "5px 4px 5px 0px";
+	return thumb;
 }
 
 function thumbshots(url) {
@@ -242,7 +241,10 @@ function thumbshots(url) {
         while (a != null) {
           var href = a.href;
           url = href.match(/http:\/\/(?:www\.)?google\.[^\/]+\/url\?.*&q=(http:.+)$/i);
-                if (url) href = unescape(url[1]);
+					if (url) href = unescape(url[1]);
+					var ori_hreh=getQueryString("url", href);
+					if(ori_hreh=="")ori_hreh=getQueryString("q", href);
+					if(ori_hreh!="")href=ori_hreh;
 
           if (href.indexOf("http://") == 0 || href.indexOf("https://") == 0) {
             var aParent = a.parentNode;
@@ -254,6 +256,7 @@ function thumbshots(url) {
                 linka.href = href;
                 linka.insertBefore(thumb, linka.firstChild);
                 aParent.parentNode.insertBefore(linka, aParent.parentNode.firstChild);
+                //aParent.nextSibling.insertBefore(linka, aParent.nextSibling.firstChild);
                 a.setAttribute("done", "done");
                 t++;
                 aParent.parentNode.style.clear = "left";
@@ -293,12 +296,12 @@ function thumbshots(url) {
       }
       a = document.getElementsByTagName("a")[i++];
     }
-        head = document.getElementsByTagName("head")[0];
-        style = document.createElement("style");
-        style.setAttribute("type", 'text/css');
-        style.innerHTML = "\n#yschweb>OL>LI { height: 105px; clear: both; }\n";
-        style.innerHTML += "\n#west>OL>LI { height: 105px; clear: both; }\n";
-        head.insertBefore(style, head.lastChild);
+		head = document.getElementsByTagName("head")[0];
+		style = document.createElement("style");
+		style.setAttribute("type", 'text/css');
+		style.innerHTML = "\n#yschweb>OL>LI { height: 105px; clear: both; }\n";
+		style.innerHTML += "\n#west>OL>LI { height: 105px; clear: both; }\n";
+		head.insertBefore(style, head.lastChild);
   }
 
   if (t > 0) {

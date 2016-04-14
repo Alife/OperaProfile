@@ -1,7 +1,12 @@
 // ==UserScript==
-// @include http://*.baidu.com/*
+// @author remove baidu url redirect
+// @version v1.0.0
+// @date 2013-02-16
+// @description Disable the lazy-load function of images for Dz-forums.
+// @include *
 // ==/UserScript==
-jQuery(document).ready(function () {
+
+document.addEventListener('DOMContentLoaded', function(e){
 	var oXHR_F = function (baidulink) {
 		var url = baidulink;
 		var oXHR = new XMLHttpRequest();
@@ -26,7 +31,7 @@ jQuery(document).ready(function () {
 		oXHR.send(null);
 		void(0);
 	}
-	jQuery("a[href*='http://www.baidu.com/link?url=']").each( function () { 
-		oXHR_F(this.href);
+	jQuery("a[href*='http://www.baidu.com/link?url='],a[href*='http://jump.bdimg.com/safecheck/index?url=']").each( function () { 
+		jQuery(this).bind("mouseover",function(){oXHR_F(this.href)});
 	});
 });

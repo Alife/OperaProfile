@@ -13,6 +13,10 @@
 		if(d instanceof HTMLHtmlElement){
 			var dcn=d.className;
 			d.className += (dcn ? ' ' : '') + hclassname;
+			while(hclassname.split('.').length>2){
+				hclassname=hclassname.substring(hclassname.indexOf('.')+1,hclassname.length);
+				d.className += ' ' + hclassname;
+			}
 		};
 	};
 	if (setclassname()){document.addEventListener('DOMContentLoaded',setclassname,false);}

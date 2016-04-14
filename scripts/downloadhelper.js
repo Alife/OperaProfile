@@ -54,7 +54,7 @@
 
 	//取cookie函数
 	function getCookie(c_name){
-		var sre="(?:;)?"+c_name+"=([^;]*);?"
+		var sre="(?:;)?"+c_name+"=([^;]*);?";
 		var ore=new RegExp(sre);
 		if(ore.test(document.cookie)){
 			return decodeURIComponent(RegExp['$1']);
@@ -311,7 +311,7 @@
 //自动更新模块
 (function(){
 	//only for firefox
-	if(window.opera || window.chrome)return;
+	if(window.opera || window.chrome || typeof GM_getValue=='undefined')return;
 
 	var prefs={
 		id:'85969'											,//上传在 userscript上的脚本 编号.. 如地址 http://userscripts.org/scripts/show/84937 id为 84937
@@ -409,6 +409,7 @@
 	//checkUpdate();
 
 
+if(typeof GM_getValue != 'undefined'){
 	var registerMenuCommand=GM_getValue(id+'_registerMenuCommand',null);
 	if(registerMenuCommand===null){
 		registerMenuCommand=true;
@@ -449,4 +450,5 @@
 	};
 
 	if(needCheck)checkUpdate();
+}
 })();

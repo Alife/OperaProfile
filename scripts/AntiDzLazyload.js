@@ -23,8 +23,7 @@
 				}
 			}, false
 		);
-	}
-	else{
+	}else{
 		function $$(str){
 			return document.qSelectorAll(str);
 		}
@@ -36,8 +35,8 @@
 		}
 		
 		function _antiDzLazyload(){
-			var w = unsafeWindow || window;
-			if(w.lazyload && w.lazyload.imgs.length > 0){
+			var w = typeof unsafeWindow=='undefined' ? window : unsafeWindow;
+			if(w.lazyload && w.lazyload.imgs&&w.lazyload.imgs.length > 0){
 				/* for firefox */
 				for(var i = 0; i < w.lazyload.imgs.length; i++){
 					var img = w.lazyload.imgs.shift();
@@ -52,6 +51,13 @@
 						loadLazyImage(imgs[i]);
 					}
 				}
+				var imgs = $$('img[data-lazy-img]');
+				if(imgs && imgs.length > 0){
+					for(var i = 0; i < imgs.length; i++){
+						imgs[i].src=imgs[i].getAttribute("data-lazy-img");
+					}
+				}
+				
 			}
 		}
 		_antiDzLazyload();

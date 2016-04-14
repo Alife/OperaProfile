@@ -32,7 +32,7 @@
 	CDATA (bug in Opera?).
 */
 
-opera.Selection2ubb = function() {
+window.Selection2ubb = function() {
 
 
 	/* ********************************************************************** */
@@ -347,4 +347,4 @@ opera.Selection2ubb = function() {
 		return html;
 	}
 
-}
+};

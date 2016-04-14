@@ -10,7 +10,7 @@
 // ==/UserScript==
 
 //code based on ff extension but improved
-(function(opera,getSelection,addEventListener,selNode,getBoundingClientRect,window){var
+(function(getSelection,addEventListener,selNode,getBoundingClientRect,window){var
 //..//
 	showStatus=1 , // show # of selected links in status bar
 	selAllLinks=0, // select all links
@@ -273,11 +273,11 @@
 			if(showStatus)window.status='Links in selection: '+ elms.length;
 		}
 	};
-	if(opera && opera.addEventListener)
+	if(typeof opera != 'undefined'&&opera && opera.addEventListener)
 		opera.addEventListener('BeforeEvent.mousedown',function(mdev){ return function(ujsev){ if(ujsev.event.dynamicEvent){ ujsev.preventDefault();return } mdev(ujsev.event) } }(events.mousedown),false);
 	else
 		addEventListener('mousedown',events.mousedown,true);
 	addEventListener('focus', events.focus, true);
 	addEventListener('blur', events.blur, true);
 	delete events.mousedown; delete events.focus; delete events.blur;
-})(opera,getSelection,addEventListener,Node.prototype.selectSingleNode,Element.prototype.getBoundingClientRect,window)
+})(getSelection,addEventListener,Node.prototype.selectSingleNode,Element.prototype.getBoundingClientRect,window);

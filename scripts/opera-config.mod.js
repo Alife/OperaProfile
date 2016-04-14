@@ -6,6 +6,9 @@
 // @author	lk
 // ==/UserScript==
 
+(function(){
+if(window.location.href.indexOf("opera:config")==-1)return;
+
 HTMLElement.prototype.hasClassName = function(className){  
     var eN = this.className;  
     if (eN.length == 0) return false;  
@@ -79,3 +82,5 @@ for (var i = 1, li; li = ols[i]; i ++) {
 		jQuery("fieldset").each(function(){jQuery("tr:visible",this).length==0?jQuery(this).hide():jQuery(this).show();})
 	},false);
 }
+
+})();

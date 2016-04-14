@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function(e){
 		if(cookie.length==2){
 			delCookie(cookie[0]);
 			setCookie(cookie[0],cookie[1]);
-			console.log(cookie[0]);
+			//console.log(cookie[0]);
 		}
 	}
 }, false);

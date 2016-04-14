@@ -409,7 +409,7 @@
   }
 
 
-  if(typeof(opera.version) == 'function' && opera.version() >= 9)
+  if(typeof opera != 'undefined' && opera.version() >= 9)
     document.addEventListener('DOMContentLoaded', onLoad, false);
   else
     document.addEventListener('load', onLoad, false);

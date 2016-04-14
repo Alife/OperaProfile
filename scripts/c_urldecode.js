@@ -9,6 +9,8 @@
 
 (function(D,W){
 
+	if(!D.selectNodes)return;
+	
 	function getdownlinks(D,W){
 
 		var i, obj, slnks, lurl=W.location.href,
@@ -35,7 +37,7 @@
 
 		//flashget
 		slnks=D.selectNodes('//a[contains(@onclick,"convertFgURL") or contains(@onclick,"ConvertURL2FG")]');
-		if (!slnks[0])
+		if (slnks&&!slnks[0])
 			fixUrl(D.selectNodes('//a[contains(@href,"javascript:download()") or contains(@onclick,"download()") or contains(@onclick,"AddLink")]'),function(o){
 				var url=(window.download?window.download+'':o.getAttribute('onclick')).match(/AddLink\(\s*([\"\'])(.*?)\1/);
 				return url&&url[2];
@@ -50,6 +52,7 @@
 	function matchUrl(text){var u;if (u=text.match(/(?:(flashget:\/\/)[^\'\"]+)|(?:(thunder:\/\/)[^\'\"]+)/im)) return u}
 
 	function fixUrl(links,downlink,istype){
+		if(!links)return;
 		for (var obj, url, s, i=0; obj=links[i]; i++){
 			obj.onclick=null;
 			url=istype?obj.getAttribute(downlink):typeof downlink==="string"?downlink:downlink(obj);
@@ -223,9 +226,9 @@
 	}
 
 	if (!D.title)
-        W.opera.addEventListener('BeforeScript',sc,false);
+        W.addEventListener('BeforeScript',sc,false);
 
 	D.addEventListener('DOMContentLoaded',urldecode,false);
 
-})(document,window)
+})(document,window);
 

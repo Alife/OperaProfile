@@ -7,34 +7,43 @@
 // 自动代理被墙的网址，其中Google会自动跳转到自己的https服务
 (function() {
 
-/* if (location.hostname == "localhost" ||
-	location.hostname == "127.0.0.1" ||
-	location.href.indexOf('://192.168') > -1 ||
-	location.href.indexOf('://10.') > -1 ||
-	location.href.indexOf('webproxy.appspot.com') > -1) {}
-else {
+if (!(["localhost","127.0.0.1"].indexOf(location.host)>-1 || 
+	location.host.startWith('192.168')||location.host.startWith('10.')||
+	location.host.startWith('proxy.piratenpartij.nl'))){
 	document.addEventListener("DOMContentLoaded", function () {
+		var url_https,url_cache,url_proxy;
+		var proxy = "https://proxy.piratenpartij.nl/%url";
+		var url=decodeURI(location.href);
 		var H1 = document.getElementsByTagName("H1");
-		var redirectUrl;
-		if (document.body.innerHTML == '' ||
-			document.body.innerHTML == '<PRE>' ||
-			H1.length > 0 && (
-				H1[0].innerHTML == '连接被远程服务器关闭' ||
-				H1[0].innerHTML == '无法连接远程服务器' ||
-				H1[0].innerHTML == 'ERROR' ||
-				H1[0].innerHTML == 'Connection closed by remote server' ||
-				H1[0].innerHTML == '网络故障')) {
-			if (location.hostname == "webcache.googleusercontent.com" ||
-			location.hostname.indexOf("www.google.com") > -1) {
-				redirectUrl= location.href.replace(/^http:/, 'https:').replace('hl=en', 'hl=zh-cn').replace('www.google', 'encrypted.google');
-			} else {
-				redirectUrl = location.href.replace(/^https?:\/\/(www\.)?(.*\.*)/, 'https://opera-webproxy.appspot.com/$2');
-			}
-			location.href = redirectUrl
-			//	}
-		}
+		if(["错误!","503 Service Unavailable"].indexOf(document.title)==-1)return;
+		if(H1.length==0)return;
+		if(["无法连接代理服务器。访问被拒绝"].indexOf(H1[0].innerHTML)>-1)return;
+		//if(["","<PRE>"].indexOf(document.body.innerHTML)==-1)return;
+		//if(["连接被远程服务器关闭","无法连接远程服务器","网络故障","无法完成安全事务","Connection closed by remote server","ERROR"].indexOf(H1[0].innerHTML)==-1)return;
+		url=decodeURI(url);
+		// https <==> http
+		url_https=url.indexOf("http:")==0?url.replace(/^http:/, 'https:'):url.replace(/^https:/, 'http:');
+		jQuery("<li><a href='"+url_https+"'>"+url_https+"</a></li>").insertBefore("ul>li:first");
+		// Cache
+		url_cache="https://webcache.googleusercontent.com/search?q=cache:"+url;
+		jQuery("<li><a href='"+url_cache+"'>"+url_cache+"</a></li>").insertAfter("ul>li:first");
+		// proxy			
+		if (["webcache.googleusercontent.com","www.google.com"].indexOf(location.host)> -1)
+			url_cache= url.replace(/^http:/, 'https:');
+		else url_proxy = url.replace(/^https?:\/\/(www\.)?(.*\.*)/, proxy.replace("%url","$2"));
+		jQuery("<li><a href='"+url+"'>"+url+"</a></li>").insertAfter("ul>li:first");
+		
+		debugger;return;
+		jQuery.get(url_https)
+		.success(function() {
+			location.href=url_https;
+		})
+		.error(function() {
+			location.href=url_cache;
+		});
+
 	}, false);
-} */
+} 
 
 // Google 图片搜索中显示原网站图片
 if (/^https?:\/\/\w{2,6}\.google(?:\.[^\.]{1,4}){1,2}\/search\?/i.test(location.href)) {

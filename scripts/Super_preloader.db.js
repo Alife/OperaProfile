@@ -30,7 +30,7 @@
 		s_ease:2	,//淡入淡出效果 0：淡入 1：淡出 2：淡入淡出
 		s_FPS:60	,//帧速.(单位:帧/秒)
 		s_duration:333	,//动画持续时长.(单位:毫秒);
-		debug:true	,//debug,firefox打开firebug切换到错误控制台,chrome打开自带调试工具,opera打开dragonfly切换到命令行.
+		debug:false	,//debug,firefox打开firebug切换到错误控制台,chrome打开自带调试工具,opera打开dragonfly切换到命令行.
 		someValue:'Powered by Super_preloader'	,//显示在翻页导航最右边的一个小句子..-_-!!..
 		DisableI:true	,//只在顶层窗口加载JS..提升性能..如果开启了这项,那么DIExclude数组有效,里面的网页即使不在顶层窗口也会加载....
 		arrowKeyPage:true	,//允许使用 Ctrl+ 左右方向键 翻页..
@@ -985,7 +985,7 @@
 
 	var JSONString=xToString(superPreloader);
 	var postString='superPreloader.db'+JSONString;
-	if(browser.opera && opera.version()<10.5){
+	if(typeof opera != 'undefined'&&browser.opera && opera.version()<10.5){
 		window.superPreloader_db = postString;
 	};
 

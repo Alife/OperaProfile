@@ -43,27 +43,28 @@ function createTable() {
 		<td class=name>'+name+'</td>\<td class=value>'+value+'</td>\
 		<td class=edit>edit</td>\<td class=del>del</td>\
 		';
-		document.getElementById("table").appendChild(div);
+		w.document.getElementById("table").appendChild(div);
 			}
 		}
 	}
 }
 var HTML="";
 window.addEventListener('DOMContentLoaded', function(e) {
+		return;
 	if(window.name&&window.name=="cookieditor")return;
 	var w = window.open('');w.name="cookieditor";
 	w.document.open();
 	w.document.write('<html><head><title></title><meta http-equiv=\'Content-Type\' content=\'text/html; charset=utf-8\' /><style type=\'text/css\'></style></head><body><table colSpan=0 rowSpan=0 width=100% id=table></table></body></html>');
-	w.document.close();
-	var style=document.createElement('style');
+	var style=w.document.createElement('style');
 	style.type='text/css';
 	style.textContent='\
 		#googtrans-rect{z-index:999999!important;Color:#fff}\
 	';
-	document.getElementsByTagName('head')[0].appendChild(style);
-	var div=document.createElement('div');
+	w.document.getElementsByTagName('head')[0].appendChild(style);
+	var div=w.document.createElement('div');
 	div.id='cookieditor';
 	div.innerHTML='';
-	document.body.appendChild(div);
+	w.document.body.appendChild(div);
 	createTable();
+	w.document.close();
 }, false);

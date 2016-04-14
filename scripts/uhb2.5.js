@@ -5,6 +5,7 @@
 //   UltimateHighlightKeywords('keywords'); -> Highlights the 'keywords' string
 
 // Options: 
+var p000_UHOption_ignoreWords="a an at is if of by or this go to like too you many want on not"; // 1=Automatically highlight pages from google results
 var p000_UHOption_AutoHighlight= 1, // 1=Automatically highlight pages from google results
     p000_UHOption_AlwaysAsk    = 0, // 1=Always prompt for keywords
     p000_UHOption_ShowFollowUp = 1, // 1=Show results pane when possible
@@ -15,6 +16,12 @@ var p000_UHVar_colors=new Array('#ffff66','#A0FFFF','#99ff99','#ff9999','#ff66ff
 var p000_UHVar_gCount,p000_UHVar_gText,p000_UHVar_gKeywords,p000_UHVar_gRE,p000_UHVar_framed;
 var p000_UHVar_d1=new Array(),p000_UHVar_d2=new Array(),p000_UHVar_d3=new Array();
 
+function isGoogleSearchWeb() {
+	var v= false;
+	v=document.URL.indexOf('.google.')==-1;
+	if(!v)v=document.getElementById("logo").title.indexOf("Google")>-1;
+	return v;
+}
 // Constructs the results pane
 function p000_UHFunc_CreateDiv() {
 	if(p000_UHOption_ShowFollowUp) {
@@ -82,7 +89,7 @@ function p000_UHFunc_CloseDiv() {
 function p000_UHFunc_GetCookie() {
 	if(p000_UHOption_UseCookies) {
 		// Don't load cookie for google domain, because we will use the google search query instead
-		if(document.URL.indexOf('.google.')==-1) {
+		if(isGoogleSearchWeb()) {
 			var search='xz7rx8vUltimateHighlight=';
 			if(document.cookie.length>0) {
 				var offset=document.cookie.indexOf(search);
@@ -117,6 +124,7 @@ function p000_UHFunc_CheckSearchString(text) {
 	
 	// Separate search terms with "|" character
 	var insidedblquotes=false;
+	if(text.substring(text.length-1,1)=='.')text=text.substring(0,text.length-1);
 	var textpart=text.split('"');
 	text='';
 	for (i=0; i<textpart.length; i++) {
@@ -130,6 +138,9 @@ function p000_UHFunc_CheckSearchString(text) {
 	text='|'+text+'|';
 	text=text.replace(/\|+/g,'|');
 	if(text.length<=1) return;
+	for (i=0,texts=text.split("|"); i<texts.length; i++)
+		if(p000_UHOption_ignoreWords.indexOf(texts[i].toLowerCase())>-1)
+			text=text.replace("|"+texts[i]+"|","|");
 	p000_UHVar_gKeywords=null;
 	p000_UHVar_gRE=null;
 	p000_UHVar_gText=x;
@@ -181,9 +192,9 @@ function p000_UHFunc_CheckSearchString(text) {
 function p000_UHFunc_ClearWindowHighlights(w) {
 	var i;
 	var result=false;
-	if(p000_UHVar_framed) {
+	if(p000_UHVar_framed&&w.frames) {
 		for (i=0;i<w.frames.length;i++) {
-			if(w.frames[i])result=p000_UHFunc_ClearWindowHighlights(w.frames[i])||result;
+			if(w.frames[i]&&w.frames[i].constructor==Window)result=p000_UHFunc_ClearWindowHighlights(w.frames[i])||result;
 		}
 	} else {
 		result=p000_UHFunc_ClearNodeHighlights(w.document.body);
@@ -306,7 +317,9 @@ function UltimateHighlight(NoPopup,ReferrerOnly) {
 				text=decodeURI(text);
 			}
 		}
-		if(location.hostname.match(/(^|\.)google\.([^\.]+|[^\.]{2,3}\.[^\.]{2})$/) && document.URL.indexOf('q=')!=-1) {
+		if(
+		//location.hostname.match(/(^|\.)google\.([^\.]+|[^\.]{2,3}\.[^\.]{2})$/) && 
+		document.URL.indexOf('q=')!=-1) {
 			var queryTermsRegExp=new RegExp('q=([^&]+)');
 			if(queryTermsRegExp.test(document.URL)) {
 				text=RegExp.$1.replace(/\+/g,' ');

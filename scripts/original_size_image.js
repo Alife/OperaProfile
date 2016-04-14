@@ -260,7 +260,7 @@
 	var fit_flag = 1;
 	var percentage = 100;
 
-	if(window.opera && window.opera.version() >= 11.10)
+	if(typeof opera != 'undefined'&&window.opera && window.opera.version() >= 11.10)
 		OP_PAGE_PERCENTAGE = 100;
 
 	var viewWidth = window.opera ? window.innerWidth / (OP_PAGE_PERCENTAGE / 100) : window.innerWidth;
@@ -2194,7 +2194,8 @@
 		isOpera = !!window.opera;
 	}
 	if(!(document instanceof HTMLDocument))return;
-	if(!document.head||document.head.innerHTML==""||document.head.innerText=="")return;
+	if(!document.head||document.head.innerHTML==""||document.head.innerText==""
+		||!document.body||document.body.innerText=="")return;
 	//if(document.querySelectorAll("img").length==0)return;
 	main_function();
 })(window.JSON);

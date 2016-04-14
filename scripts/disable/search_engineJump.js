@@ -8946,7 +8946,7 @@
 
 
 		if(prefs.debug){
-			if(envir.opera && window.opera.version()<10.5){
+			if(envir.opera && typeof opera != 'undefined'&&window.opera.version()<10.5){
 				C.log=C.err=function(){
 					opera.postError.apply(opera,arguments);
 				};

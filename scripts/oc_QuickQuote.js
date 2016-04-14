@@ -407,6 +407,7 @@
 
 	// ------------------------------ 记录上次点击的元素 ------------------------------
 	document["$UserJS"].lastClicked = document.body;
+if (typeof opera != 'undefined')
 	window.opera.addEventListener("BeforeEvent.mousedown", function (oEvent) {
 		document["$UserJS"].lastClicked = oEvent.event.target;
 	}, false);
@@ -417,7 +418,7 @@ window.addEventListener(
 	function(){
 	/*---------------------------------功能：在引用按钮后面添加快速引用（直接提交）---------------------------------------*/
 		var quoteuls = document.selectNodes('//a[@title="引用"]');
-		for(var i=0,quoteul;quoteul = quoteuls[i];i++){
+		if(quoteuls)for(var i=0,quoteul;quoteul = quoteuls[i];i++){
 			var autoquote = document.createElement('li');
 			autoquote.setAttribute('class', 'quote-icon');
 			autoquote.setAttribute('title', '直接引用并提交');

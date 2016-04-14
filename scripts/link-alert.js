@@ -5,6 +5,7 @@
 // @exclude http://www.frontbase.com/*
 // ==/UserScript==
 
+if (typeof opera != 'undefined')
 opera.addEventListener('AfterEvent.load',function (e) {
 	if( !( e.event.target instanceof Document ) ) { return; }
 	e.target.removeEventListener('AfterEvent.load',arguments.callee,false);

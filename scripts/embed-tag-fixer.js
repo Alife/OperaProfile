@@ -9,8 +9,9 @@
 document.addEventListener('DOMContentLoaded',iEmbed,false);
 
 function iEmbed(){
+	if(!document.selectNodes)return;
 	var es = document.selectNodes('//object[@classid]');
-	for(var i=0, o; o=es[i]; i++){
+	if(es)for(var i=0, o; o=es[i]; i++){
 			var oType=o.getAttribute('type')?o.getAttribute('type').toLowerCase():'';
 			var eType=o.selectSingleNode('embed[@type]')?o.selectSingleNode('embed[@type]').getAttribute('type').toLowerCase():'';
 			eType=(eType.indexOf('oleobject')>0)?'':eType;

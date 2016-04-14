@@ -65,6 +65,7 @@ function ReURL() {
 }
 
 document.addEventListener('DOMContentLoaded', ReURL, false);
+if (typeof opera != 'undefined')
 window.opera.addEventListener('BeforeExternalScript', function (e) {
 	if (e.element.src) {
 		for (var j = 0; j < res.length; j++) {

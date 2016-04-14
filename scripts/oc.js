@@ -4,6 +4,9 @@
 // @include		 http://oc.ls.tl/*
 // ==/UserScript==
 
+(function(){
+if(window.location.href.indexOf("oc.ls.tl")==-1)return;
+
 document.addEventListener("DOMContentLoaded", function () {
 	var oTDs = document.selectNodes("//td[@class='tposts' and (number(substring-before(text(),' ')) mod 20=19 or starts-with(text(),'0'))]");
 	for (var i = 0, oTD; oTD = oTDs[i]; i++) {
@@ -204,3 +207,5 @@ if(typeof(jQuery)!='undefined'){
 		jQuery("small.ua").each(function(){if(jQuery(this).html().indexOf("mini")>-1){jQuery(this).css("color","red")}});
 	});
 }
+
+})();

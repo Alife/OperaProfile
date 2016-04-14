@@ -19,4 +19,4 @@ var t2s = function() {
 	return n;
 }
 document.body.innerHTML=document.body.innerHTML.t2s();
-})()
+})();

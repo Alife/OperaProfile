@@ -10,119 +10,58 @@ E[att*=”val”]	属性att的值包含"val"字符串的元素
 */
 
 [id="ad"],[class="ad"],
-
-/*[id^="ad"],[class^="ad"],
-[id$="ad"],[class$="ad"],*/
-[id^="adB"],[class^="adB"],
-
-[id^="Ad"],[class^="Ad"],
-[id^="AD"],[class^="AD"],
-
-/* [id^="ad_"],[class^="ad_"],
-[id$="_ad"],[class$="_ad"], */
-[id*="ad_"],[class*="ad_"],
-[id*="_ad"],[class*="_ad"],
-
-[class$="-ad"],[id$="-ad"],
-[class^="ad-"],[id^="ad-"],
-
-/* [id^="ads_"],[class^="ads_"],
-[id$="_ads"],[class$="_ads"], */
-[id*="ads"],[class*="ads"],
-
-[id*="adv_"],[class*="adv_"],
+[id*="ad"]:not([id*="add"],[id*="adv"],[id*="ead"],[id*="oad"],[id*="adm"],[id*="adu"]),
+[class*="ad"]:not([class*="add"],[class*="adv"],[class*="ead"],[class*="oad"],[class*="adm"],[class*="adu"]){display: none !important }
 
 [class="gg"],[id="gg"],
 [class^="gg"],[id^="gg"],
 /*[class$="gg"],[id$="gg"],*/
 [class*="-gg"],[id*="-gg"],
-[class*="gg-"],[id*="gg-"],
+[class*="gg-"],[id*="gg-"]{display: none !important }
 
-[id*="_banner_"],[class*="_banner_"],
-[id^="banner"],[class^="banner"],
-[id$="banner"],[class$="banner"],
+[id*="banner"],
+[class*="banner"]:not(.goog-te-banner,[class="bannercon"]){display: none !important }
 
 [id*="alimama"],[class*="alimama"]{display: none !important }
 
-[href*="/ads/"],[src*="/ads/"],
-[href*="/adpuba/"],[src*="/adpuba/"],
-[href*="/adjs/"],[src*="/adjs/"],
+[href*="ad"][href*="ad"]:not([href*="add"],[href*="adv"],[href*="ead"],[href*="oad"]),
+[src*="/ads/"][src*="ad"]:not([src*="add"],[src*="adv"],[src*="ead"],[src*="oad"]),
 [href*="/ma.baidu.com/"],[src*="/ma.baidu.com/"],
-[src*="?adid="],[href*="?adid="],
-[href*="/ad/"],[src*="/ad/"],
-[href*="/ads/"],[src*="/ads/"],
-[href*="/ad."],[src*="/ad."],
-[href*="/ads."],[src*="/ads."],
-[href*="//classad."],[src*="//classad."],
 [href*="//cpc.163"],[src*="//cpc.163"],
 [href*="//gimg.baidu."],[src*="//gimg.baidu."],
 [href*="//ma.baidu."],[src*="//ma.baidu."],
 [href*="/union."],[src*="/union."],
 [href*=".union."],[src*=".union."],
 [href*="3721."],[src*="3721."],
-[href*="/ad."],[src*="/ad."],
-[href*="-ad."],[src*="-ad."],
-[href*="-ads."],[src*="-ads."],
 [href*="-banner"],[src*="-banner"],
-[href*=".ad."],[src*=".ad."],
-[href*=".ad/"],[src*=".ad/"],
-[href*=".adlink."],[src*=".adlink."],
-[href*=".ads."],[src*=".ads."],
-[href*=".ads/"],[src*=".ads/"],
-[href*=".ads8."],[src*=".ads8."],
-[href*=".ads99."],[src*=".ads99."],
-[href*=".adsunion."],[src*=".adsunion."],
-[href*=".blogads."],[src*=".blogads."],
 [href*=".cnnic."],[src*=".cnnic."],
 [href*=".hao121."],[src*=".hao121."],
-[href*="/ad_"],[src*="/ad_"],
-[href*="/adimg/"],[src*="/adimg/"],
-[href*="_ad."],[src*="_ad."],
-[href*="_ads."],[src*="_ads."],
-[href*="/pagead/"],[src*="/pagead/"],
 [href*="Adtop."],[src*="AdTop."],
 [href*="/levelAD"],[src*="/levelAD"],
 [href*="topAd."],[src*="topAd."],
-[href*="adsina."],[src*="adsina."],
 [href*="allyes"],[src*="allyes"],
-[href*="?adsnum"],[src*="?adsnum"],
 [href*="/a-d-s/"],[src*="/a-d-s/"],
-[href*="/adcode."],[src*="/adcode."],
 [href*="/union/"],[src*="/union/"],
-[href*="&adsid="],[src*="&adsid="],
 [href*="17k.com/promotion/"],[src*="17k.com/promotion/"],
 [href*="/soyo_hd/"],[src*="/soyo_hd/"],
 [href*="/affiche/"],[src*="/affiche/"],
 [href*=".aeeboo."],[src*=".aeeboo."],
 [href*="/guanggao/"],[src*="/guanggao/"],
-[href*="adc.go.sohu"],[src*="adc.go.sohu"],
-[href*="doc.go.sohu"],[src*="doc.go.sohu"],
 [href*="www.99xqw.com"],[src*="www.99xqw.com"],
 [href*="/in.pet.mop.com"],[src*="/in.pet.mop.com"],
 [href*="/VipVoteHelp.asp?BID="],[src*="/VipVoteHelp.asp?BID="],
 [href*="/ADFlash"],[src*="/ADFlash"],
-[href*="/adshow"],[src*="/adshow"],
-[href*="/ad1."],[src*="/ad1."],
-[href*="/ad2."],[src*="/ad2."],
-[href*="/ad3."],[src*="/ad3."],
-[href*="/ad4."],[src*="/ad4."],
-[href*="/ad5."],[src*="/ad5."],
-[href*="/ad6."],[src*="/ad6."],
-[href*="/ad7."],[src*="/ad7."],
-[href*="/ad8."],[src*="/ad8."],
-[href*="/ad9."],[src*="/ad9."],
-[href*="/ad0."],[src*="/ad0."],
-[href*="/adplay."],[src*="/adplay."],
-[href*="/adfclick?"][src*="/adfclick?"],
-
 [href*="baidu?tn="],[href*="_banner_"],
 [href*="/mopgg."],[href*="/baidu.php?url="],
+[href*=".22.cn/"],[href*=".51idc.com/"],
+
 [src*="/gg1.js"],[src*="/gg2.js"],
 [src*="/mopgg."],
 [src*="/cpro.baidu"],
 [src*="/banner.gif"],
 [src*="/Ggao/"],[src*="/ggao/"],
-[src*="/adunion."],
+[src="images/atm/1003/b_hansi_100331.gif"],
+[src="images/atm/1003/b_za200_*.gif"],
 
 iframe[src*="/s.asp?q="],
 iframe[src*="ggbd"]{display: none !important }
@@ -130,10 +69,7 @@ iframe[src*="ggbd"]{display: none !important }
 div[id^="Bar"],div[id^="Float"],
 
 [data-ad-client],[data-ad-slot],
-
-
-/*  */
-
+.adsbygoogle,
 /*.signature,#signature,.signatures,#signatures,*/
 
 div[id^="popDiv_"],
@@ -145,29 +81,8 @@ div[class="nH"]>div[class="nH"]>div[class="u5"],
 /*,div[id*="popup"]*/
 iframe#frm_tt1,
 
-/* 雅虎广告隐藏 */
-.yahoocom #northbanner,.yahoocom #rads,.yahoocom #ygmauser a,
-
-body[id="greendown"] div[class*="content ad"],
-
 #feed-pyv-container,
 #ShowQQ,#focusflash,#eteUnionUpFloat,#FrameWinLayer,.t_signature{display: none !important }
-
-/* 白名单 */
-[id*="head"],[class*="head"],
-[id*="adm"],[class*="adm"],
-[id*="advance"],[class*="advance"],
-/* bbs */[id*="thread"],[class*="thread"],
-div[id*="add"],
-div[class*="adu"],
-/* greendown.cn */[id*="download"],[class*="download"],
-/* hi.baidu.com */div[class="stagepad"],
-/* cnbeta */div[id="ADcon0"],
-/* Gmail */body[class="aAU"] div[class*="ads"],
-/* lastpass div[id="lppopupautofill"],*/
-/* bbs */[class*='thread'],
-/* blog.sina.com.cn */div[id="sina_keyword_ad_area2"]{display:block !important;}
-
 
 /* bbs */a[id*="thread"],a[class*="thread"],a[id*="download"],a[class*="download"]{display:inline !important;}
 /* bbs */table[id*="thread"],table[class*="thread"]{display:table !important;}

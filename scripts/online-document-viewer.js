@@ -62,7 +62,7 @@
 	}
 
 	function listener(e){
-		var link = e && e.target && e.target.selectSingleNode('ancestor-or-self::a[@href][1] | ancestor-or-self::area[@href][1]');
+		var link = e && e.target && e.target.selectSingleNode && e.target.selectSingleNode('ancestor-or-self::a[@href][1] | ancestor-or-self::area[@href][1]');
 
 		if (!link) return;
 

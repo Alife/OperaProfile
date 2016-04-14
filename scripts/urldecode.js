@@ -7,8 +7,12 @@
 // @version 1.0.5
 // ==/UserScript==
 
+(function(){
+if (document.selectNodes)return;
+	
 document.addEventListener('DOMContentLoaded',getdownlinks,false);
 
+if (typeof opera != 'undefined')
 window.opera.addEventListener('BeforeExternalScript',function(e){
    var lurl=location.href;
    if (lurl.search('5qzone.net/gotohtml.php?')>-1 || lurl.search('5qzone.net/download.php?')>-1)
@@ -56,7 +60,7 @@ function getdownlinks(){
 	}
 	//flashget
 	var slnks=document.selectNodes('//a[contains(@onclick,"convertFgURL") or contains(@onclick,"ConvertURL2FG")]');
-	if (!slnks[0]){
+	if (slnks&&!slnks[0]){
 		getAddLinkDL();
 		return;
 	}
@@ -112,8 +116,7 @@ function showDL(hurl){
 	}else
         sxp='//a[contains(@href,"'+hurl+'")]';
 	var slnks=document.selectNodes(sxp);;
-    if (!slnks[0])
-		return;
+    if (slnks&&slnks[0])
 	for (var i=0,l=slnks.length;i<l ;i++ ){
         var url=slnks[i].href.replace(/(http:\/\/[^\/]+\/)*/,'');
 		showXMLhttpDL(url,slnks[i]);
@@ -152,3 +155,4 @@ function showXMLhttpDL(url,obj){
 		}
 	}
 }
+})();
